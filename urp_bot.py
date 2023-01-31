@@ -18,44 +18,39 @@ def start(message):
     start = types.KeyboardButton('/Старт')
     info = types.KeyboardButton('/info')
     markup.add(website, start, info)
-    mess = f'Привет, <b>{message.from_user.first_name} {message.from_user.last_name}</b>!'
+    mess = (f'Привет, <b>{message.from_user.first_name} '
+            f'{message.from_user.last_name}</b>!')
     bot.send_message(message.chat.id, mess, parse_mode='html')
 
-#сайт
+
+# сайт
 @bot.message_handler(commands=['website'])
 def website(message):
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("Открыть сайт", url="http://gazpromneftenergysystems.ru"))
+    markup.add(types.InlineKeyboardButton("Открыть сайт",
+               url="http://gazpromneftenergysystems.ru"))
     bot.send_message(message.chat.id, 'Откройте сайт', reply_markup=markup)
 
-#информация для пользователя
+
+# информация для пользователя
 @bot.message_handler(commands=['info'])
 def send_welcome(message):
     bot.reply_to(message, 'Я расскажу тебе о нефтесервисных активах!')
 
-#ответ на картинку
+
+# ответ на картинку
 @bot.message_handler(content_types=['photo'])
 def get_user_photo(message):
-    bot.send_message(message.chat.id, 'У меня нет глаз, я не понимаю что на этой картинке(')
+    bot.send_message(message.chat.id, 'У меня нет глаз, '
+                                      'я не понимаю что на этой картинке(')
 
-#кнопки помощи
-#@bot.message_handler(commands=['help'])
-#def website(message):
-    #markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    #website = types.KeyboardButton('/Сайт_компании')
-    #start = types.KeyboardButton('/Старт')
-    #can = types.KeyboardButton('/info')
-    #markup.add(website, start, can)
-    #bot.send_message(message.chat.id, 'Используйте кнопки бота', reply_markup=markup)
-    #bot.send_message(message.chat.id, 'Main Menu', {reply_markup: {inline_keyboard: ["uno :+1:"],["uno \ud83d\udc4d", "due"],["uno", "due","tre"],["uno", "due","tre","quattro"]] } })
 
-#stop
+# stop
 @bot.message_handler(commands=['stp'])
 def stop_command(message):
     bot.send_message(message.chat.id, 'OK, stop...')
     print("OK, stop...")
     bot.stop_polling()
-
 
 
 bot.polling(none_stop=True)
