@@ -3,9 +3,9 @@
 
 import telebot
 from telebot import types
-from .api import apy
+#from .api import Apy
 
-API_TOKEN = apy
+API_TOKEN: str = ''
 bot = telebot.TeleBot(API_TOKEN)
 
 
@@ -17,8 +17,8 @@ def start(message):
     btn02 = types.KeyboardButton('Главное меню')
     markup.add(btn01, btn02)
     mess = (f'Привет, <b>{message.from_user.first_name} '
-            f'{message.from_user.last_name}</b>!'
-             'Я расскажу тебе о нефтесервисных активах!'
+            f'{message.from_user.last_name}</b>! '
+             'Я расскажу тебе о нефтесервисных активах! '
              'выберите интересующую вас тему в меню.')
     bot.send_message(message.chat.id, mess, parse_mode='html', reply_markup=markup)
 
@@ -79,9 +79,9 @@ def get_text_messages(message):
     elif message.text == 'История ЭС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn_history_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
-        img = open('pictures/kodex.jpg', 'rb')
+        doc_es = open('data/gpn_es/about_us.pptx', 'rb')
         markup.add(btn_history_es)
-        bot.send_photo(message.chat.id, img, caption = 'История ЭС...', parse_mode="html")
+        bot.send_document(message.chat.id, doc_es, caption = 'История ООО "Газпромнефть Энергосистемы"', parse_mode="html")
     
     # elif message.text == 'Адаптация':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)

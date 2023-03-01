@@ -70,6 +70,8 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+urp_data/
+
 api.py
 
 # PyBuilder
