@@ -5,7 +5,9 @@ import telebot
 from telebot import types
 #from .api import Apy
 
-API_TOKEN: str = ''
+
+API_TOKEN = ''
+
 bot = telebot.TeleBot(API_TOKEN)
 
 
