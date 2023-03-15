@@ -376,9 +376,22 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
-    # elif message.text == 'Адаптация':
-    #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    #     btn1 = types.KeyboardButton('Главное меню')
+    elif (message.text == 'Адаптация'
+          or message.text == '🔙 вернуться в раздел Адаптация'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_2 = types.KeyboardButton('В офис')
+        btn_3 = types.KeyboardButton('На производство')
+        markup.add(
+            btn_2,
+            btn_3,
+            btn_1
+            )
+        bot.send_message(
+            message.from_user.id,
+            "Адаптация",
+            reply_markup=markup
+            )
 
     # elif message.text == 'Карьерное развитие':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
