@@ -70,9 +70,8 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# Company docs
 urp_data/
-
-api.py
 
 # PyBuilder
 target/
@@ -150,3 +149,6 @@ dmypy.json
 
 # Token
 settings.py
+
+# Bot files
+bot_data/
