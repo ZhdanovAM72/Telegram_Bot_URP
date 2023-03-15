@@ -3,11 +3,10 @@
 
 import telebot
 from telebot import types
+from settings import URP_BOT_TOKEN
 #from .api import Apy
 
-
-API_TOKEN = ''
-
+API_TOKEN: str = ''
 bot = telebot.TeleBot(API_TOKEN)
 
 
@@ -142,3 +141,7 @@ def get_user_photo(message):
 
 
 bot.polling(none_stop=True, interval=0)
+
+
+if __name__ == '__main__':
+    ...

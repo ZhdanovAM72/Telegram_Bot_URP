@@ -147,3 +147,6 @@ dmypy.json
 .history/
 
 .mypy_cache
+
+# Token
+settings.py
