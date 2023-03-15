@@ -379,41 +379,47 @@ def get_text_messages(message):
     # elif message.text == 'Адаптация':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'Карьерное развитие':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'Регулярная оценка':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'Обучение':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'Стажировка':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'ДМС и РВЛ':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'Молодежная политика':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     # elif message.text == 'Обратная связь':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
-    
+
     else:
         message.text == 'Информация о боте'
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn_info_0 = types.KeyboardButton('Главное меню')
         markup.add(btn_info_0)
-        bot.send_message(message.from_user.id, "Переходи в главное меню и узнай самую важную информацию о нефтесервисных активах!", parse_mode='html', reply_markup=markup)   
+        bot.send_message(
+            message.from_user.id,
+            'Переходи в главное меню и узнай самую важную '
+            'информацию о нефтесервисных активах!',
+            parse_mode='html',
+            reply_markup=markup
+            )   
 
 # сайт
 # @bot.message_handler(commands=['website'])
