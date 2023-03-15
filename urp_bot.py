@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 from settings import URP_BOT_TOKEN
 
-API_TOKEN: str = ''
+API_TOKEN = URP_BOT_TOKEN
 bot = telebot.TeleBot(API_TOKEN)
 
 
