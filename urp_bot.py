@@ -89,7 +89,7 @@ def get_text_messages(message):
     # ГПН ЭС
     elif (message.text == 'ГПН ЭС'
           or message.text == '🔙 вернуться в раздел ГПН ЭС'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
         btn_es_2 = types.KeyboardButton('История ЭС')
         btn_es_3 = types.KeyboardButton('Структура ЭС')
@@ -143,7 +143,7 @@ def get_text_messages(message):
     # ННГГФ
     elif (message.text == 'ННГГФ'
           or message.text == '🔙 вернуться в раздел ННГГФ'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
         btn_es_2 = types.KeyboardButton('История ННГГФ')
         btn_es_3 = types.KeyboardButton('Структура ННГГФ')
@@ -194,7 +194,7 @@ def get_text_messages(message):
     # ГПН НС
     elif (message.text == 'ГПН НС'
           or message.text == '🔙 вернуться в раздел ГПН НС'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
         btn_es_2 = types.KeyboardButton('История ГПН НС')
         btn_es_3 = types.KeyboardButton('Структура ГПН НС')
@@ -259,7 +259,7 @@ def get_text_messages(message):
             )
 
     elif message.text == 'Новостная лента':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
         btn_do_2 = types.KeyboardButton('Корпоративный портал')
         btn_do_3 = types.KeyboardButton('Мобильная лента')
@@ -328,7 +328,7 @@ def get_text_messages(message):
 
     elif (message.text == 'Сервисы для сотрудников'
           or message.text == '🔙 вернуться в раздел Сервисы'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
         btn_do_2 = types.KeyboardButton('Сервисы самообслуживания')
         btn_do_3 = types.KeyboardButton('Контакт центр')
@@ -343,7 +343,7 @@ def get_text_messages(message):
     elif message.text == 'Сервисы самообслуживания':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
-        doc = open('bot_data/presentations/portal_samoobsl.pptx', 'rb')
+        doc = open('data/about_company/self-service_portal.pptx', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
@@ -355,7 +355,7 @@ def get_text_messages(message):
     elif message.text == 'Контакт центр':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
-        doc = open('bot_data/presentations/contacts_centr.pptx', 'rb')
+        doc = open('data/about_company/contact_center.pptx', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
@@ -367,7 +367,7 @@ def get_text_messages(message):
     elif message.text == 'Краткий справочник':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
-        doc = open('bot_data/presentations/404.pptx', 'rb')
+        doc = open('data/404.pptx', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
@@ -378,11 +378,11 @@ def get_text_messages(message):
 
     elif (message.text == 'Адаптация'
           or message.text == '🔙 вернуться в раздел Адаптация'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
         btn_2 = types.KeyboardButton('Корпоративная безопасность')
         btn_3 = types.KeyboardButton('Производственная безопасность')
-        btn_4 = types.KeyboardButton('Хозяйственное и транспортное '
+        btn_4 = types.KeyboardButton('Хоз. и транспорт. '
                                      'обеспечение')
         btn_5 = types.KeyboardButton('Трудовой распорядок')
         btn_6 = types.KeyboardButton('Внешний вид. Спецодежда и СИЗ')
@@ -426,7 +426,7 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
-    elif message.text == 'Хозяйственное и транспортное обеспечение':
+    elif message.text == 'Хоз. и транспорт. обеспечение':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/household.pptx', 'rb')
@@ -474,10 +474,90 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
-    # elif message.text == 'Карьерное развитие':
-    #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    #     btn1 = types.KeyboardButton('Главное меню')
+    elif (message.text == 'Карьерное развитие'
+          or message.text == '🔙 вернуться в раздел Карьерное развитие'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_2 = types.KeyboardButton('Консультирование')
+        btn_3 = types.KeyboardButton('Мой профиль')
+        btn_4 = types.KeyboardButton('Оценка')
+        btn_5 = types.KeyboardButton('План развития')
+        btn_6 = types.KeyboardButton('Регулярная оценка')
+        markup.add(
+            btn_2,
+            btn_3,
+            btn_4,
+            btn_5,
+            btn_6,
+            btn_1,
+            )
+        bot.send_message(
+            message.from_user.id,
+            "Карьерное развитие",
+            reply_markup=markup
+            )
 
+    elif message.text == 'Консультирование':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        doc = open('data/404.pptx', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Консультирование',
+            parse_mode="html"
+            )
+
+    elif message.text == 'Мой профиль':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        doc = open('data/career_counseling/my_profile.pdf', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Мой профиль',
+            parse_mode="html"
+            )
+
+    elif message.text == 'Оценка':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        doc = open('data/404.pptx', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Оценка',
+            parse_mode="html"
+            )
+
+    elif message.text == 'План развития':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        doc = open('data/career_counseling/IPR.pdf', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='План развития',
+            parse_mode="html"
+            )
+
+    elif message.text == 'Регулярная оценка':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        doc = open('data/404.pptx', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Регулярная оценка',
+            parse_mode="html"
+            )
+
+    # Ниже код, который еще не реализован.
     # elif message.text == 'Регулярная оценка':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
