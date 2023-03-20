@@ -482,13 +482,13 @@ def get_text_messages(message):
         btn_3 = types.KeyboardButton('Мой профиль')
         btn_4 = types.KeyboardButton('Оценка')
         btn_5 = types.KeyboardButton('План развития')
-        btn_6 = types.KeyboardButton('Регулярная оценка')
+        # btn_6 = types.KeyboardButton('Регулярная оценка')
         markup.add(
             btn_2,
             btn_3,
             btn_4,
             btn_5,
-            btn_6,
+            # btn_6,
             btn_1,
             )
         bot.send_message(
@@ -545,15 +545,104 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
-    elif message.text == 'Регулярная оценка':
+    # elif message.text == 'Регулярная оценка':
+    #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    #     btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+    #     doc = open('data/404.pptx', 'rb')
+    #     markup.add(btn)
+    #     bot.send_document(
+    #         message.chat.id,
+    #         doc,
+    #         caption='Регулярная оценка',
+    #         parse_mode="html"
+    #         )
+
+    elif (message.text == 'Регулярная оценка'
+          or message.text == '🔙 вернуться в раздел Регулярная оценка'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_2 = types.KeyboardButton('Диалоги о развитии')
+        btn_3 = types.KeyboardButton('Диалоги об эффективности')
+        btn_4 = types.KeyboardButton('На что влияет')
+        btn_5 = types.KeyboardButton('Обратная связь по итогам оценки')
+        btn_6 = types.KeyboardButton('Оценка вклада')
+        markup.add(
+            btn_2,
+            btn_3,
+            btn_4,
+            btn_5,
+            btn_6,
+            btn_1,
+            )
+        bot.send_message(
+            message.from_user.id,
+            "Регулярная оценка",
+            reply_markup=markup
+            )
+
+    elif message.text == 'Оценка вклада':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
+        video = open('data/regular_evaluation/promo.mp4', 'rb')
+        markup.add(btn)
+        bot.send_video(
+            message.chat.id,
+            video,
+            caption='Оценка вклада',
+            parse_mode="html",
+            )
+
+    elif message.text == 'На что влияет':
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Ссылка на курс", url="https://edu.gazprom-neft.ru/view_doc.html?mode=course&object_id=7060403380104215139"))
+        bot.send_message(
+            message.chat.id,
+            'Практики регулярного менеджмента - это инструмент, '
+            'нацеленный на повышение эффективности и результативности '
+            'работы, а также формирование и поддержание культурной среды, '
+            'в которой достигаются стратегические цели компании.\n'
+            '\nПрохождение данного курса будет полезно каждому сотруднику.\n'
+            'Пройти его можно с любого личного устройства вне КСПД.\n'
+            '\nКурс состоит из девяти модулей и рассказывает обо всех '
+            'основных практиках: вы узнаете, как эффективно проводить '
+            'совещания, давать обратную связь, делегировать задачи '
+            'и многое другое.',
+            reply_markup=markup,
+            )
+
+    elif message.text == 'Диалоги о развитии':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
         doc = open('data/404.pptx', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc,
-            caption='Регулярная оценка',
+            caption='Диалоги о развитии',
+            parse_mode="html"
+            )
+
+    elif message.text == 'Диалоги об эффективности':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
+        doc = open('data/404.pptx', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Диалоги об эффективности',
+            parse_mode="html"
+            )
+
+    elif message.text == 'Обратная связь по итогам оценки':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
+        doc = open('data/404.pptx', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Обратная связь по итогам оценки',
             parse_mode="html"
             )
 
