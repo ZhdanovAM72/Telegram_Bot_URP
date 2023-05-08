@@ -152,3 +152,4 @@ settings.py
 
 # Bot files
 bot_data/
+bot_log
