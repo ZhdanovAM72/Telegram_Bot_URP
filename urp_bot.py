@@ -1,6 +1,6 @@
 import os
 import logging
-from logging.handlers import TimedRotatingFileHandler, RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 
 import telebot
 from telebot import types
@@ -43,12 +43,25 @@ def start(message):
     btn01 = types.KeyboardButton('Информация о боте')
     btn02 = types.KeyboardButton('Главное меню')
     markup.add(btn01, btn02)
-    mess = (f'Привет, <b>{message.from_user.first_name} '
-            f'{message.from_user.last_name}</b>! '
-            'Я расскажу тебе о нефтесервисных активах! '
-            'выберите интересующую вас тему в меню.')
+
+    if (message.from_user.first_name is not None and
+       message.from_user.last_name is not None):
+        user_info = (f'{message.from_user.first_name} '
+                     f'{message.from_user.last_name}')
+
+    if (message.from_user.first_name is not None and
+       message.from_user.last_name is None):
+        user_info = (f'{message.from_user.first_name}')
+
+    if (message.from_user.first_name is None or
+       message.from_user.last_name is None):
+        user_info = (f'{message.from_user.username}')
+
+    start_message = (f'Привет, <b>{user_info}</b>! '
+                     'Я расскажу тебе о нефтесервисных активах! '
+                     'выберите интересующую вас тему в меню.')
     bot.send_message(message.chat.id,
-                     mess, parse_mode='html',
+                     start_message, parse_mode='html',
                      reply_markup=markup)
     logger.info(
         f'команда: "start" - '
