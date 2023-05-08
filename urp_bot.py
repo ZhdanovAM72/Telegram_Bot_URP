@@ -1,14 +1,44 @@
+import os
+import logging
+from logging.handlers import TimedRotatingFileHandler, RotatingFileHandler
+
 import telebot
 from telebot import types
-from settings import URP_BOT_TOKEN
 
-API_TOKEN = URP_BOT_TOKEN
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+LOG_FILE = 'bot_log'
+API_TOKEN = os.getenv('URP_BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
 
 
-# Handle '/start' and '/help'
+def init_logger() -> logging.Logger:
+    """Определяем настройки логгера."""
+    logging.basicConfig(
+        format=('%(asctime)s - %(levelname)s - %(name)s - '
+                'строка: %(lineno)d - %(message)s'),
+        level=logging.INFO,
+        handlers=[
+            logging.StreamHandler(),
+            RotatingFileHandler(
+                filename=LOG_FILE,
+                maxBytes=5_000_000,
+                backupCount=5
+            )
+        ],
+    )
+    return logging.getLogger(__name__)
+
+
+logger = init_logger()
+
+
 @bot.message_handler(commands=['start'])
 def start(message):
+    """Приветствуем пользователя."""
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn01 = types.KeyboardButton('Информация о боте')
     btn02 = types.KeyboardButton('Главное меню')
@@ -20,19 +50,36 @@ def start(message):
     bot.send_message(message.chat.id,
                      mess, parse_mode='html',
                      reply_markup=markup)
+    logger.info(
+        f'команда: "start" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
 
 
-# stop
 @bot.message_handler(commands=['stp'])
 def stop_command(message):
+    """Останавливаем работу бота командой."""
     bot.send_message(message.chat.id, 'OK, stop...')
     print("OK, stop...")
+    logger.critical(
+        f'команда: "stp" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
     bot.stop_polling()
 
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
-    # main menu
+    """
+    Главное меню чат-бота с глубокой вложенностью
+    и возможностью возврата к предыдущему пункту меню.
+    """
     if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton('О компании')
@@ -228,7 +275,7 @@ def get_text_messages(message):
         markup.add(btn_structure_nnggf)
         bot.send_document(
             message.chat.id,
-            doc_es, 
+            doc_es,
             caption='Структура компании ГПН НС',
             parse_mode="html"
             )
@@ -285,46 +332,50 @@ def get_text_messages(message):
         btn_do_1 = types.InlineKeyboardButton('КАНАЛ «ГАЗПРОМ НЕФТИ»', url="HTTPS://LENTA.GAZPROM-NEFT.RU/")
         btn_do_2 = types.InlineKeyboardButton('КАНАЛ «НЕФТЕСЕРВИСЫ»', url="https://lenta.gazprom-neft.ru/channel/nefteservisy/")
         markup.add(btn_do_1, btn_do_2)
-        bot.send_message(message.chat.id,
-                         'Мобильная лента:\n'
-                         '\n'
-                         '1. КАНАЛ «ГАЗПРОМ НЕФТИ» Главные новости компании'
-                         ' емко и без лишних деталей, '
-                         'конкурсы, тесты, прямые трансляции с мероприятий,'
-                         ' каналы коллег о работе, '
-                         'корпоративной культуре, финансах, спорте и жизни.\n'
-                         '\n'
-                         '2. КАНАЛ «НЕФТЕСЕРВИСЫ» Канал для блока '
-                         'нефтесервисов: '
-                         'ГПН-НС, ГПН ЭС и ННГГФ со всеми видами активностей:'
-                         ' опросы, конкурсы, публикация новостей, '
-                         'комментарии участников.',
-                         reply_markup=markup)
+        bot.send_message(
+            message.chat.id,
+            'Мобильная лента:\n'
+            '\n'
+            '1. КАНАЛ «ГАЗПРОМ НЕФТИ» Главные новости компании'
+            ' емко и без лишних деталей, '
+            'конкурсы, тесты, прямые трансляции с мероприятий,'
+            ' каналы коллег о работе, '
+            'корпоративной культуре, финансах, спорте и жизни.\n'
+            '\n'
+            '2. КАНАЛ «НЕФТЕСЕРВИСЫ» Канал для блока '
+            'нефтесервисов: '
+            'ГПН-НС, ГПН ЭС и ННГГФ со всеми видами активностей:'
+            ' опросы, конкурсы, публикация новостей, '
+            'комментарии участников.',
+            reply_markup=markup
+        )
 
     elif message.text == 'Телеграм-каналы':
         markup = types.InlineKeyboardMarkup(row_width=1)
-        btn_do_1 = types.InlineKeyboardButton('КОМАНДА ГПН-НС', url="https://t.me/+LmDKSVvewR0yMzEy") # Заплатка
+        btn_do_1 = types.InlineKeyboardButton('КОМАНДА ГПН-НС', url="https://t.me/+LmDKSVvewR0yMzEy")  # Заплатка
         btn_do_2 = types.InlineKeyboardButton('КУЛЬТУРА И СПОРТ БРД', url="HTTPS://T.ME/SPORTCULTUREBRDHR")
         btn_do_3 = types.InlineKeyboardButton('Новости нефтесервисов', url="https://t.me/+LmDKSVvewR0yMzEy")
         btn_do_4 = types.InlineKeyboardButton('Совет молодых специалистов ЭС»', url="https://t.me/joinchat/Ez0rmolXqAS3Nzjp")
         markup.add(btn_do_1, btn_do_2, btn_do_3, btn_do_4)
-        bot.send_message(message.chat.id, 
-                         'Телеграм-каналы:\n'
-                         '\n'
-                         '1. «КОМАНДА ГПН-НС» Открытое общение '
-                         'сотрудников нефтесервисных предприятий\n'
-                         '\n'
-                         '2. «КУЛЬТУРА И СПОРТ БРД» Оперативная, '
-                         'актуальная и эксклюзивная информация '
-                         'про культуру, спорт и не только!\n'
-                         '\n'
-                         '3. «Новости нефтесервисов» Новости из '
-                         'жизни нефтесервисов\n'
-                         '\n'
-                         '4. «Совет молодых специалистов ЭС» '
-                         'Актуальная информация о деятельности '
-                         'Совета молодых специалистов\n',
-                         reply_markup=markup)
+        bot.send_message(
+            message.chat.id,
+            'Телеграм-каналы:\n'
+            '\n'
+            '1. «КОМАНДА ГПН-НС» Открытое общение '
+            'сотрудников нефтесервисных предприятий\n'
+            '\n'
+            '2. «КУЛЬТУРА И СПОРТ БРД» Оперативная, '
+            'актуальная и эксклюзивная информация '
+            'про культуру, спорт и не только!\n'
+            '\n'
+            '3. «Новости нефтесервисов» Новости из '
+            'жизни нефтесервисов\n'
+            '\n'
+            '4. «Совет молодых специалистов ЭС» '
+            'Актуальная информация о деятельности '
+            'Совета молодых специалистов\n',
+            reply_markup=markup,
+        )
 
     elif (message.text == 'Сервисы для сотрудников'
           or message.text == '🔙 вернуться в раздел Сервисы'):
@@ -681,8 +732,15 @@ def get_text_messages(message):
             'Переходи в главное меню и узнай самую важную '
             'информацию о нефтесервисных активах!',
             parse_mode='html',
-            reply_markup=markup
-            )   
+            reply_markup=markup,
+            )
+    logger.info(
+        f'команда: {message.text} - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
 
 # сайт
 # @bot.message_handler(commands=['website'])
@@ -693,19 +751,44 @@ def get_text_messages(message):
 #     bot.send_message(message.chat.id, 'Откройте сайт', reply_markup=markup)
 
 
-# ответ на картинку
 @bot.message_handler(content_types=['photo'])
 def get_user_photo(message):
+    """Ловим отправленные пользователем изобращения."""
     bot.send_message(
         message.chat.id,
         'У меня нет глаз, '
-        'я не понимаю что на этой картинке'
+        'я не понимаю что на этой картинке.\n'
         'Давай продолжим работать в меню.'
         )
+    logger.info(
+        f'изображение - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
 
 
-bot.polling(none_stop=True, interval=0)
+@bot.message_handler(content_types=['sticker'])
+def get_user_stiсker(message):
+    """Ловим отправленные пользователем стикеры."""
+    bot.send_message(
+        message.chat.id,
+        'У меня нет глаз, '
+        'я не вижу этот стикер.\n'
+        'Давай продолжим работать в меню.'
+        )
+    logger.info(
+        f'стикер - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+# bot.polling(none_stop=True, interval=0)
 
 
 if __name__ == '__main__':
-    ...
+    bot.polling(none_stop=True, interval=0)
