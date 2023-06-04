@@ -4,18 +4,19 @@ from random import choice
 import logging
 from logging.handlers import RotatingFileHandler
 
+import asyncio
+import aiohttp
 import telebot
-# from telebot.async_telebot import AsyncTeleBot
+from telebot.async_telebot import AsyncTeleBot
 from dotenv import load_dotenv
 from telebot import types
-
-from db_users import get_new_user
 
 load_dotenv()
 
 LOG_FILE = 'bot_log'
 API_TOKEN = os.getenv('URP_BOT_TOKEN')
-bot = telebot.TeleBot(API_TOKEN)
+# bot = telebot.TeleBot(API_TOKEN)
+bot = AsyncTeleBot(API_TOKEN)
 
 
 def init_logger() -> logging.Logger:
@@ -39,68 +40,9 @@ def init_logger() -> logging.Logger:
 logger = init_logger()
 
 
-# @bot.message_handler(commands=['admin'])
-# def admin_root(message):
-
-
-def get_admin_access(user_id):
-    with sqlite3.connect('users_v2.sqlite') as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            SELECT auth_code, user_id
-            FROM bot_users
-            WHERE user_id=? AND auth_code LIKE 'admin%'
-            """,
-            (user_id,)
-        )
-        admin_check = cursor.fetchone()
-        cursor.close()
-        return admin_check
-
-
-@bot.message_handler(commands=['admin'])
-def check_admin_permissions(message):
-    """"Проверяем права администратора."""
-    bot.send_message(message.chat.id, 'Проверяем права.')
-    access = get_admin_access(message.chat.id)
-    print(access)
-    if access[1] == message.chat.id:
-        bot.send_message(message.chat.id, 'Привет Admin!')
-    else:
-        bot.send_message(message.chat.id, 'Вы не админ!')
-
-
-def get_user_access(user_id):
-    """Проверяем пользователя в БД."""
-    with sqlite3.connect('users_v2.sqlite') as conn:
-        cursor = conn.cursor()
-        cursor.execute('SELECT id, user_id FROM bot_users WHERE user_id=?',
-                       (user_id,))
-        user_check = cursor.fetchone()
-        return user_check
-
-
 @bot.message_handler(commands=['start'])
-def check_user_permissions(message):
-    """"Определяем права пользователя."""
-    access = get_user_access(message.chat.id)
-    print(access)
-    registration_massage = 'введите код доступа для вашей учетной записи (Внимание код одноразовый!)'
-    if access is None:
-        bot.send_message(message.chat.id, 'Вы не зарегистрированны в системе!')
-        bot.send_message(message.chat.id, 'Чтобы зарегистрироваться введите код доступа через пробел после команды "/code"')
-        bot.send_message(message.chat.id, registration_massage)
-    if access[1] == message.chat.id:
-        start(message)
-        bot.send_message(message.chat.id, 'Привет User!')
-    else:
-        bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
-
-
-@bot.message_handler(commands=['dev_test_command'])
-def start(message):
-    """Приветствуем пользователя и включаем меню бота."""
+async def start(message: telebot.types.Message):
+    """Приветствуем пользователя."""
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn01 = types.KeyboardButton('Информация о боте')
     btn02 = types.KeyboardButton('Главное меню')
@@ -122,9 +64,12 @@ def start(message):
     start_message = (f'Привет, <b>{user_info}</b>! '
                      'Я расскажу тебе о нефтесервисных активах! '
                      'выберите интересующую вас тему в меню.')
-    bot.send_message(message.chat.id,
-                     start_message, parse_mode='html',
-                     reply_markup=markup)
+    await bot.send_message(
+        message.chat.id,
+        start_message,
+        parse_mode='html',
+        reply_markup=markup
+    )
     logger.info(
         f'команда: "start" - '
         f'пользователь: {message.from_user.username} - '
@@ -135,7 +80,7 @@ def start(message):
 
 
 @bot.message_handler(commands=['stp'])
-def stop_command(message):
+async def stop_command(message: telebot.types.Message):
     """Останавливаем работу бота командой."""
     bot.send_message(message.chat.id, 'OK, stop...')
     print("OK, stop...")
@@ -150,7 +95,7 @@ def stop_command(message):
 
 
 @bot.message_handler(content_types=['text'])
-def get_text_messages(message):
+async def get_text_messages(message: telebot.types.Message):
     """
     Главное меню чат-бота с глубокой вложенностью
     и возможностью возврата к предыдущему пункту меню.
@@ -167,10 +112,10 @@ def get_text_messages(message):
         btn8 = types.KeyboardButton('Молодежная политика')
         btn9 = types.KeyboardButton('Обратная связь')
         markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9)
-        bot.send_message(message.from_user.id,
+        await bot.send_message(message.from_user.id,
                          "Добро пожаловать в главное меню чат-бота",
                          reply_markup=markup)
-        bot.send_message(message.from_user.id,
+        await bot.send_message(message.from_user.id,
                          'Выберите интересующий вас раздел')
 
     elif (message.text == 'О компании'
@@ -188,7 +133,7 @@ def get_text_messages(message):
             btn_about_5,
             btn_about_1
             )
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "⬇ О компании",
             reply_markup=markup
@@ -202,7 +147,7 @@ def get_text_messages(message):
         btn_do_3 = types.KeyboardButton('ГПН ЭС')
         btn_do_4 = types.KeyboardButton('ННГГФ')
         markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_1)
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "⬇ Выбрать ДО",
             reply_markup=markup
@@ -217,7 +162,7 @@ def get_text_messages(message):
         btn_es_3 = types.KeyboardButton('Структура ЭС')
         btn_es_4 = types.KeyboardButton('Контакты ЭС')
         markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_1)
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "⬇ ГПН ЭС",
             reply_markup=markup
@@ -229,7 +174,7 @@ def get_text_messages(message):
         btn_history_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
         doc_es = open('data/about_company/history_ES.pptx', 'rb')
         markup.add(btn_history_es)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='История ООО "Газпромнефть Энергосистемы"',
@@ -242,7 +187,7 @@ def get_text_messages(message):
         btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
         doc_es = open('data/about_company/structure_ES.pptx', 'rb')
         markup.add(btn_structure_es)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='Структура компании ООО "Газпромнефть Энергосистемы"',
@@ -255,7 +200,7 @@ def get_text_messages(message):
         btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
         doc_es = open('data/404.pptx', 'rb')  # Заплатка
         markup.add(btn_structure_es)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='Контакты компании ООО "Газпромнефть Энергосистемы"',
@@ -271,7 +216,7 @@ def get_text_messages(message):
         btn_es_3 = types.KeyboardButton('Структура ННГГФ')
         btn_es_4 = types.KeyboardButton('Контакты ННГГФ')
         markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_1)
-        bot.send_message(message.from_user.id, "⬇ ННГГФ", reply_markup=markup)
+        await bot.send_message(message.from_user.id, "⬇ ННГГФ", reply_markup=markup)
 
     # ННГГФ история
     elif message.text == 'История ННГГФ':
@@ -279,7 +224,7 @@ def get_text_messages(message):
         btn_history_es = types.KeyboardButton('🔙 вернуться в раздел ННГГФ')
         doc_es = open('data/404.pptx', 'rb')  # Заплатка
         markup.add(btn_history_es)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='История ННГГФ',
@@ -293,7 +238,7 @@ def get_text_messages(message):
                                                    'в раздел ННГГФ')
         doc_es = open('data/about_company/structure_NNGGF.pptx', 'rb')
         markup.add(btn_structure_nnggf)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='Структура компании ННГГФ',
@@ -306,7 +251,7 @@ def get_text_messages(message):
         btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ННГГФ')
         doc_es = open('data/404.pptx', 'rb')  # Заплатка
         markup.add(btn_structure_es)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='Контакты компании ННГГФ',
@@ -322,7 +267,7 @@ def get_text_messages(message):
         btn_es_3 = types.KeyboardButton('Структура ГПН НС')
         btn_es_4 = types.KeyboardButton('Контакты ГПН НС')
         markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_1)
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "⬇ ГПН НС",
             reply_markup=markup
@@ -334,7 +279,7 @@ def get_text_messages(message):
         btn_history_ns = types.KeyboardButton('🔙 вернуться в раздел ГПН НС')
         doc_ns = open('data/about_company/history_NS.pptx', 'rb')
         markup.add(btn_history_ns)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_ns,
             caption='История ГПН НС',
@@ -348,7 +293,7 @@ def get_text_messages(message):
                                                    'раздел ГПН НС')
         doc_es = open('data/404.pptx', 'rb')  # Заплатка
         markup.add(btn_structure_nnggf)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='Структура компании ГПН НС',
@@ -361,7 +306,7 @@ def get_text_messages(message):
         btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ГПН НС')
         doc_es = open('data/404.pptx', 'rb')  # Заплатка
         markup.add(btn_structure_es)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_es,
             caption='Контакты компании ГПН НС',
@@ -373,7 +318,7 @@ def get_text_messages(message):
         back_button = types.KeyboardButton('🔙 вернуться в раздел О компании')
         doc_include = open('data/about_company/corporate_values.pptx', 'rb')
         markup.add(back_button)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_include,
             caption='Корпоративные ценности',
@@ -387,7 +332,7 @@ def get_text_messages(message):
         btn_do_3 = types.KeyboardButton('Мобильная лента')
         btn_do_4 = types.KeyboardButton('Телеграм-каналы')
         markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_1)
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "⬇ Новостная лента",
             reply_markup=markup
@@ -396,7 +341,7 @@ def get_text_messages(message):
     elif message.text == 'Корпоративный портал':
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("«Газпром нефть»", url="https://www.gazprom-neft.ru/"))
-        bot.send_message(
+        await bot.send_message(
             message.chat.id,
             'Корпоративный портал',
             reply_markup=markup
@@ -407,7 +352,7 @@ def get_text_messages(message):
         btn_do_1 = types.InlineKeyboardButton('КАНАЛ «ГАЗПРОМ НЕФТИ»', url="HTTPS://LENTA.GAZPROM-NEFT.RU/")
         btn_do_2 = types.InlineKeyboardButton('КАНАЛ «НЕФТЕСЕРВИСЫ»', url="https://lenta.gazprom-neft.ru/channel/nefteservisy/")
         markup.add(btn_do_1, btn_do_2)
-        bot.send_message(
+        await bot.send_message(
             message.chat.id,
             'Мобильная лента:\n'
             '\n'
@@ -432,7 +377,7 @@ def get_text_messages(message):
         btn_do_3 = types.InlineKeyboardButton('Новости нефтесервисов', url="https://t.me/+LmDKSVvewR0yMzEy")
         btn_do_4 = types.InlineKeyboardButton('Совет молодых специалистов ЭС»', url="https://t.me/joinchat/Ez0rmolXqAS3Nzjp")
         markup.add(btn_do_1, btn_do_2, btn_do_3, btn_do_4)
-        bot.send_message(
+        await bot.send_message(
             message.chat.id,
             'Телеграм-каналы:\n'
             '\n'
@@ -460,7 +405,7 @@ def get_text_messages(message):
         btn_do_3 = types.KeyboardButton('Контакт центр')
         btn_do_4 = types.KeyboardButton('Краткий справочник')
         markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_1)
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "⬇ Сервисы для сотрудников",
             reply_markup=markup
@@ -471,7 +416,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
         doc = open('data/about_company/self-service_portal.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Сервисы самообслуживания',
@@ -483,7 +428,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
         doc = open('data/about_company/contact_center.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Контакт центр',
@@ -495,7 +440,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
         doc = open('data/404.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Краткий справочник',
@@ -522,7 +467,7 @@ def get_text_messages(message):
             btn_7,
             btn_1,
             )
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "Адаптация",
             reply_markup=markup
@@ -533,7 +478,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/corp_sec.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Корпоративная безопасность',
@@ -545,7 +490,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/production_sec.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Производственная безопасность',
@@ -557,7 +502,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/household.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Хозяйственное и транспортное обеспечение',
@@ -569,7 +514,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/work_schedule.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Трудовой распорядок',
@@ -581,7 +526,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/appearance.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Внешний вид. Спецодежда и СИЗ',
@@ -593,7 +538,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc = open('data/adaptation/staff_motivation.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Мотивация персонала',
@@ -617,7 +562,7 @@ def get_text_messages(message):
             # btn_6,
             btn_1,
         )
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             "Карьерное развитие",
             reply_markup=markup
@@ -628,7 +573,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc = open('data/404.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Консультирование',
@@ -640,7 +585,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc = open('data/career_counseling/my_profile.pdf', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Мой профиль',
@@ -652,7 +597,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc = open('data/404.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Оценка',
@@ -664,7 +609,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc = open('data/career_counseling/IPR.pdf', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='План развития',
@@ -701,7 +646,7 @@ def get_text_messages(message):
             btn_6,
             btn_1,
         )
-        bot.send_video(
+        await bot.send_video(
             message.chat.id,
             video,
             caption='Оценка вклада, компетенций и ценностей',
@@ -730,13 +675,13 @@ def get_text_messages(message):
         doc_1 = open('data/regular_evaluation/info.pdf', 'rb')
         doc_2 = open('data/regular_evaluation/procedural.pdf', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_1,
             caption='Диалоги о развитии',
             parse_mode="html"
         )
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc_2,
             caption='Диалоги о развитии',
@@ -746,7 +691,7 @@ def get_text_messages(message):
     elif message.text == 'На что влияет':
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Ссылка на курс", url="https://edu.gazprom-neft.ru/view_doc.html?mode=course&object_id=7060403380104215139"))
-        bot.send_message(
+        await bot.send_message(
             message.chat.id,
             'Практики регулярного менеджмента - это инструмент, '
             'нацеленный на повышение эффективности и результативности '
@@ -780,31 +725,37 @@ def get_text_messages(message):
         doc_2 = open('data/regular_evaluation/efficiency/instruction.pdf', 'rb')
         doc_3 = open('data/regular_evaluation/efficiency/memo.PNG', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_media_group(
             message.chat.id,
-            doc_1,
-            caption='Диалог об эффективности - Памятка для сотрудника',
-            parse_mode="html"
+            [telebot.types.InputMediaDocument(doc_1),
+             telebot.types.InputMediaDocument(doc_2),
+             telebot.types.InputMediaDocument(doc_3)],
         )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Инструкция по чтению отчета регулярной оценки 2023',
-            parse_mode="html"
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption='ДоЭФ №2',
-            parse_mode="html"
-        )
+        # await bot.send_document(
+        #     message.chat.id,
+        #     doc_1,
+        #     caption='Диалог об эффективности - Памятка для сотрудника',
+        #     parse_mode="html"
+        # )
+        # await bot.send_document(
+        #     message.chat.id,
+        #     doc_2,
+        #     caption='Инструкция по чтению отчета регулярной оценки 2023',
+        #     parse_mode="html"
+        # )
+        # await bot.send_document(
+        #     message.chat.id,
+        #     doc_3,
+        #     caption='ДоЭФ №2',
+        #     parse_mode="html"
+        # )
 
     elif message.text == 'Обратная связь по итогам оценки':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада, компетенций и ценностей')
         doc = open('data/404.pptx', 'rb')
         markup.add(btn)
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='Обратная связь по итогам оценки вклада, компетенций и ценностей',
@@ -836,7 +787,7 @@ def get_text_messages(message):
         #     '- Консультирование и сопровождение стажера. \n'
         #     '- Экспертная помощь наставника.'
         # )
-        bot.send_message(
+        await bot.send_message(
             message.chat.id,
             'СТАЖИРОВКА.\n'
             'в другой деятельности и получить новый опыт в предписании'
@@ -850,7 +801,7 @@ def get_text_messages(message):
             'Экспертная помощь инструктора.',
             reply_markup=markup
         )
-        bot.send_document(
+        await bot.send_document(
             message.chat.id,
             doc,
             caption='План стажировки',
@@ -881,7 +832,7 @@ def get_text_messages(message):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn_info_0 = types.KeyboardButton('Главное меню')
         markup.add(btn_info_0)
-        bot.send_message(
+        await bot.send_message(
             message.from_user.id,
             'Переходи в главное меню и узнай самую важную '
             'информацию о нефтесервисных активах!',
@@ -906,9 +857,9 @@ def get_text_messages(message):
 
 
 @bot.message_handler(content_types=['photo'])
-def get_user_photo(message):
+async def get_user_photo(message: telebot.types.Message):
     """Ловим отправленные пользователем изобращения."""
-    bot.send_message(
+    await bot.send_message(
         message.chat.id,
         'У меня нет глаз, '
         'я не понимаю что на этой картинке.\n'
@@ -924,9 +875,9 @@ def get_user_photo(message):
 
 
 @bot.message_handler(content_types=['sticker'])
-def get_user_stiсker(message):
+async def get_user_stiсker(message: telebot.types.Message):
     """Ловим отправленные пользователем стикеры."""
-    bot.send_message(
+    await bot.send_message(
         message.chat.id,
         'У меня нет глаз, '
         'я не вижу этот стикер.\n'
@@ -941,8 +892,5 @@ def get_user_stiсker(message):
     )
 
 
-# bot.polling(none_stop=True, interval=0)
-
-
 if __name__ == '__main__':
-    bot.polling(none_stop=True, interval=0)
+    asyncio.run(bot.polling(none_stop=True, interval=0))
