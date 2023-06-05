@@ -10,7 +10,8 @@ import telebot
 from dotenv import load_dotenv
 from telebot import types
 
-from db_users import get_new_user
+from password_generator import generate_code
+from db_users import get_new_user, get_new_code
 
 load_dotenv()
 
@@ -40,7 +41,7 @@ def init_logger() -> logging.Logger:
 logger = init_logger()
 
 
-def get_admin_access(user_id):
+def get_admin_access(user_id: int) -> str:
     """"Проверяем данные администратора в БД."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
@@ -58,7 +59,7 @@ def get_admin_access(user_id):
 
 
 @bot.message_handler(commands=['admin'])
-def check_admin_permissions(message):
+def check_admin_permissions(message: telebot.types.Message):
     """"Проверяем права администратора."""
     bot.send_message(message.chat.id, 'Проверяем права.')
     access = get_admin_access(message.chat.id)
@@ -68,10 +69,40 @@ def check_admin_permissions(message):
             message.chat.id,
             'Для Вас доступны следующие команды:\n'
             '1. Создание уникального ключа доступа (/create-code).\n'
-            '2. Выгрузка лог-файлов (/log).'
+            '/create-code\n'
+            '2. Выгрузка лог-файлов (/log).\n'
+            '/log'
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
+
+
+@bot.message_handler(commands=['create-code'])
+def create_new_code(message: telebot.types.Message):
+    """Создаем новый код доступа в БД."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+
+    bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
+    generate__new_code = generate_code()
+    print(generate__new_code)
+    check = search_code_in_db(generate__new_code)
+    if check is not None and check[0] == generate__new_code:
+        bot.send_message(message.chat.id,
+                                'Данный код уже существует, '
+                                'повторите команду.')
+    elif check is None:
+        bot.send_message(message.chat.id, 'Создаем новый.')
+        generate__new_code = generate_code()
+        bot.send_message(message.chat.id, 'Записываем код в БД.')
+        get_new_code(generate__new_code)
+        bot.send_message(message.chat.id,
+                         'Код сохранен и доступен для регистрации:')
+        bot.send_message(message.chat.id, generate__new_code)
+    else:
+        bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
 
 def get_user_access(user_id):
@@ -86,7 +117,7 @@ def get_user_access(user_id):
 
 
 @bot.message_handler(commands=['start'])
-def check_user_permissions(message):
+def check_user_permissions(message: telebot.types.Message):
     """"Определяем права пользователя."""
     access = get_user_access(message.chat.id)
     if access is None:
@@ -107,7 +138,6 @@ def check_user_permissions(message):
         )
     elif access[1] == message.chat.id:
         start(message)
-        bot.send_message(message.chat.id, 'Привет User!')
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
@@ -176,11 +206,15 @@ def start(message):
 
     if (message.from_user.first_name is not None and
        message.from_user.last_name is None):
-        user_info = (f'{message.from_user.first_name}')
-
-    if (message.from_user.first_name is None or
-       message.from_user.last_name is None):
         user_info = (f'{message.from_user.username}')
+
+    if (message.from_user.first_name is None and
+       message.from_user.username is None):
+        user_info = ('сотрудник')
+
+    if (message.from_user.username is None and
+       message.from_user.last_name is None):
+        user_info = (f'{message.from_user.first_name}')
 
     start_message = (f'Привет, <b>{user_info}</b>! '
                      'Я расскажу тебе о нефтесервисных активах! '
