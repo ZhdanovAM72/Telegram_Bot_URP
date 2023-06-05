@@ -1,5 +1,12 @@
 import datetime as dt
 import sqlite3
+import os
+import sqlite3
+from random import choice
+import logging
+from logging.handlers import RotatingFileHandler
+
+import telebot
 
 
 def get_new_code(code):
@@ -37,7 +44,7 @@ def get_new_user(code: str, username, user_id, first_name, last_name):
             first_name = ?,
             last_name = ?,
             register_date = ?
-            WHERE auth_code = ? AND username IS NULL
+            WHERE auth_code = ? AND user_id IS NULL
         """)
         update_time = dt.datetime.now()
         data = (user_id, username, first_name, last_name, update_time, code)
@@ -53,8 +60,8 @@ def get_new_user(code: str, username, user_id, first_name, last_name):
             print("Соединение с SQLite закрыто")
 
 
-post_code: str = 'TEST-jHZSXXdt#Nanfx123213'
-# get_new_code(post_code)
+post_code: str = 'SOC0E1ZH?nOW+g-i'
+#get_new_code(post_code)
 
 atr_2 = 'Alex'
 atr_3 = 33332245679

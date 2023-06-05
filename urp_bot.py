@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import datetime as dt
 from random import choice
 import logging
 from logging.handlers import RotatingFileHandler
@@ -39,11 +40,8 @@ def init_logger() -> logging.Logger:
 logger = init_logger()
 
 
-# @bot.message_handler(commands=['admin'])
-# def admin_root(message):
-
-
 def get_admin_access(user_id):
+    """"Проверяем данные администратора в БД."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
         cursor.execute(
@@ -64,11 +62,16 @@ def check_admin_permissions(message):
     """"Проверяем права администратора."""
     bot.send_message(message.chat.id, 'Проверяем права.')
     access = get_admin_access(message.chat.id)
-    print(access)
     if access[1] == message.chat.id:
         bot.send_message(message.chat.id, 'Привет Admin!')
+        bot.send_message(
+            message.chat.id,
+            'Для Вас доступны следующие команды:\n'
+            '1. Создание уникального ключа доступа (/create-code).\n'
+            '2. Выгрузка лог-файлов (/log).'
+        )
     else:
-        bot.send_message(message.chat.id, 'Вы не админ!')
+        bot.send_message(message.chat.id, 'У Вас нет административных прав!')
 
 
 def get_user_access(user_id):
@@ -78,6 +81,7 @@ def get_user_access(user_id):
         cursor.execute('SELECT id, user_id FROM bot_users WHERE user_id=?',
                        (user_id,))
         user_check = cursor.fetchone()
+        cursor.close()
         return user_check
 
 
@@ -85,17 +89,60 @@ def get_user_access(user_id):
 def check_user_permissions(message):
     """"Определяем права пользователя."""
     access = get_user_access(message.chat.id)
-    print(access)
-    registration_massage = 'введите код доступа для вашей учетной записи (Внимание код одноразовый!)'
+    registration_massage = 'введите код доступа для вашей учетной записи, пример, "/code #your-code-1" (Внимание код одноразовый!)'
     if access is None:
         bot.send_message(message.chat.id, 'Вы не зарегистрированны в системе!')
-        bot.send_message(message.chat.id, 'Чтобы зарегистрироваться введите код доступа через пробел после команды "/code"')
+        bot.send_message(message.chat.id, 'Чтобы зарегистрироваться введите актуальный код доступа через пробел после команды "/code"')
         bot.send_message(message.chat.id, registration_massage)
-    if access[1] == message.chat.id:
+    elif access[1] == message.chat.id:
         start(message)
         bot.send_message(message.chat.id, 'Привет User!')
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
+
+
+def search_code_in_db(code):
+    """Проверяем отсутствие кода доступа в БД."""
+    with sqlite3.connect('users_v2.sqlite') as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT auth_code, user_id
+            FROM bot_users
+            WHERE auth_code=?
+            """,
+            (code,)
+        )
+        search_code = cursor.fetchone()
+        cursor.close()
+        return search_code
+
+
+
+@bot.message_handler(commands=['code'])
+def login_user(message):
+    """"Определяем права пользователя."""
+    input_code = message.text
+    clear_code = input_code.split()
+    check = search_code_in_db(clear_code[1])
+    if check is not None and check[0] == clear_code[1]:
+        bot.send_message(message.chat.id, 'Код найден в базе!')
+        bot.send_message(message.chat.id,
+                         'Проверяю возможность создания нового пользователя.')
+        print(clear_code[1], message.from_user.username,
+              message.from_user.id,
+              message.from_user.first_name,
+              message.from_user.last_name)
+        get_new_user(
+            clear_code[1],
+            message.from_user.username,
+            message.from_user.id,
+            message.from_user.first_name,
+            message.from_user.last_name
+        )
+        check_user_permissions(message)
+    else:
+        bot.send_message(message.chat.id, 'Код не найден в системе!')
 
 
 @bot.message_handler(commands=['dev_test_command'])
