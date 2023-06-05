@@ -89,11 +89,22 @@ def get_user_access(user_id):
 def check_user_permissions(message):
     """"Определяем права пользователя."""
     access = get_user_access(message.chat.id)
-    registration_massage = 'введите код доступа для вашей учетной записи, пример, "/code #your-code-1" (Внимание код одноразовый!)'
     if access is None:
         bot.send_message(message.chat.id, 'Вы не зарегистрированны в системе!')
-        bot.send_message(message.chat.id, 'Чтобы зарегистрироваться введите актуальный код доступа через пробел после команды "/code"')
-        bot.send_message(message.chat.id, registration_massage)
+        bot.send_message(
+            message.chat.id,
+            'Запросите код у администратора проекта, '
+            'либо используйте имеющийся.'
+        )
+        bot.send_message(
+            message.chat.id,
+            'Чтобы зарегистрироваться введите актуальный код доступа'
+            ' через пробел после команды "/code"'
+        )
+        bot.send_message(
+            message.chat.id,
+            'пример кода:\n/code #your-code-1\n(Внимание код одноразовый!)'
+        )
     elif access[1] == message.chat.id:
         start(message)
         bot.send_message(message.chat.id, 'Привет User!')
@@ -143,6 +154,11 @@ def login_user(message):
         check_user_permissions(message)
     else:
         bot.send_message(message.chat.id, 'Код не найден в системе!')
+        bot.send_message(
+            message.chat.id,
+            'Запросите код у администратора проекта, '
+            'либо используйте имеющийся.'
+        )
 
 
 @bot.message_handler(commands=['dev_test_command'])
