@@ -10,27 +10,34 @@ import telebot
 
 
 def get_new_code(code):
-    con = sqlite3.connect('users_v2.sqlite')
-    cur = con.cursor()
-    bot_users = [
-        (
-         None,
-         code,
-         None,
-         None,
-         None,
-         None,
-         None,
+    try:
+        con = sqlite3.connect('users_v2.sqlite')
+        cur = con.cursor()
+        bot_users = [
+            (
+             None,
+             code,
+             None,
+             None,
+             None,
+             None,
+             None,
+            )
+        ]
+        cur.executemany(
+            """
+            INSERT OR IGNORE INTO bot_users
+            VALUES(?, ?, ?, ?, ?, ?, ?);
+            """,
+            bot_users
         )
-    ]
-    cur.executemany(
-        'INSERT OR IGNORE INTO bot_users '
-        'VALUES(?, ?, ?, ?, ?, ?, ?);',
-        bot_users
-    )
-    con.commit()
-    con.close()
-    print("Соединение с SQLite закрыто")
+        con.commit()
+    except sqlite3.Error as error:
+        print("Ошибка при работе с БД", error)
+    finally:
+        if con:
+            con.close()
+            print("Соединение с БД закрыто")
 
 
 def get_new_user(code: str, username, user_id, first_name, last_name):
@@ -50,23 +57,22 @@ def get_new_user(code: str, username, user_id, first_name, last_name):
         data = (user_id, username, first_name, last_name, update_time, code)
         cur.execute(sql_update_v1, data)
         con.commit()
-        print("Запись успешно обновлена")
         cur.close()
     except sqlite3.Error as error:
-        print("Ошибка при работе с SQLite", error)
+        print("Ошибка при работе с БД", error)
     finally:
         if con:
             con.close()
-            print("Соединение с SQLite закрыто")
+            print("Соединение с БД закрыто")
 
 
-post_code: str = 'SOC0E1ZH?nOW+g-i'
+# post_code: str = 'SOC0E1ZH?nOW+g-i'
 #get_new_code(post_code)
 
-atr_2 = 'Alex'
-atr_3 = 33332245679
-atr_4 = 'ТЕСТфест'
-atr_5 = 'ТЕСТласт'
+# atr_2 = 'Alex'
+# atr_3 = 33332245679
+# atr_4 = 'ТЕСТфест'
+# atr_5 = 'ТЕСТласт'
 
 # get_new_user(post_code, atr_2, atr_3, atr_4, atr_5)
 

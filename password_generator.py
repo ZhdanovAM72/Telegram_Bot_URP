@@ -17,7 +17,4 @@ def generate_code() -> str:
     for i in range(PASS_RANGE):
         password += choice(chars)
     print(password)
-    return (password)
-
-
-generate_code()
+    return password
