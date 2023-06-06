@@ -55,6 +55,10 @@ def get_admin_access(user_id: int) -> str:
         )
         admin_check = cursor.fetchone()
         cursor.close()
+        logger.info(
+            f'проверка прав администратора - '
+            f'id пользователя: {user_id} - '
+        )
         return admin_check
 
 
@@ -75,6 +79,14 @@ def check_admin_permissions(message: telebot.types.Message):
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
+    logger.info(
+        f'команда: "admin" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name} - '
+        f'данные в БД {access[1]}'
+    )
 
 
 @bot.message_handler(commands=['create-code'])
@@ -82,20 +94,21 @@ def create_new_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        bot.send_message(message.chat.id,
+                         'У Вас нет административных прав!')
+        return None
 
     bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
     generate__new_code = generate_code()
-    print(generate__new_code)
     check = search_code_in_db(generate__new_code)
     if check is not None and check[0] == generate__new_code:
-        bot.send_message(message.chat.id,
-                                'Данный код уже существует, '
-                                'повторите команду.')
+        bot.send_message(
+            message.chat.id,
+            'Данный код уже существует, '
+            'повторите команду.'
+        )
     elif check is None:
         bot.send_message(message.chat.id, 'Создаем новый.')
-        generate__new_code = generate_code()
         bot.send_message(message.chat.id, 'Записываем код в БД.')
         get_new_code(generate__new_code)
         bot.send_message(message.chat.id,
@@ -103,6 +116,47 @@ def create_new_code(message: telebot.types.Message):
         bot.send_message(message.chat.id, generate__new_code)
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
+    logger.info(
+        f'команда: "create-code" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+# def user_access(func):
+#     def wrapper(user_id=message.chat.id, **kwargs):
+#         with sqlite3.connect('users_v2.sqlite') as conn:
+#             cursor = conn.cursor()
+#             cursor.execute('SELECT id, user_id FROM bot_users WHERE user_id=?',
+#                            (user_id,))
+#             user_check = cursor.fetchone()
+#             cursor.close()
+#             if user_check[1] != user_id:
+#                 return False
+#             return True
+#     return wrapper
+
+
+def user_access(func):
+    def wrapper(*args):
+
+        user_id = {args: {"from_user": 'id'}}
+        print(user_id)
+        #print(*args)
+        # check_user = get_user_access(user_id)
+        # if check_user in None or check_user[1] != user_id:
+        #     return False
+        # return True
+    return wrapper
+
+
+@bot.message_handler(commands=['lol'])
+@user_access
+def check_user_permissions(message: telebot.types.Message):
+    bot.send_message(message.chat.id, 'TEST 1')
+    return bot.send_message(message.chat.id, 'TEST 'f'{check_user_permissions}')
 
 
 def get_user_access(user_id):
@@ -252,6 +306,9 @@ def get_text_messages(message):
     Главное меню чат-бота с глубокой вложенностью
     и возможностью возврата к предыдущему пункту меню.
     """
+    # access = get_user_access(message.chat.id)
+    # if access is None:
+    #     bot.send_message(message.chat.id, '/start')
     if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton('О компании')
