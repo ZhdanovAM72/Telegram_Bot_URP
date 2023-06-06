@@ -4,6 +4,7 @@ PASS_RANGE = 16
 
 
 def generate_code() -> str:
+    """Генератор уникального кода доступа."""
     digits: str = '0123456789'
     uppercase: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     lowercase: str = 'abcdefghijklmnopqrstuvwxyz'
@@ -16,5 +17,4 @@ def generate_code() -> str:
 
     for i in range(PASS_RANGE):
         password += choice(chars)
-    print(password)
     return password
