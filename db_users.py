@@ -1,12 +1,7 @@
 import datetime as dt
-import sqlite3
-import os
-import sqlite3
-from random import choice
 import logging
+import sqlite3
 from logging.handlers import RotatingFileHandler
-
-import telebot
 
 LOG_FILE = 'bot_log'
 
@@ -92,36 +87,3 @@ def get_new_user(code: str, username, user_id, first_name, last_name):
         if con:
             con.close()
             logger.info('Закрыто соединение с БД: users_v2')
-
-
-# post_code: str = 'SOC0E1ZH?nOW+g-i'
-#get_new_code(post_code)
-
-# atr_2 = 'Alex'
-# atr_3 = 33332245679
-# atr_4 = 'ТЕСТфест'
-# atr_5 = 'ТЕСТласт'
-
-# get_new_user(post_code, atr_2, atr_3, atr_4, atr_5)
-
-# cur.execute('''
-# CREATE TABLE IF NOT EXISTS bot_users(
-#     id INTEGER PRIMARY KEY,
-#     code TEXT,
-#     user_id INTEGER
-# );
-# ''')
-
-# cur.execute('''
-# CREATE TABLE IF NOT EXISTS bot_users(
-#     id INTEGER PRIMARY KEY,
-#     auth_code TEXT UNIQIE,
-#     user_id INTEGER UNIQIE,
-#     username TEXT,
-#     first_name TEXT,
-#     last_name TEXT,
-#     register_date DATE
-# );
-# ''')
-
-
