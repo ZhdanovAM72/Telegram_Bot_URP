@@ -1,8 +1,6 @@
+import logging
 import os
 import sqlite3
-import datetime as dt
-from random import choice
-import logging
 from logging.handlers import RotatingFileHandler
 
 import telebot
@@ -15,7 +13,7 @@ from db_users import get_new_user, get_new_code
 
 load_dotenv()
 
-LOG_FILE = 'bot_log'
+LOG_FILE = 'bot_log'  # Имя файла логов (также используем при отправле файла)
 API_TOKEN = os.getenv('URP_BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
 
@@ -83,9 +81,9 @@ def check_admin_permissions(message: telebot.types.Message):
         f'команда: "admin" - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
+        f'данные в БД {access[1]} - '
         f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name} - '
-        f'данные в БД {access[1]}'
+        f'фамилия: {message.from_user.last_name}'
     )
 
 
@@ -94,9 +92,8 @@ def create_new_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        bot.send_message(message.chat.id,
-                         'У Вас нет административных прав!')
-        return None
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
 
     bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
     generate__new_code = generate_code()
@@ -116,7 +113,8 @@ def create_new_code(message: telebot.types.Message):
         bot.send_message(message.chat.id, generate__new_code)
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
-    logger.info(
+
+    return logger.info(
         f'команда: "create-code" - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
@@ -124,39 +122,18 @@ def create_new_code(message: telebot.types.Message):
         f'фамилия: {message.from_user.last_name}'
     )
 
-
+# задумка по декоратору
 # def user_access(func):
-#     def wrapper(user_id=message.chat.id, **kwargs):
-#         with sqlite3.connect('users_v2.sqlite') as conn:
-#             cursor = conn.cursor()
-#             cursor.execute('SELECT id, user_id FROM bot_users WHERE user_id=?',
-#                            (user_id,))
-#             user_check = cursor.fetchone()
-#             cursor.close()
-#             if user_check[1] != user_id:
-#                 return False
-#             return True
+#     def wrapper(*args):
+#         message = args[0]
+#         user_id = message.from_user.id
+#         print(user_id)
+#         check_user = get_user_access(user_id)
+#         if check_user is None or check_user[1] != user_id:
+#             return bot.send_message(message.chat.id,
+#                                     'Вы не зарегистрированны в системе!')
+#         return get_text_messages()
 #     return wrapper
-
-
-def user_access(func):
-    def wrapper(*args):
-
-        user_id = {args: {"from_user": 'id'}}
-        print(user_id)
-        #print(*args)
-        # check_user = get_user_access(user_id)
-        # if check_user in None or check_user[1] != user_id:
-        #     return False
-        # return True
-    return wrapper
-
-
-@bot.message_handler(commands=['lol'])
-@user_access
-def check_user_permissions(message: telebot.types.Message):
-    bot.send_message(message.chat.id, 'TEST 1')
-    return bot.send_message(message.chat.id, 'TEST 'f'{check_user_permissions}')
 
 
 def get_user_access(user_id):
@@ -213,21 +190,31 @@ def search_code_in_db(code):
         return search_code
 
 
-
 @bot.message_handler(commands=['code'])
 def login_user(message):
     """"Определяем права пользователя."""
     input_code = message.text
+    erorr_code_message = (
+        'Команда использована неверно, '
+        'введите код как показано на примере!\n'
+        'Пример: \n/code jifads9af8@!1'
+    )
+    if input_code == '/code':
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
     clear_code = input_code.split()
+    if len(clear_code) <= 1 or len(clear_code) > 2:
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
     check = search_code_in_db(clear_code[1])
     if check is not None and check[0] == clear_code[1]:
         bot.send_message(message.chat.id, 'Код найден в базе!')
         bot.send_message(message.chat.id,
                          'Проверяю возможность создания нового пользователя.')
-        print(clear_code[1], message.from_user.username,
-              message.from_user.id,
-              message.from_user.first_name,
-              message.from_user.last_name)
         get_new_user(
             clear_code[1],
             message.from_user.username,
@@ -235,19 +222,22 @@ def login_user(message):
             message.from_user.first_name,
             message.from_user.last_name
         )
-        check_user_permissions(message)
-    else:
-        bot.send_message(message.chat.id, 'Код не найден в системе!')
-        bot.send_message(
-            message.chat.id,
-            'Запросите код у администратора проекта, '
-            'либо используйте имеющийся.'
-        )
+        return check_user_permissions(message)
+    return bot.send_message(
+        message.chat.id,
+        'Код не найден в системе!\n'
+        'Запросите код у администратора проекта, '
+        'либо используйте имеющийся.'
+    )
 
 
 @bot.message_handler(commands=['dev_test_command'])
 def start(message):
     """Приветствуем пользователя и включаем меню бота."""
+    check_user = get_user_access(message.chat.id)
+    if check_user is None or check_user[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'Вы не зарегистрированны в системе!')
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn01 = types.KeyboardButton('Информация о боте')
     btn02 = types.KeyboardButton('Главное меню')
@@ -276,8 +266,8 @@ def start(message):
     bot.send_message(message.chat.id,
                      start_message, parse_mode='html',
                      reply_markup=markup)
-    logger.info(
-        f'команда: "start" - '
+    return logger.info(
+        f'команда: "{message.text}" - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
         f'имя: {message.from_user.first_name} - '
@@ -288,16 +278,19 @@ def start(message):
 @bot.message_handler(commands=['stp'])
 def stop_command(message):
     """Останавливаем работу бота командой."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
     bot.send_message(message.chat.id, 'OK, stop...')
-    print("OK, stop...")
     logger.critical(
-        f'команда: "stp" - '
+        f'команда: "{message.text}" - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
-    bot.stop_polling()
+    return bot.stop_polling()
 
 
 @bot.message_handler(content_types=['text'])
@@ -306,9 +299,10 @@ def get_text_messages(message):
     Главное меню чат-бота с глубокой вложенностью
     и возможностью возврата к предыдущему пункту меню.
     """
-    # access = get_user_access(message.chat.id)
-    # if access is None:
-    #     bot.send_message(message.chat.id, '/start')
+    check_user = get_user_access(message.chat.id)
+    if check_user is None or check_user[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'Вы не зарегистрированны в системе!')
     if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn1 = types.KeyboardButton('О компании')
@@ -549,7 +543,10 @@ def get_text_messages(message):
 
     elif message.text == 'Корпоративный портал':
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("«Газпром нефть»", url="https://www.gazprom-neft.ru/"))
+        markup.add(types.InlineKeyboardButton(
+            "«Газпром нефть»",
+            url="https://www.gazprom-neft.ru/"
+        ))
         bot.send_message(
             message.chat.id,
             'Корпоративный портал',
@@ -558,8 +555,12 @@ def get_text_messages(message):
 
     elif message.text == 'Мобильная лента':
         markup = types.InlineKeyboardMarkup(row_width=1)
-        btn_do_1 = types.InlineKeyboardButton('КАНАЛ «ГАЗПРОМ НЕФТИ»', url="HTTPS://LENTA.GAZPROM-NEFT.RU/")
-        btn_do_2 = types.InlineKeyboardButton('КАНАЛ «НЕФТЕСЕРВИСЫ»', url="https://lenta.gazprom-neft.ru/channel/nefteservisy/")
+        btn_do_1 = types.InlineKeyboardButton(
+            'КАНАЛ «ГАЗПРОМ НЕФТИ»',
+            url="HTTPS://LENTA.GAZPROM-NEFT.RU/")
+        btn_do_2 = types.InlineKeyboardButton(
+            'КАНАЛ «НЕФТЕСЕРВИСЫ»',
+            url="https://lenta.gazprom-neft.ru/channel/nefteservisy/")
         markup.add(btn_do_1, btn_do_2)
         bot.send_message(
             message.chat.id,
@@ -581,10 +582,23 @@ def get_text_messages(message):
 
     elif message.text == 'Телеграм-каналы':
         markup = types.InlineKeyboardMarkup(row_width=1)
-        btn_do_1 = types.InlineKeyboardButton('КОМАНДА ГПН-НС', url="https://t.me/+LmDKSVvewR0yMzEy")  # Заплатка
-        btn_do_2 = types.InlineKeyboardButton('КУЛЬТУРА И СПОРТ БРД', url="HTTPS://T.ME/SPORTCULTUREBRDHR")
-        btn_do_3 = types.InlineKeyboardButton('Новости нефтесервисов', url="https://t.me/+LmDKSVvewR0yMzEy")
-        btn_do_4 = types.InlineKeyboardButton('Совет молодых специалистов ЭС»', url="https://t.me/joinchat/Ez0rmolXqAS3Nzjp")
+        # Заплатка
+        btn_do_1 = types.InlineKeyboardButton(
+            'КОМАНДА ГПН-НС',
+            url="https://t.me/+LmDKSVvewR0yMzEy"
+        )
+        btn_do_2 = types.InlineKeyboardButton(
+            'КУЛЬТУРА И СПОРТ БРД',
+            url="HTTPS://T.ME/SPORTCULTUREBRDHR"
+        )
+        btn_do_3 = types.InlineKeyboardButton(
+            'Новости нефтесервисов',
+            url="https://t.me/+LmDKSVvewR0yMzEy"
+        )
+        btn_do_4 = types.InlineKeyboardButton(
+            'Совет молодых специалистов ЭС»',
+            url="https://t.me/joinchat/Ez0rmolXqAS3Nzjp"
+        )
         markup.add(btn_do_1, btn_do_2, btn_do_3, btn_do_4)
         bot.send_message(
             message.chat.id,
@@ -754,6 +768,7 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
+    # доработать
     elif (message.text == 'Карьерное развитие'
           or message.text == '🔙 вернуться в раздел Карьерное развитие'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
@@ -804,7 +819,7 @@ def get_text_messages(message):
     elif message.text == 'Оценка':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        doc = open('data/404.pptx', 'rb')
+        doc = open('data/404.pptx', 'rb')  # заплатка
         markup.add(btn)
         bot.send_document(
             message.chat.id,
@@ -838,7 +853,8 @@ def get_text_messages(message):
     #     )
 
     elif (message.text == 'Оценка вклада, компетенций и ценностей'
-          or message.text == '🔙 вернуться в раздел Оценка вклада, компетенций и ценностей'):
+          or message.text == '🔙 вернуться в раздел Оценка вклада, '
+          'компетенций и ценностей'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
         # btn_2 = types.KeyboardButton('Диалоги о развитии')
@@ -871,7 +887,8 @@ def get_text_messages(message):
 
     elif message.text == 'Регулярная оценка':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада, компетенций и ценностей')
+        btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада,'
+                                   'компетенций и ценностей')
         # Второй вариант реализации
         # video = open('data/regular_evaluation/promo.mp4', 'rb')
         # markup.add(btn)
@@ -899,7 +916,13 @@ def get_text_messages(message):
 
     elif message.text == 'На что влияет':
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("Ссылка на курс", url="https://edu.gazprom-neft.ru/view_doc.html?mode=course&object_id=7060403380104215139"))
+        markup.add(
+            types.InlineKeyboardButton(
+                "Ссылка на курс",
+                url=("https://edu.gazprom-neft.ru/view_doc.html?"
+                     "mode=course&object_id=7060403380104215139")
+            )
+        )
         bot.send_message(
             message.chat.id,
             'Практики регулярного менеджмента - это инструмент, '
@@ -917,7 +940,8 @@ def get_text_messages(message):
 
     # elif message.text == 'Диалоги о развитии':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    #     btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада, компетенций и ценностей')
+    #     btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада,
+    #                                компетенций и ценностей')
     #     doc = open('data/404.pptx', 'rb')
     #     markup.add(btn)
     #     bot.send_document(
@@ -929,9 +953,14 @@ def get_text_messages(message):
 
     elif message.text == 'Диалоги об эффективности':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада, компетенций и ценностей')
-        doc_1 = open('data/regular_evaluation/efficiency/efficiency_dialogue.pdf', 'rb')
-        doc_2 = open('data/regular_evaluation/efficiency/instruction.pdf', 'rb')
+        btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада,'
+                                   'компетенций и ценностей')
+        doc_1 = open(
+            'data/regular_evaluation/efficiency/efficiency_dialogue.pdf',
+            'rb'
+        )
+        doc_2 = open('data/regular_evaluation/efficiency/instruction.pdf',
+                     'rb')
         doc_3 = open('data/regular_evaluation/efficiency/memo.PNG', 'rb')
         markup.add(btn)
         bot.send_document(
@@ -955,13 +984,15 @@ def get_text_messages(message):
 
     elif message.text == 'Обратная связь по итогам оценки':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада, компетенций и ценностей')
-        doc = open('data/404.pptx', 'rb')
+        btn = types.KeyboardButton('🔙 вернуться в раздел Оценка вклада, '
+                                   'компетенций и ценностей')
+        doc = open('data/404.pptx', 'rb')  # заплатка
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc,
-            caption='Обратная связь по итогам оценки вклада, компетенций и ценностей',
+            caption=('Обратная связь по итогам оценки вклада, '
+                     'компетенций и ценностей'),
             parse_mode="html"
             )
 
@@ -971,37 +1002,29 @@ def get_text_messages(message):
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
 
-    elif (message.text == 'Стажировка' or message.text == '🔙 вернуться в раздел Стажировка'):
+    elif (message.text == 'Стажировка' or message.text == '🔙 вернуться в '
+          'раздел Стажировка'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
         # btn_2 = types.KeyboardButton('О процессе стажировок')
         # btn_3 = types.KeyboardButton('Бланк плана стажировок')
         markup.add(btn_1)
         doc = open('data/internship/internship_plan.pdf', 'rb')
-        # message_text = (
-        #     'СТАЖИРОВКА \n Позволяет работнику погрузиться '
-        #     'в другую деятельность и получить новый опыт в короткие'
-        #     ' сроки. \n Перед началом стажировки совместно с '
-        #     'руководителем необходимо сформировать план на время '
-        #     'стажировки и согласовать его с наставником '
-        #     'принимающей стороны.\n Обязательства принимающей стороны:'
-        #     '- Подготовка рабочего места для стажера.\n'
-        #     '- Выполнение плана работы на время стажировки.\n'
-        #     '- Консультирование и сопровождение стажера. \n'
-        #     '- Экспертная помощь наставника.'
-        # )
+        message_text = (
+            'СТАЖИРОВКА \n Позволяет работнику погрузиться '
+            'в другую деятельность и получить новый опыт в короткие'
+            ' сроки. \n Перед началом стажировки совместно с '
+            'руководителем необходимо сформировать план на время '
+            'стажировки и согласовать его с наставником '
+            'принимающей стороны.\n Обязательства принимающей стороны:'
+            '- Подготовка рабочего места для стажера.\n'
+            '- Выполнение плана работы на время стажировки.\n'
+            '- Консультирование и сопровождение стажера. \n'
+            '- Экспертная помощь наставника.'
+        )
         bot.send_message(
             message.chat.id,
-            'СТАЖИРОВКА.\n'
-            'в другой деятельности и получить новый опыт в предписании'
-            ' стоит. \n Перед началом стажировки совместно с '
-            'руководителем необходимо широкий план на время'
-            'стажировки и согласование его с наставником'
-            'принимающей стороны.\n Обязательства принимающей стороны:'
-            'Подготовка рабочего места для стажера.\n'
-            ' Выполнение плана работы на время стажировки.\n'
-            ' Консультирование и сопровождение стажера. \n'
-            'Экспертная помощь инструктора.',
+            message_text,
             reply_markup=markup
         )
         bot.send_document(
@@ -1017,8 +1040,7 @@ def get_text_messages(message):
         #     parse_mode='html',
         # )
 
-
-    # elif message.text == 'ДМС и РВЛ':
+    #  elif message.text == 'ДМС и РВЛ':
     #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #     btn1 = types.KeyboardButton('Главное меню')
 
@@ -1042,7 +1064,7 @@ def get_text_messages(message):
             parse_mode='html',
             reply_markup=markup,
             )
-    logger.info(
+    return logger.info(
         f'команда: {message.text} - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
@@ -1062,14 +1084,27 @@ def get_text_messages(message):
 @bot.message_handler(content_types=['photo'])
 def get_user_photo(message):
     """Ловим отправленные пользователем изобращения."""
+    check_user = get_user_access(message.chat.id)
+    if check_user is None or check_user[1] != message.chat.id:
+        # Рефакторинг логгера добавить
+        logger.info(
+            f'изображение - {message.photo}'
+            f'пользователь: {message.from_user.username} - '
+            f'id пользователя: {message.chat.id} - '
+            f'имя: {message.from_user.first_name} - '
+            f'фамилия: {message.from_user.last_name}'
+        )
+        return bot.send_message(message.chat.id,
+                                'Вы не зарегистрированны в системе!')
+
     bot.send_message(
         message.chat.id,
         'У меня нет глаз, '
         'я не понимаю что на этой картинке.\n'
         'Давай продолжим работать в меню.'
         )
-    logger.info(
-        f'изображение - '
+    return logger.info(
+        f'изображение - {message.photo}'
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
         f'имя: {message.from_user.first_name} - '
@@ -1080,14 +1115,26 @@ def get_user_photo(message):
 @bot.message_handler(content_types=['sticker'])
 def get_user_stiсker(message):
     """Ловим отправленные пользователем стикеры."""
+    check_user = get_user_access(message.chat.id)
+    if check_user is None or check_user[1] != message.chat.id:
+        # Необходим рефакторинг логгера
+        logger.info(
+            f'изображение {message.photo} - '
+            f'пользователь: {message.from_user.username} - '
+            f'id пользователя: {message.chat.id} - '
+            f'имя: {message.from_user.first_name} - '
+            f'фамилия: {message.from_user.last_name}'
+        )
+        return bot.send_message(message.chat.id,
+                                'Вы не зарегистрированны в системе!')
     bot.send_message(
         message.chat.id,
         'У меня нет глаз, '
         'я не вижу этот стикер.\n'
         'Давай продолжим работать в меню.'
         )
-    logger.info(
-        f'стикер - '
+    return logger.info(
+        f'стикер {message.sticker} - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
         f'имя: {message.from_user.first_name} - '
