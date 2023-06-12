@@ -200,6 +200,13 @@ def login_user(message):
         'Пример: \n/code jifads9af8@!1'
     )
     if input_code == '/code':
+        logger.info(
+            f'команда: "{message.text}" - '
+            f'пользователь: {message.from_user.username} - '
+            f'id пользователя: {message.chat.id} - '
+            f'имя: {message.from_user.first_name} - '
+            f'фамилия: {message.from_user.last_name}'
+        )
         return bot.send_message(
             message.chat.id,
             erorr_code_message
@@ -223,11 +230,18 @@ def login_user(message):
             message.from_user.last_name
         )
         return check_user_permissions(message)
-    return bot.send_message(
+    bot.send_message(
         message.chat.id,
         'Код не найден в системе!\n'
         'Запросите код у администратора проекта, '
         'либо используйте имеющийся.'
+    )
+    return logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
     )
 
 

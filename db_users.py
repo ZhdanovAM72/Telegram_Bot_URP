@@ -78,7 +78,7 @@ def get_new_user(code: str, username, user_id, first_name, last_name):
         data = (user_id, username, first_name, last_name, update_time, code)
         cur.execute(sql_update_v1, data)
         con.commit()
-        cur.close()
+        # cur.close()
         logger.info('Записан новый пользователь в БД: '
                     f'{user_id, first_name, last_name}')
     except sqlite3.Error as error:
