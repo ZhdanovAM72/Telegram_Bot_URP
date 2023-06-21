@@ -153,9 +153,16 @@ settings.py
 # Bot files
 bot_data/
 bot_log
+bot_log.txt
 
 # db files
 *.sqlite
 
 # other gurbage
 content_type.txt
+
+# рабочие файлы
+*.xlsx
+data/
+/data
+pictures/
