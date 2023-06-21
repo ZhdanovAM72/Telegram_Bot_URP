@@ -3,7 +3,7 @@ import logging
 import sqlite3
 from logging.handlers import RotatingFileHandler
 
-LOG_FILE = 'bot_log'
+LOG_FILE = 'bot_log.txt'
 
 
 def init_logger() -> logging.Logger:

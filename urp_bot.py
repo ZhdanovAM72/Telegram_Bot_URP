@@ -13,7 +13,7 @@ from db_users import get_new_user, get_new_code
 
 load_dotenv()
 
-LOG_FILE = 'bot_log'  # Имя файла логов (также используем при отправле файла)
+LOG_FILE = 'bot_log.txt'  # Имя файла логов (также используем при отправле файла)
 API_TOKEN = os.getenv('URP_BOT_TOKEN')
 bot = telebot.TeleBot(API_TOKEN)
 
