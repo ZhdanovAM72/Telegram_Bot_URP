@@ -41,6 +41,3 @@ def excel_export():
         if con:
             con.close()
             logger.info('Закрыто соединение с БД: users_v2')
-
-
-excel_export()
