@@ -1,6 +1,7 @@
 import logging
 import os
 import sqlite3
+import datetime as dt
 from logging.handlers import RotatingFileHandler
 
 import telebot
@@ -10,6 +11,8 @@ from telebot import types
 
 from password_generator import generate_code
 from db_users import get_new_user, get_new_code
+from delete_utils import delete_code, delete_user
+from excel import excel_export
 
 load_dotenv()
 
@@ -87,7 +90,134 @@ def check_admin_permissions(message: telebot.types.Message):
     )
 
 
-@bot.message_handler(commands=['create-code'])
+@bot.message_handler(commands=['deleteuser'])
+def delete_user_from_db(message):
+    """Удаляем запись из БД по user_id."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+    input_code = message.text
+    erorr_code_message = (
+        'Команда использована неверно, '
+        'введите запрос как показано на примере!\n'
+        'Пример: \n/deleteuser 111111111'
+    )
+    if input_code == '/deleteuser':
+        logger.info(
+            f'команда: "{message.text}" - '
+            f'пользователь: {message.from_user.username} - '
+            f'id пользователя: {message.chat.id} - '
+            f'имя: {message.from_user.first_name} - '
+            f'фамилия: {message.from_user.last_name}'
+        )
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    delete_user_id = input_code.split()
+    if len(delete_user_id) <= 1 or len(delete_user_id) > 2:
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    check = search_user_id_in_db(delete_user_id[1])
+    if check is not None and check[0] == int(delete_user_id[1]):
+        bot.send_message(message.chat.id, 'Код найден в базе!')
+        delete_user(delete_user_id[1])
+        return bot.send_message(message.chat.id, 'Запись БД удалена!')
+    bot.send_message(
+        message.chat.id,
+        'Пользователь не найден в системе!\n'
+        'Проверьте user_id в БД. '
+    )
+    return logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+@bot.message_handler(commands=['deletecode'])
+def delete_code_from_db(message):
+    """Удаляем запись из БД по коду доступа."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+    input_code = message.text
+    erorr_code_message = (
+        'Команда использована неверно, '
+        'введите запрос как показано на примере!\n'
+        'Пример: \n/deletecode jifads9af8@!1'
+    )
+    if input_code == '/deletecode':
+        logger.info(
+            f'команда: "{message.text}" - '
+            f'пользователь: {message.from_user.username} - '
+            f'id пользователя: {message.chat.id} - '
+            f'имя: {message.from_user.first_name} - '
+            f'фамилия: {message.from_user.last_name}'
+        )
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    clear_code = input_code.split()
+    if len(clear_code) <= 1 or len(clear_code) > 2:
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    check = search_code_in_db(clear_code[1])
+    if check is not None and check[0] == clear_code[1]:
+        bot.send_message(message.chat.id, 'Код найден в базе!')
+        delete_code(clear_code[1])
+        return bot.send_message(message.chat.id, 'Запись БД удалена!')
+    bot.send_message(
+        message.chat.id,
+        'Код не найден в системе!\n'
+        'Проверьте код в БД. '
+    )
+    return logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+@bot.message_handler(commands=['excel'])
+def export_db(message: telebot.types.Message):
+    """Экспортируем БД."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+
+    bot.send_message(message.chat.id, 'Попытка экспорта БД.')
+    excel_export()
+    export_doc = open('result.xlsx', 'rb')
+    date_info = dt.datetime.utcfromtimestamp(message.date)
+    bot.send_document(
+            message.chat.id,
+            export_doc,
+            caption=f'Выгрузка БД на {date_info.date()}',
+            parse_mode="html"
+            )
+    return logger.info(
+        f'команда: "create-code" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+@bot.message_handler(commands=['createcode'])
 def create_new_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_admin_access(message.chat.id)
@@ -122,26 +252,13 @@ def create_new_code(message: telebot.types.Message):
         f'фамилия: {message.from_user.last_name}'
     )
 
-# задумка по декоратору
-# def user_access(func):
-#     def wrapper(*args):
-#         message = args[0]
-#         user_id = message.from_user.id
-#         print(user_id)
-#         check_user = get_user_access(user_id)
-#         if check_user is None or check_user[1] != user_id:
-#             return bot.send_message(message.chat.id,
-#                                     'Вы не зарегистрированны в системе!')
-#         return get_text_messages()
-#     return wrapper
-
 
 def get_user_access(user_id):
     """Проверяем пользователя в БД."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT id, user_id FROM bot_users WHERE user_id=?',
-                       (user_id,))
+        user_check_in_db = 'SELECT id, user_id FROM bot_users WHERE user_id=?'
+        cursor.execute(user_check_in_db, (user_id,))
         user_check = cursor.fetchone()
         cursor.close()
         return user_check
@@ -173,16 +290,30 @@ def check_user_permissions(message: telebot.types.Message):
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
 
-def search_code_in_db(code):
-    """Проверяем отсутствие кода доступа в БД."""
+def search_user_id_in_db(chat_id):
+    """Проверяем наличие user_id в БД."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
+        search_db_user = ('SELECT user_id, auth_code '
+                          'FROM bot_users WHERE user_id=?')
         cursor.execute(
-            """
-            SELECT auth_code, user_id
-            FROM bot_users
-            WHERE auth_code=?
-            """,
+            search_db_user,
+            (chat_id,)
+        )
+        search_user = cursor.fetchone()
+        print(search_user)
+        cursor.close()
+        return search_user
+
+
+def search_code_in_db(code):
+    """Проверяем наличие кода доступа в БД."""
+    with sqlite3.connect('users_v2.sqlite') as conn:
+        cursor = conn.cursor()
+        search_db = ('SELECT auth_code, user_id '
+                     'FROM bot_users WHERE auth_code=?')
+        cursor.execute(
+            search_db,
             (code,)
         )
         search_code = cursor.fetchone()
@@ -1154,9 +1285,6 @@ def get_user_stiсker(message):
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
-
-
-# bot.polling(none_stop=True, interval=0)
 
 
 if __name__ == '__main__':
