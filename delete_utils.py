@@ -28,7 +28,7 @@ def init_logger() -> logging.Logger:
 logger = init_logger()
 
 
-def delete_user(user_id):
+def delete_user(chat_id):
     """Удаляем данные пользователя по user_id."""
     try:
         con = sqlite3.connect('users_v2.sqlite')
@@ -37,11 +37,11 @@ def delete_user(user_id):
             DELETE FROM bot_users
             WHERE user_id = ?;
         """)
-        cur.execute(sql_update_v1, (user_id,))
+        cur.execute(sql_update_v1, (chat_id,))
         con.commit()
         cur.close()
         logger.info('Команда удаления пользователя в БД, id: '
-                    f'{user_id}')
+                    f'{chat_id}')
     except sqlite3.Error as error:
         logger.error(f'SQL error: {error}')
     finally:
