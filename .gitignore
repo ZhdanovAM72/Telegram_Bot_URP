@@ -164,5 +164,6 @@ content_type.txt
 # рабочие файлы
 *.xlsx
 data/
+prod_data/
 /data
 pictures/
