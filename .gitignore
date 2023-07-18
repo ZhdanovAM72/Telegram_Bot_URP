@@ -167,3 +167,4 @@ data/
 prod_data/
 /data
 pictures/
+db_correct.py
