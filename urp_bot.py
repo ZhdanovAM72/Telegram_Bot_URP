@@ -641,7 +641,7 @@ def get_text_messages(message):
     elif message.text == 'История ГПН НС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn_history_ns = types.KeyboardButton('🔙 вернуться в раздел ГПН НС')
-        doc_ns = open('data/about_company/history_NS.pptx', 'rb')
+        doc_ns = open('data/404.pptx', 'rb')  # Заплатка
         markup.add(btn_history_ns)
         bot.send_document(
             message.chat.id,
@@ -743,7 +743,6 @@ def get_text_messages(message):
 
     elif message.text == 'Телеграм-каналы':
         markup = types.InlineKeyboardMarkup(row_width=1)
-        # Заплатка
         btn_do_1 = types.InlineKeyboardButton(
             'КОМАНДА ГПН-НС',
             url="https://t.me/+LmDKSVvewR0yMzEy"
@@ -1094,28 +1093,18 @@ def get_text_messages(message):
           or message.text == '🔙 вернуться в раздел Цикл управления талантами'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
-        # btn_2 = types.KeyboardButton('Диалоги о развитии')
         btn_3 = types.KeyboardButton('Регулярная оценка')
         btn_4 = types.KeyboardButton('Диалоги об эффективности')
         btn_5 = types.KeyboardButton('Кадровый резерв')
         btn_6 = types.KeyboardButton('Диалоги о развитии')
-        # video = open('data/regular_evaluation/promo.mp4', 'rb')
         markup.add(
-            # btn_2,
             btn_3,
             btn_4,
             btn_5,
             btn_6,
             btn_1,
         )
-        # bot.send_video(
-        #     message.chat.id,
-        #     video,
-        #     caption='Оценка вклада, компетенций и ценностей',
-        #     parse_mode="html",
-        #     reply_markup=markup
-        # )
-        # Второй вариант реализации
+
         bot.send_message(
             message.from_user.id,
             "Цикл управления талантами",
@@ -1405,9 +1394,11 @@ def get_text_messages(message):
         )
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'Молодежный совет':
+    elif (message.text == 'Молодежный совет'
+          or message.text == '🔙 вернуться в '
+                             'раздел Молодежный совет'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_1 = types.KeyboardButton('🔙 вернуться в раздел Молодежная политика')
         btn_2 = types.KeyboardButton('Направления деятельности МС')
         btn_3 = types.KeyboardButton('Положение, мотивация МС')
         btn_4 = types.KeyboardButton('Структура МС')
@@ -1480,9 +1471,10 @@ def get_text_messages(message):
         )
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'Развитие молодых специалистов':
+    elif (message.text == 'Развитие молодых специалистов'
+          or message.text == '🔙 вернуться в раздел Развитие молодых специалистов'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_1 = types.KeyboardButton('🔙 вернуться в раздел Молодежная политика')
         btn_2 = types.KeyboardButton('НТК МС')
         btn_3 = types.KeyboardButton('СЛЕТ МС')
         markup.add(btn_2, btn_3, btn_1)
@@ -1496,20 +1488,55 @@ def get_text_messages(message):
     elif message.text == 'НТК МС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Молодежный совет')
-        doc = open('prod_data/Молодежная_политика/Молодежный_совет/Структура/Структура.pptx', 'rb')
+                                   'раздел Развитие молодых специалистов')
+        doc_1 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Заявка_Шаблон.docx', 'rb')
+        doc_2 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_одностраничника.pptx', 'rb')
+        doc_3 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_презентации.pptx', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
-            doc,
-            caption='Структура МС',
+            doc_1,
+            caption='Заявка - Шаблон',
+            parse_mode="html",
+            reply_markup=markup,
+        )
+        bot.send_document(
+            message.chat.id,
+            doc_2,
+            caption='Шаблон одностраничника',
+            parse_mode="html",
+            reply_markup=markup,
+        )
+        bot.send_document(
+            message.chat.id,
+            doc_3,
+            caption='Шаблон презентации',
             parse_mode="html",
             reply_markup=markup,
         )
 
-    # elif message.text == 'Обратная связь':
-    #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    #     btn1 = types.KeyboardButton('Главное меню')
+    # МОЛОДЕЖНАЯ ПОЛИТИКА
+    elif message.text == 'СЛЕТ МС':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в '
+                                   'раздел Развитие молодых специалистов')
+        doc = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/Слет_МС/Слет_МС.pptx', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc,
+            caption='Слет МС',
+            parse_mode="html",
+            reply_markup=markup,
+        )
+
+    elif message.text == 'Обратная связь':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton('Главное меню')
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Заполнить форму",
+                   url="https://forms.yandex.ru/cloud/64b7748e068ff01f7b2822ad/"))
+        bot.send_message(message.chat.id, 'Форма обратной связи', reply_markup=markup)
 
     else:
         message.text == 'Информация о боте'
@@ -1530,14 +1557,6 @@ def get_text_messages(message):
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
-
-# сайт
-# @bot.message_handler(commands=['website'])
-# def website(message):
-#     markup = types.InlineKeyboardMarkup()
-#     markup.add(types.InlineKeyboardButton("Открыть сайт",
-#                url="http://gazpromneftenergysystems.ru"))
-#     bot.send_message(message.chat.id, 'Откройте сайт', reply_markup=markup)
 
 
 @bot.message_handler(content_types=['photo'])
