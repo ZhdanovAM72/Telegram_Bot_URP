@@ -1291,11 +1291,11 @@ def get_text_messages(message):
     # ОБУЧЕНИЕ
     elif (message.text == 'Обучение' or message.text == '🔙 вернуться в '
           'раздел Обучение'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
         # btn_2 = types.KeyboardButton('Обучение ГПН-Нефтесервис')
         btn_3 = types.KeyboardButton('Обучение ГПН-Энергосистемы')
-        markup.add(btn_3, btn_2, btn_1)
+        markup.add(btn_3, btn_1)
         bot.send_message(
             message.from_user.id,
             "Раздел обучения, выбор ДО",
