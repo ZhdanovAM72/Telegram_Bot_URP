@@ -1,43 +1,44 @@
-import logging
+#import logging
 import os
 import sqlite3
 import datetime as dt
-from logging.handlers import RotatingFileHandler
+#from logging.handlers import RotatingFileHandler
 
 import telebot
 # from telebot.async_telebot import AsyncTeleBot
 from dotenv import load_dotenv
 from telebot import types
 
-from password_generator import generate_code
-from db_users import get_new_user, get_new_code
-from delete_utils import delete_code, delete_user
-from excel import excel_export
+from db.db_users import get_new_user, get_new_code
+from db.delete_utils import delete_code, delete_user
+from logger_setting.logger_bot import init_logger
+from utils.password_generator import generate_code
+from utils.excel import excel_export
 
 load_dotenv()
 
-LOG_FILE = 'bot_log.txt'  # Имя файла логов
+# LOG_FILE = 'bot_log.txt'  # Имя файла логов
 API_TOKEN = os.getenv('URP_BOT_TOKEN')
 STOP_COMMAND = os.getenv('STOP_COMMAND')
 bot = telebot.TeleBot(API_TOKEN)
 
 
-def init_logger() -> logging.Logger:
-    """Определяем настройки логгера."""
-    logging.basicConfig(
-        format=('%(asctime)s - %(levelname)s - %(name)s - '
-                'строка: %(lineno)d - %(message)s'),
-        level=logging.INFO,
-        handlers=[
-            logging.StreamHandler(),
-            RotatingFileHandler(
-                filename=LOG_FILE,
-                maxBytes=5_000_000,
-                backupCount=5
-            )
-        ],
-    )
-    return logging.getLogger(__name__)
+# def init_logger() -> logging.Logger:
+#     """Определяем настройки логгера."""
+#     logging.basicConfig(
+#         format=('%(asctime)s - %(levelname)s - %(name)s - '
+#                 'строка: %(lineno)d - %(message)s'),
+#         level=logging.INFO,
+#         handlers=[
+#             logging.StreamHandler(),
+#             RotatingFileHandler(
+#                 filename=LOG_FILE,
+#                 maxBytes=5_000_000,
+#                 backupCount=5
+#             )
+#         ],
+#     )
+#     return logging.getLogger(__name__)
 
 
 logger = init_logger()
