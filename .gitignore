@@ -160,6 +160,7 @@ bot_log.txt
 
 # other gurbage
 content_type.txt
+asinc_bot.py
 
 # рабочие файлы
 *.xlsx
