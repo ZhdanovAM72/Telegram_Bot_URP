@@ -17,34 +17,13 @@ from utils.excel import excel_export
 
 load_dotenv()
 
-# LOG_FILE = 'bot_log.txt'  # Имя файла логов
 API_TOKEN = os.getenv('URP_BOT_TOKEN')
 STOP_COMMAND = os.getenv('STOP_COMMAND')
 bot = telebot.TeleBot(API_TOKEN)
-
-
-# def init_logger() -> logging.Logger:
-#     """Определяем настройки логгера."""
-#     logging.basicConfig(
-#         format=('%(asctime)s - %(levelname)s - %(name)s - '
-#                 'строка: %(lineno)d - %(message)s'),
-#         level=logging.INFO,
-#         handlers=[
-#             logging.StreamHandler(),
-#             RotatingFileHandler(
-#                 filename=LOG_FILE,
-#                 maxBytes=5_000_000,
-#                 backupCount=5
-#             )
-#         ],
-#     )
-#     return logging.getLogger(__name__)
-
-
 logger = init_logger()
 
 
-def get_admin_access(user_id: int) -> str:
+def get_admin_access(user_id: int) -> tuple:
     """"Проверяем данные администратора в БД."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
@@ -1614,6 +1593,7 @@ def get_user_stiсker(message):
         )
         return bot.send_message(message.chat.id,
                                 'Вы не зарегистрированны в системе!')
+
     bot.send_message(
         message.chat.id,
         'У меня нет глаз, '
