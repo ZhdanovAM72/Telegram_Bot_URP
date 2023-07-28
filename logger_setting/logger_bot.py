@@ -1,4 +1,5 @@
 import logging
+from logging.handlers import RotatingFileHandler
 
 LOG_FILE = 'bot_log.txt'  # Имя файла логов
 
@@ -11,7 +12,7 @@ def init_logger() -> logging.Logger:
         level=logging.INFO,
         handlers=[
             logging.StreamHandler(),
-            logging.handlers.RotatingFileHandler(
+            RotatingFileHandler(
                 filename=LOG_FILE,
                 maxBytes=5_000_000,
                 backupCount=5
