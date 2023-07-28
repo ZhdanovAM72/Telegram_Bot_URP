@@ -1,33 +1,10 @@
 import datetime as dt
-import logging
 import sqlite3
-from logging.handlers import RotatingFileHandler
 
-LOG_FILE = 'bot_log.txt'
-
-
-def init_logger() -> logging.Logger:
-    """Определяем настройки логгера."""
-    logging.basicConfig(
-        format=('%(asctime)s - %(levelname)s - %(name)s - '
-                'строка: %(lineno)d - %(message)s'),
-        level=logging.INFO,
-        handlers=[
-            logging.StreamHandler(),
-            RotatingFileHandler(
-                filename=LOG_FILE,
-                maxBytes=5_000_000,
-                backupCount=5
-            )
-        ],
-    )
-    return logging.getLogger(__name__)
+from logger_setting.logger_bot import logger
 
 
-logger = init_logger()
-
-
-def get_new_code(code):
+def get_new_code(code: str):
     """Записываем новый код в БД."""
     try:
         con = sqlite3.connect('users_v2.sqlite')
@@ -60,7 +37,7 @@ def get_new_code(code):
             logger.info('Закрыто соединение с БД: users_v2')
 
 
-def get_new_user(code: str, username, user_id, first_name, last_name):
+def get_new_user(code: str, username: str, user_id: int, first_name: str, last_name: str) -> None:
     """Записываем данные пользователя по валидному коду."""
     try:
         con = sqlite3.connect('users_v2.sqlite')
@@ -78,7 +55,6 @@ def get_new_user(code: str, username, user_id, first_name, last_name):
         data = (user_id, username, first_name, last_name, update_time, code)
         cur.execute(sql_update_v1, data)
         con.commit()
-        # cur.close()
         logger.info('Записан новый пользователь в БД: '
                     f'{user_id, first_name, last_name}')
     except sqlite3.Error as error:

@@ -2,16 +2,15 @@
 import os
 import sqlite3
 import datetime as dt
-#from logging.handlers import RotatingFileHandler
+
 
 import telebot
-# from telebot.async_telebot import AsyncTeleBot
 from dotenv import load_dotenv
 from telebot import types
 
 from db.db_users import get_new_user, get_new_code
 from db.delete_utils import delete_code, delete_user
-from logger_setting.logger_bot import init_logger
+from logger_setting.logger_bot import logger
 from utils.password_generator import generate_code
 from utils.excel import excel_export
 
@@ -19,8 +18,8 @@ load_dotenv()
 
 API_TOKEN = os.getenv('URP_BOT_TOKEN')
 STOP_COMMAND = os.getenv('STOP_COMMAND')
+
 bot = telebot.TeleBot(API_TOKEN)
-logger = init_logger()
 
 
 def get_admin_access(user_id: int) -> tuple:
@@ -72,7 +71,7 @@ def check_admin_permissions(message: telebot.types.Message):
 
 
 @bot.message_handler(commands=['deleteuser'])
-def delete_user_from_db(message):
+def delete_user_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по user_id."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
@@ -122,7 +121,7 @@ def delete_user_from_db(message):
 
 
 @bot.message_handler(commands=['deletecode'])
-def delete_code_from_db(message):
+def delete_code_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по коду доступа."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:

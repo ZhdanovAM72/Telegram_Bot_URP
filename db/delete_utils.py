@@ -1,34 +1,9 @@
 import sqlite3
 
-import logging
-from logging.handlers import RotatingFileHandler
+from logger_setting.logger_bot import logger
 
 
-LOG_FILE = 'bot_log.txt'
-
-
-def init_logger() -> logging.Logger:
-    """Определяем настройки логгера."""
-    logging.basicConfig(
-        format=('%(asctime)s - %(levelname)s - %(name)s - '
-                'строка: %(lineno)d - %(message)s'),
-        level=logging.INFO,
-        handlers=[
-            logging.StreamHandler(),
-            RotatingFileHandler(
-                filename=LOG_FILE,
-                maxBytes=5_000_000,
-                backupCount=5
-            )
-        ],
-    )
-    return logging.getLogger(__name__)
-
-
-logger = init_logger()
-
-
-def delete_user(chat_id):
+def delete_user(chat_id: int) -> None:
     """Удаляем данные пользователя по user_id."""
     try:
         con = sqlite3.connect('users_v2.sqlite')
@@ -50,7 +25,7 @@ def delete_user(chat_id):
             logger.info('Закрыто соединение с БД: users_v2')
 
 
-def delete_code(auth_code):
+def delete_code(auth_code: str) -> None:
     """Удаляем все данные привязанные с auth_code."""
     try:
         con = sqlite3.connect('users_v2.sqlite')
