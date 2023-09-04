@@ -464,8 +464,8 @@ def get_text_messages(message):
           or message.text == '🔙 вернуться в раздел О компании'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_about_1 = types.KeyboardButton('🔙 Главное меню')
-        btn_about_2 = types.KeyboardButton('Выбрать ДО')
-        btn_about_3 = types.KeyboardButton('Наши корпоративные ценности')
+        btn_about_2 = types.KeyboardButton('Подробнее')
+        btn_about_3 = types.KeyboardButton('Корпоративные ценности')
         btn_about_4 = types.KeyboardButton('Сервисы для сотрудников')
         btn_about_5 = types.KeyboardButton('Новостная лента')
         markup.add(
@@ -481,40 +481,40 @@ def get_text_messages(message):
             reply_markup=markup
             )
 
-    elif (message.text == 'Выбрать ДО'
-          or message.text == '🔙 вернуться в раздел Выбрать ДО'):
+    elif (message.text == 'Подробнее'
+          or message.text == '🔙 вернуться в раздел Подробнее'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
         # btn_do_2 = types.KeyboardButton('ГПН НС')
-        btn_do_3 = types.KeyboardButton('ГПН ЭС')
+        btn_do_3 = types.KeyboardButton('Газпромнефть Энергосистемы')
         # btn_do_4 = types.KeyboardButton('ННГГФ')
         # markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_1)
         markup.add(btn_do_3, btn_do_1)
         bot.send_message(
             message.from_user.id,
-            "⬇ Выбрать ДО",
+            "⬇ Подробнее",
             reply_markup=markup
             )
 
     # ГПН ЭС
-    elif (message.text == 'ГПН ЭС'
-          or message.text == '🔙 вернуться в раздел ГПН ЭС'):
+    elif (message.text == 'Газпромнефть Энергосистемы'
+          or message.text == '🔙 вернуться в раздел Газпромнефть Энергосистемы'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
-        btn_es_2 = types.KeyboardButton('История ЭС')
-        btn_es_3 = types.KeyboardButton('Структура ЭС')
-        btn_es_4 = types.KeyboardButton('Контакты ЭС')
+        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Подробнее')
+        btn_es_2 = types.KeyboardButton('История Энергосистем')
+        btn_es_3 = types.KeyboardButton('Структура Энергосистем')
+        btn_es_4 = types.KeyboardButton('Контакты Энергосистем')
         markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_1)
         bot.send_message(
             message.from_user.id,
-            "⬇ ГПН ЭС",
+            "⬇ Газпромнефть Энергосистемы",
             reply_markup=markup
             )
 
     # ГПН ЭС история
-    elif message.text == 'История ЭС':
+    elif message.text == 'История Энергосистем':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_history_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
+        btn_history_es = types.KeyboardButton('🔙 вернуться в раздел Газпромнефть Энергосистемы')
         doc_es = open('prod_data/о_компании/выбрать_ДО/ГПН_ЭС/история/о_нас.pptx', 'rb')
         markup.add(btn_history_es)
         bot.send_document(
@@ -525,10 +525,10 @@ def get_text_messages(message):
             )
 
     # ГПН ЭС структура
-    elif message.text == 'Структура ЭС':
+    elif message.text == 'Структура Энергосистем':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
-        doc_es = open('prod_data/о_компании/выбрать_ДО/ГПН_ЭС/Структура/организационная_структура_ЭС.pptx', 'rb')
+        btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел Газпромнефть Энергосистемы')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/ГПН_ЭС/Структура/организационная_структура_ЭС.pdf', 'rb')
         markup.add(btn_structure_es)
         bot.send_document(
             message.chat.id,
@@ -538,10 +538,10 @@ def get_text_messages(message):
             )
 
     # ГПН ЭС контакты
-    elif message.text == 'Контакты ЭС':
+    elif message.text == 'Контакты Энергосистем':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ГПН ЭС')
-        doc_es = open('data/404.pptx', 'rb')  # Заплатка
+        btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел Газпромнефть Энергосистемы')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/ГПН_ЭС/контакты/contacs.pdf', 'rb')
         markup.add(btn_structure_es)
         bot.send_document(
             message.chat.id,
@@ -550,113 +550,7 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
-    # ННГГФ
-    elif (message.text == 'ННГГФ'
-          or message.text == '🔙 вернуться в раздел ННГГФ'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
-        btn_es_2 = types.KeyboardButton('История ННГГФ')
-        btn_es_3 = types.KeyboardButton('Структура ННГГФ')
-        btn_es_4 = types.KeyboardButton('Контакты ННГГФ')
-        markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_1)
-        bot.send_message(message.from_user.id, "⬇ ННГГФ", reply_markup=markup)
-
-    # ННГГФ история
-    elif message.text == 'История ННГГФ':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_history_es = types.KeyboardButton('🔙 вернуться в раздел ННГГФ')
-        doc_es = open('data/404.pptx', 'rb')  # Заплатка
-        markup.add(btn_history_es)
-        bot.send_document(
-            message.chat.id,
-            doc_es,
-            caption='История ННГГФ',
-            parse_mode="html"
-            )
-
-    # ННГГФ структура
-    elif message.text == 'Структура ННГГФ':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_structure_nnggf = types.KeyboardButton('🔙 вернуться '
-                                                   'в раздел ННГГФ')
-        doc_es = open('data/about_company/structure_NNGGF.pptx', 'rb')
-        markup.add(btn_structure_nnggf)
-        bot.send_document(
-            message.chat.id,
-            doc_es,
-            caption='Структура компании ННГГФ',
-            parse_mode="html"
-            )
-
-    # ННГГФ контакты
-    elif message.text == 'Контакты ННГГФ':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ННГГФ')
-        doc_es = open('data/404.pptx', 'rb')  # Заплатка
-        markup.add(btn_structure_es)
-        bot.send_document(
-            message.chat.id,
-            doc_es,
-            caption='Контакты компании ННГГФ',
-            parse_mode="html"
-            )
-
-    # ГПН НС
-    elif (message.text == 'ГПН НС'
-          or message.text == '🔙 вернуться в раздел ГПН НС'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
-        btn_es_2 = types.KeyboardButton('История ГПН НС')
-        btn_es_3 = types.KeyboardButton('Структура ГПН НС')
-        btn_es_4 = types.KeyboardButton('Контакты ГПН НС')
-        markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_1)
-        bot.send_message(
-            message.from_user.id,
-            "⬇ ГПН НС",
-            reply_markup=markup
-            )
-
-    # ГПН НС история
-    elif message.text == 'История ГПН НС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_history_ns = types.KeyboardButton('🔙 вернуться в раздел ГПН НС')
-        doc_ns = open('data/404.pptx', 'rb')  # Заплатка
-        markup.add(btn_history_ns)
-        bot.send_document(
-            message.chat.id,
-            doc_ns,
-            caption='История ГПН НС',
-            parse_mode="html"
-            )
-
-    # ГПН НС структура
-    elif message.text == 'Структура ГПН НС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_structure_nnggf = types.KeyboardButton('🔙 вернуться в '
-                                                   'раздел ГПН НС')
-        doc_es = open('data/404.pptx', 'rb')  # Заплатка
-        markup.add(btn_structure_nnggf)
-        bot.send_document(
-            message.chat.id,
-            doc_es,
-            caption='Структура компании ГПН НС',
-            parse_mode="html"
-            )
-
-    # ГПН НС контакты
-    elif message.text == 'Контакты ГПН НС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn_structure_es = types.KeyboardButton('🔙 вернуться в раздел ГПН НС')
-        doc_es = open('data/404.pptx', 'rb')  # Заплатка
-        markup.add(btn_structure_es)
-        bot.send_document(
-            message.chat.id,
-            doc_es,
-            caption='Контакты компании ГПН НС',
-            parse_mode="html"
-            )
-
-    elif message.text == 'Наши корпоративные ценности':
+    elif message.text == 'Корпоративные ценности':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         back_button = types.KeyboardButton('🔙 вернуться в раздел О компании')
         doc_include = open('prod_data/о_компании/корпоративные_ценности/корпоративные_ценности.pptx', 'rb')
@@ -665,7 +559,7 @@ def get_text_messages(message):
             message.chat.id,
             doc_include,
             caption='Корпоративные ценности',
-            parse_mode="html"
+            parse_mode="html",
             )
 
     elif message.text == 'Новостная лента':
@@ -683,15 +577,22 @@ def get_text_messages(message):
 
     elif message.text == 'Корпоративный портал':
         markup = types.InlineKeyboardMarkup()
+        doc_1 = open('prod_data/о_компании/новостная_лента/Корпоративный_портал/guide.pdf', 'rb')
         markup.add(types.InlineKeyboardButton(
-            "«Газпром нефть»",
-            url="https://www.gazprom-neft.ru/"
+            "Открыть полтал знаний»",
+            url="http://edu.gazprom-neft.ru"
         ))
         bot.send_message(
             message.chat.id,
             'Корпоративный портал',
             reply_markup=markup
             )
+        bot.send_document(
+            message.chat.id,
+            doc_1,
+            caption='Как через Интернет войти на Портал знаний',
+            parse_mode="html",
+        )
 
     elif message.text == 'Мобильная лента':
         markup = types.InlineKeyboardMarkup(row_width=1)
@@ -765,8 +666,8 @@ def get_text_messages(message):
         btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
         btn_do_2 = types.KeyboardButton('Сервисы самообслуживания')
         btn_do_3 = types.KeyboardButton('Контакт центр')
-        btn_do_4 = types.KeyboardButton('Краткий справочник')
-        markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_1)
+        # btn_do_4 = types.KeyboardButton('Краткий справочник')
+        markup.add(btn_do_2, btn_do_3, btn_do_1)
         bot.send_message(
             message.from_user.id,
             "⬇ Сервисы для сотрудников",
@@ -797,18 +698,6 @@ def get_text_messages(message):
             parse_mode="html"
             )
 
-    elif message.text == 'Краткий справочник':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
-        doc = open('data/404.pptx', 'rb')
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc,
-            caption='Краткий справочник',
-            parse_mode="html"
-            )
-
     # АДАПТАЦИЯ
     elif (message.text == 'Адаптация'
           or message.text == '🔙 вернуться в раздел Адаптация'):
@@ -824,14 +713,14 @@ def get_text_messages(message):
         btn_8 = types.KeyboardButton('Буклеты для сотрудников.')
         btn_9 = types.KeyboardButton('Книги для сотрудников.')
         markup.add(
+            btn_8,
+            btn_9,
             btn_2,
             btn_3,
             btn_4,
             btn_5,
             btn_6,
             btn_7,
-            btn_8,
-            btn_9,
             btn_1,
             )
         bot.send_message(
@@ -942,12 +831,12 @@ def get_text_messages(message):
     elif message.text == 'Книги для сотрудников.':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        doc_1 = open('prod_data/Адаптация/книги_для_новых_сотрудников/книга_новичка_ЭС_2023.pdf', 'rb')
+        doc_1 = open('prod_data/Адаптация/книги_для_новых_сотрудников/book.pdf', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc_1,
-            caption='Книга новичка.',
+            caption='Книга для нового сотрудника.',
             parse_mode="html"
             )
 
@@ -956,8 +845,9 @@ def get_text_messages(message):
           or message.text == '🔙 вернуться в раздел ДМС и РВЛ'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
-        btn_2 = types.KeyboardButton('ДМС ЭС')
-        btn_3 = types.KeyboardButton('РВЛ ЭС')
+        btn_2 = types.KeyboardButton('ДМС')
+        btn_3 = types.KeyboardButton('РВЛ')
+        doc = open('prod_data/ДМС/ГПН_ЭС/curators.pdf', 'rb')
         markup.add(
             btn_2,
             btn_3,
@@ -968,22 +858,42 @@ def get_text_messages(message):
             "ДМС и РВЛ",
             reply_markup=markup
         )
-
-    # ДМС и РВЛ
-    elif message.text == 'ДМС ЭС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        doc = open('prod_data/ДМС/ГПН_ЭС/ДМС/памятка_ДМС_2023.pdf', 'rb')
-        markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc,
-            caption='ДМС в Газпромнефть Энергосистемы',
+            caption='Кураторы программы в ДО и подразделениях',
             parse_mode="html"
             )
 
     # ДМС и РВЛ
-    elif message.text == 'РВЛ ЭС':
+    elif message.text == 'ДМС':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        doc_1 = open('prod_data/ДМС/ГПН_ЭС/ДМС/памятка_ДМС_2023.pdf', 'rb')
+        doc_2 = open('prod_data/ДМС/ГПН_ЭС/ДМС/med_list.pdf', 'rb')
+        doc_3 = open('prod_data/ДМС/ГПН_ЭС/ДМС/dms.pdf', 'rb')
+        markup.add(btn)
+        bot.send_document(
+            message.chat.id,
+            doc_1,
+            caption='Памятка по лечению',
+            parse_mode="html"
+            )
+        bot.send_document(
+            message.chat.id,
+            doc_2,
+            caption='Перечень поликлиник',
+            parse_mode="html"
+            )
+        bot.send_document(
+            message.chat.id,
+            doc_3,
+            caption='Программа ДМС',
+            parse_mode="html"
+            )
+
+    # ДМС и РВЛ
+    elif message.text == 'РВЛ':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc = open('prod_data/ДМС/ГПН_ЭС/РВЛ/памятка_санатории.pdf', 'rb')
@@ -991,7 +901,7 @@ def get_text_messages(message):
         bot.send_document(
             message.chat.id,
             doc,
-            caption='РВЛ в Газпромнефть Энергосистемы',
+            caption='Памятка по санаториям',
             parse_mode="html"
             )
 
@@ -1037,6 +947,21 @@ def get_text_messages(message):
         doc_1 = open('prod_data/карьерное_развитие/Профиль_на_Карьерном_Портале/Памятка_по_заполнению_профиля.pdf', 'rb')
         doc_2 = open('prod_data/карьерное_развитие/Профиль_на_Карьерном_Портале/Профиль_сотрудника.pdf', 'rb')
         markup.add(btn)
+        bot.send_message(
+            message.chat.id,
+            'Профиль на карьерном портале -это Ваша визитная карточка, '
+            'в которой отображаются ваши уникальные навыки и квалификация,'
+            ' она подчеркивает преимущества, которые вы можете '
+            'предложить работодателю.\n'
+            '\nЗдесь собирается вся информация о Вас как о специалисте:\n'
+            '- информация об образовании,\n'
+            '- профессиональной квалификации,\n'
+            '- соответствующем опыте работы,\n'
+            '- навыках и заметных достижениях\n'
+            '\nРегулярно обновляйте профиль, чтобы руководители и HR '
+            'смогли видеть самую актуальную информацию о Вас.',
+            reply_markup=markup,
+        )
         bot.send_document(
             message.chat.id,
             doc_1,
@@ -1056,19 +981,26 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc_1 = open('prod_data/карьерное_развитие/Индивидуальный_план/instruction.pdf', 'rb')
         doc_2 = open('prod_data/карьерное_развитие/Индивидуальный_план/IPR.pdf', 'rb')
+        doc_3 = open('prod_data/карьерное_развитие/Индивидуальный_план/plan.pdf', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc_1,
             caption='Актуализация ИПР - Инструкция для сотрудников',
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Индивидуальный план развития - памятка для сотрудника',
             parse_mode="html"
-            )
+        )
+        bot.send_document(
+            message.chat.id,
+            doc_3,
+            caption='Меню развивающих действий',
+            parse_mode="html"
+        )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Карьерное консультирование':
@@ -1088,15 +1020,18 @@ def get_text_messages(message):
           or message.text == '🔙 вернуться в раздел Цикл управления талантами'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_2 = types.KeyboardButton('Обучение')
         btn_3 = types.KeyboardButton('Регулярная оценка')
         btn_4 = types.KeyboardButton('Диалоги об эффективности')
-        btn_5 = types.KeyboardButton('Кадровый резерв')
+        btn_5 = types.KeyboardButton('Комитет по талантам')
         btn_6 = types.KeyboardButton('Диалоги о развитии')
+
         markup.add(
             btn_3,
             btn_4,
             btn_5,
             btn_6,
+            btn_2,
             btn_1,
         )
 
@@ -1107,43 +1042,19 @@ def get_text_messages(message):
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif message.text == 'Регулярная оценка':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    elif (message.text == 'Регулярная оценка'
+          or message.text == '🔙 вернуться в раздел Регулярная оценка'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn = types.KeyboardButton('🔙 вернуться в раздел Цикл управления талантами')
-        doc_1 = open('prod_data/Цикл_управления_талантами/Регулярная_оценка/Комиссия.pdf', 'rb')
+        btn_1 = types.KeyboardButton('Комиссия по оценке вклада')
         doc_2 = open('prod_data/Цикл_управления_талантами/Регулярная_оценка/Процедуры.pdf', 'rb')
         doc_3 = open('prod_data/Цикл_управления_талантами/Регулярная_оценка/для_сотрудников.pdf', 'rb')
-        doc_4 = open('prod_data/Цикл_управления_талантами/Регулярная_оценка/инструкция_по_работе_с_порталом.pdf', 'rb')
-        markup.add(btn)
-        bot.send_message(
-            message.chat.id,
-            'Практики регулярного менеджмента - это инструмент, '
-            'нацеленный на повышение эффективности и результативности '
-            'работы, а также формирование и поддержание культурной среды, '
-            'в которой достигаются стратегические цели компании.\n'
-            '\nПрохождение данного курса будет полезно каждому сотруднику.\n'
-            'Пройти его можно с любого личного устройства вне КСПД.\n'
-            '\nКурс состоит из девяти модулей и рассказывает обо всех '
-            'основных практиках: вы узнаете, как эффективно проводить '
-            'совещания, давать обратную связь, делегировать задачи '
-            'и многое другое.\n'
-            'Ссылка на курс:',
-            reply_markup=markup,
-        )
-        bot.send_message(
-            message.chat.id,
-            "https://edu.gazprom-neft.ru/view_doc.html?mode=course&object_id=7060403380104215139",
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Комиссия по оценке вклада для сотрудников',
-            parse_mode="html"
-        )
+        markup.add(btn_1, btn)
+
         bot.send_document(
             message.chat.id,
             doc_2,
+            reply_markup=markup,
             caption='Процедуры ежегодной оценки в ГПН',
             parse_mode="html"
         )
@@ -1153,31 +1064,30 @@ def get_text_messages(message):
             caption='Регулярная оценка для сотрудников',
             parse_mode="html"
         )
+
+    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
+    elif message.text == 'Комиссия по оценке вклада':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
+        markup.add(btn)
+        doc_1 = open('prod_data/Цикл_управления_талантами/Регулярная_оценка/Комиссия.pdf', 'rb')
         bot.send_document(
             message.chat.id,
-            doc_4,
-            caption='Регулярная оценка инструкция по работе с порталом',
+            doc_1,
+            reply_markup=markup,
+            caption='Комиссия по оценке вклада для сотрудников',
             parse_mode="html"
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Диалоги об эффективности':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Цикл управления талантами')
-        doc_1 = open(
-            'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/Памятка.pdf',
-            'rb'
-        )
         doc_2 = open('prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/Инструкция.pdf',
                      'rb')
         doc_3 = open('prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/ДоЭФ.PNG', 'rb')
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Диалог об эффективности - Памятка для сотрудника',
-            parse_mode="html"
-        )
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("смотреть видео",
+                   url="https://youtu.be/O2JyX9iL8Hs"))
+        bot.send_message(message.chat.id, 'Диалог об эффективности', reply_markup=markup)
         bot.send_document(
             message.chat.id,
             doc_2,
@@ -1187,36 +1097,37 @@ def get_text_messages(message):
         bot.send_document(
             message.chat.id,
             doc_3,
-            caption='ДоЭФ №2',
+            caption='Помятка для сотрудника',
             parse_mode="html"
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif message.text == 'Кадровый резерв':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Цикл управления талантами')
+    elif message.text == 'Комитет по талантам':
         doc_1 = open('prod_data/Цикл_управления_талантами/Кадровый_резерв/committees.pdf', 'rb')
         doc_2 = open('prod_data/Цикл_управления_талантами/Кадровый_резерв/criterion.pdf', 'rb')
         doc_3 = open('prod_data/Цикл_управления_талантами/Кадровый_резерв/rules.pdf', 'rb')
-        markup.add(btn)
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("смотреть видео",
+                   url="https://youtu.be/yxILbJcIFA8"))
+        bot.send_message(message.chat.id, 'Комитеты по талантам', reply_markup=markup)
         bot.send_document(
             message.chat.id,
             doc_1,
             caption='Комитеты по талантам методология',
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Критерии включения в кадровый резерв',
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_3,
             caption='Правила нахождения в кадровом резерве',
             parse_mode="html"
-            )
+        )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Диалоги о развитии':
@@ -1277,25 +1188,25 @@ def get_text_messages(message):
         )
 
     # ОБУЧЕНИЕ
+    # elif (message.text == 'Обучение' or message.text == '🔙 вернуться в '
+    #       'раздел Обучение'):
+    #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    #     btn_1 = types.KeyboardButton('🔙 вернуться в раздел Цикл управления талантами')
+    #     # btn_2 = types.KeyboardButton('Обучение ГПН-Нефтесервис')
+    #     btn_3 = types.KeyboardButton('Обучение ГПН-Энергосистемы')
+    #     markup.add(btn_3, btn_1)
+    #     bot.send_message(
+    #         message.from_user.id,
+    #         "Раздел обучения, выбор ДО",
+    #         reply_markup=markup,
+    #     )
+
+    # ОБУЧЕНИЕ
     elif (message.text == 'Обучение' or message.text == '🔙 вернуться в '
           'раздел Обучение'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton('🔙 Главное меню')
-        # btn_2 = types.KeyboardButton('Обучение ГПН-Нефтесервис')
-        btn_3 = types.KeyboardButton('Обучение ГПН-Энергосистемы')
-        markup.add(btn_3, btn_1)
-        bot.send_message(
-            message.from_user.id,
-            "Раздел обучения, выбор ДО",
-            reply_markup=markup,
-        )
-
-    # ОБУЧЕНИЕ
-    elif (message.text == 'Обучение ГПН-Энергосистемы' or message.text == '🔙 вернуться в '
-          'раздел Обучение ГПН-Энергосистемы'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton('🔙 вернуться в раздел Обучение')
-        btn_2 = types.KeyboardButton('Целевые образовательные программы')
+        btn_1 = types.KeyboardButton('🔙 вернуться в раздел Цикл управления талантами')
+        btn_2 = types.KeyboardButton('Цикл планирования обучения')
         btn_3 = types.KeyboardButton('Каталог программ')
         btn_4 = types.KeyboardButton('Полезная литература')
         markup.add(btn_3, btn_2, btn_4, btn_1)
@@ -1309,7 +1220,7 @@ def get_text_messages(message):
     elif message.text == 'Полезная литература':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Обучение ГПН-Энергосистемы')
+                                   'раздел Обучение')
         doc_1 = open('prod_data/Обучение/ГПН_ЭС/Почитать/электронные_библиотеки.pdf', 'rb')
         markup.add(btn)
         bot.send_document(
@@ -1321,16 +1232,16 @@ def get_text_messages(message):
         )
 
     # ОБУЧЕНИЕ
-    elif message.text == 'Целевые образовательные программы':
+    elif message.text == 'Цикл планирования обучения':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Обучение ГПН-Энергосистемы')
-        doc_1 = open('prod_data/Обучение/ГПН_ЭС/Целевые_образовательные_программы/График_ЦОП_на_2023_год.xlsx', 'rb')
+                                   'раздел Обучение')
+        doc_1 = open('prod_data/Обучение/ГПН_ЭС/Целевые_образовательные_программы/educate.pdf', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc_1,
-            caption='Целевые образовательные программы график на 2023 год',
+            caption='Цикл планирования обучения',
             parse_mode="html",
             reply_markup=markup,
         )
@@ -1340,27 +1251,11 @@ def get_text_messages(message):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в '
                                    'раздел Обучение ГПН-Энергосистемы')
-        doc_1 = open('prod_data/Обучение/ГПН_ЭС/Каталог_программ/Каталог_программ_для_сотрудников_ИТ.pdf', 'rb')
-        doc_2 = open('prod_data/Обучение/ГПН_ЭС/Каталог_программ/Каталог_программ_для_сотрудников_отдела_закупок.pdf', 'rb')
-        doc_3 = open('prod_data/Обучение/ГПН_ЭС/Каталог_программ/Рекомендованные_образовательные_программы.pdf', 'rb')
+        doc_1 = open('prod_data/Обучение/ГПН_ЭС/Каталог_программ/Рекомендованные_образовательные_программы.pdf', 'rb')
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc_1,
-            caption='Каталог программ для сотрудников ИТ',
-            parse_mode="html",
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Каталог программ для сотрудников отдела закупок',
-            parse_mode="html",
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
             caption='Рекомендованные образовательные программы',
             parse_mode="html",
             reply_markup=markup,
@@ -1479,7 +1374,31 @@ def get_text_messages(message):
         doc_1 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Заявка_Шаблон.docx', 'rb')
         doc_2 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_одностраничника.pptx', 'rb')
         doc_3 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_презентации.pptx', 'rb')
+        doc_4 = open('prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/dk.pdf', 'rb')
         markup.add(btn)
+        bot.send_message(
+            message.from_user.id,
+            'Научно – техническая конференция – это мероприятие, '
+            'проводящееся на ежегодной основе, с целью продвижения '
+            'научного потенциала молодых специалистов и работников компании,'
+            ' а также с целью обмена опытом между молодыми специалистами '
+            'дочерних обществ и совместных предприятий, демонстрации '
+            'инноваций, апробирования новых технологий и процессов, '
+            'укрепления имиджа компании и повышения заинтересованности '
+            'работников в совершенствовании профессиональных навыков.\n'
+            '\nНТК проводится в 3 этапа:\n'
+            'Локальная НТК\n'
+            'НТК Блока разведки и добычи\n'
+            'Корпоративный финал НТК \n'
+            '\nПочему стоит принять участие в конференции?\n'
+            '-  Возможность раскрыть потенциал и заявить о себе;\n'
+            '-  Возможность повысить экспертизу в рамках направления своей '
+            'деятельности;\n'
+            '-  Возможность принять участие в дальнейшей реализации '
+            'проектов;\n'
+            '-  Возможность найти единомышленников.',
+            reply_markup=markup,
+        )
         bot.send_document(
             message.chat.id,
             doc_1,
@@ -1497,6 +1416,13 @@ def get_text_messages(message):
         bot.send_document(
             message.chat.id,
             doc_3,
+            caption='Шаблон презентации',
+            parse_mode="html",
+            reply_markup=markup,
+        )
+        bot.send_document(
+            message.chat.id,
+            doc_4,
             caption='Шаблон презентации',
             parse_mode="html",
             reply_markup=markup,
@@ -1522,7 +1448,7 @@ def get_text_messages(message):
         btn1 = types.KeyboardButton('Главное меню')
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Заполнить форму",
-                   url="https://forms.yandex.ru/cloud/64b7748e068ff01f7b2822ad/"))
+                   url="https://forms.yandex.ru/u/64f4d1a4068ff09dca58ac3c/"))
         bot.send_message(message.chat.id, 'Форма обратной связи', reply_markup=markup)
 
     else:
