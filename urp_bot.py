@@ -553,7 +553,7 @@ def get_text_messages(message):
     elif message.text == 'Корпоративные ценности':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         back_button = types.KeyboardButton('🔙 вернуться в раздел О компании')
-        doc_include = open('prod_data/о_компании/корпоративные_ценности/корпоративные_ценности.pptx', 'rb')
+        doc_include = open('prod_data/о_компании/корпоративные_ценности/gpn_guide.pdf', 'rb')
         markup.add(back_button)
         bot.send_document(
             message.chat.id,
@@ -582,14 +582,6 @@ def get_text_messages(message):
             "Открыть портал знаний",
             url="http://edu.gazprom-neft.ru"
         ))
-        # markup.add(types.InlineKeyboardButton(
-        #     "Открыть полтал знаний",
-        #     url="http://edu.gazprom-neft.ru"
-        # ))
-        # markup.add(types.InlineKeyboardButton(
-        #     "Открыть полтал знаний",
-        #     url="http://edu.gazprom-neft.ru"
-        # ))
         bot.send_message(
             message.chat.id,
             'Корпоративные ресурсы',
