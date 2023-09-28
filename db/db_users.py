@@ -63,3 +63,26 @@ def get_new_user(code: str, username: str, user_id: int, first_name: str, last_n
         if con:
             con.close()
             logger.info('Закрыто соединение с БД: users_v2')
+
+
+def create_new_moderator(code: str, user_id: int) -> None:
+    """Дополняем пользователя правами модератора."""
+    try:
+        con = sqlite3.connect('users_v2.sqlite')
+        cur = con.cursor()
+        sql_update_v1 = ("""
+            UPDATE bot_users
+            SET auth_code = ?
+            WHERE user_id = ?
+        """)
+        data = (code, user_id)
+        cur.execute(sql_update_v1, data)
+        con.commit()
+        logger.info('Записан новый модератор в БД: '
+                    f'{user_id}')
+    except sqlite3.Error as error:
+        logger.error(f'SQL error: {error}')
+    finally:
+        if con:
+            con.close()
+            logger.info('Закрыто соединение с БД: users_v2')
