@@ -7,7 +7,7 @@ import telebot
 from dotenv import load_dotenv
 from telebot import types
 
-from db.db_users import get_new_user, get_new_code
+from db.db_users import get_new_user, get_new_code, create_new_moderator
 from db.delete_utils import delete_code, delete_user
 from logger_setting.logger_bot import logger
 from utils.password_generator import generate_code
@@ -42,28 +42,133 @@ def get_admin_access(user_id: int) -> tuple:
         return admin_check
 
 
+def get_moderator_access(user_id: int) -> tuple:
+    """"Проверяем данные администратора в БД."""
+    with sqlite3.connect('users_v2.sqlite') as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT auth_code, user_id
+            FROM bot_users
+            WHERE user_id=? AND auth_code LIKE 'moderator%'
+            """,
+            (user_id,)
+        )
+        moderator_check = cursor.fetchone()
+        cursor.close()
+        logger.info(
+            f'проверка прав модератора - '
+            f'id пользователя: {user_id} - '
+        )
+        return moderator_check
+
+
 @bot.message_handler(commands=['admin'])
 def check_admin_permissions(message: telebot.types.Message):
     """"Проверяем права администратора."""
     bot.send_message(message.chat.id, 'Проверяем права.')
     access = get_admin_access(message.chat.id)
-    if access[1] == message.chat.id:
+    if access is None:
+        bot.send_message(message.chat.id, 'У Вас нет административных прав!')
+    elif access[1] == message.chat.id:
         bot.send_message(message.chat.id, 'Привет Admin!')
         bot.send_message(
             message.chat.id,
             'Для Вас доступны следующие команды:\n'
-            '1. Создание уникального ключа доступа (/create-code).\n'
-            '/create-code\n'
-            '2. Выгрузка лог-файлов (/log).\n'
-            '/log'
+            '1. Создание уникального ключа доступа (/createcode).\n'
+            '/createcode\n'
+            '2. Выгрузка, базы данных и лог-файлов (/dbinfo).\n'
+            '/dbinfo\n'
+            '3. Выгрузка лог-файлов (/log).\n'
+            '/dbinfo'
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
     logger.info(
-        f'команда: "admin" - '
+        f'команда: "{message.text}" - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
-        f'данные в БД {access[1]} - '
+        f'данные в БД {access} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+@bot.message_handler(commands=['createmoderator'])
+def create_moderator(message: telebot.types.Message):
+    """Создаем модератора."""
+    bot.send_message(message.chat.id, 'Проверяем права.')
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+    input_code = message.text
+    erorr_code_message = (
+        'Команда использована неверно, '
+        'введите запрос как показано на примере!\n'
+        'Пример: \n/createmoderator 111111111'
+    )
+    if input_code == '/createmoderator':
+        logger.info(
+            f'команда: "{message.text}" - '
+            f'пользователь: {message.from_user.username} - '
+            f'id пользователя: {message.chat.id} - '
+            f'имя: {message.from_user.first_name} - '
+            f'фамилия: {message.from_user.last_name}'
+        )
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    user_id = input_code.split()
+    if len(user_id) <= 1 or len(user_id) > 2:
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    check = search_user_id_in_db(user_id[1])
+    if check is not None and check[0] == int(user_id[1]):
+        bot.send_message(message.chat.id, 'Пользователь найден в базе!')
+        moderator_code = 'moderator-' + check[1]
+        create_new_moderator(moderator_code, user_id[1])
+        return bot.send_message(message.chat.id, 'Запись БД обновлена!')
+    bot.send_message(
+        message.chat.id,
+        'Пользователь не найден в системе!\n'
+        'Проверьте user_id в БД. '
+    )
+    return logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+@bot.message_handler(commands=['moderator'])
+def check_moderator_permissions(message: telebot.types.Message):
+    """"Проверяем права модератора."""
+    bot.send_message(message.chat.id, 'Проверяем права.')
+    access = get_moderator_access(message.chat.id)
+    if access is None:
+        bot.send_message(message.chat.id, 'У Вас нет прав модератора!')
+    elif access[1] == message.chat.id:
+        bot.send_message(message.chat.id, 'Привет Moderator!')
+        bot.send_message(
+            message.chat.id,
+            'Для Вас доступна следующая команда команда:\n'
+            'Создание уникального ключа доступа для регистрации новых '
+            'сотрудников (/createnewcode).\n'
+            '/createnewcode\n'
+        )
+    else:
+        bot.send_message(message.chat.id, 'У Вас нет прав модератора!')
+    logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'данные в БД {access} - '
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
@@ -211,12 +316,48 @@ def export_db(message: telebot.types.Message):
 
 
 @bot.message_handler(commands=['createcode'])
-def create_new_code(message: telebot.types.Message):
+def create_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id,
                                 'У Вас нет административных прав!')
+
+    bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
+    generate__new_code = generate_code()
+    check = search_code_in_db(generate__new_code)
+    if check is not None and check[0] == generate__new_code:
+        bot.send_message(
+            message.chat.id,
+            'Данный код уже существует, '
+            'повторите команду.'
+        )
+    elif check is None:
+        bot.send_message(message.chat.id, 'Создаем новый.')
+        bot.send_message(message.chat.id, 'Записываем код в БД.')
+        get_new_code(generate__new_code)
+        bot.send_message(message.chat.id,
+                         'Код сохранен и доступен для регистрации:')
+        bot.send_message(message.chat.id, f'/code {generate__new_code}')
+    else:
+        bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
+
+    return logger.info(
+        f'команда: "createcode" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+
+
+@bot.message_handler(commands=['createnewcode'])
+def create_new_code(message: telebot.types.Message):
+    """Создаем новый код доступа в БД."""
+    access = get_moderator_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет прав модератора!')
 
     bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
     generate__new_code = generate_code()
@@ -275,7 +416,7 @@ def check_user_permissions(message: telebot.types.Message):
         )
         bot.send_message(
             message.chat.id,
-            'пример кода:\n/code #your-code-1\n(Внимание код одноразовый!)'
+            'пример кода:\n/code es1nngg2f^st3!nr4\n(Внимание код одноразовый!)'
         )
     elif access[1] == message.chat.id:
         start(message)
@@ -398,12 +539,21 @@ def start(message):
        message.from_user.last_name is None):
         user_info = (f'{message.from_user.first_name}')
 
-    start_message = (f'Привет, <b>{user_info}</b>! '
-                     'Я расскажу тебе о нефтесервисных активах! '
-                     'выберите интересующую вас тему в меню.')
+    start_message = (f'Здравствуйте, <b>{user_info}</b>!\n'
+                     'Я расскажу Вам о нефтесервисных активах! '
+                     'выберите интересующую Вас тему в меню.')
     bot.send_message(message.chat.id,
                      start_message, parse_mode='html',
                      reply_markup=markup)
+    # Убрать в обратную связь
+    # bot.send_message(
+    #     message.chat.id,
+    #     'Используйте команды /admin или /moderator для получении '
+    #     'информации о доступных командах по управлению чат-ботом!\n'
+    #     'Получение дополнительных прав доступно сотрудникам HR, пожалуйста запросите е',
+    #     parse_mode='html',
+    #     reply_markup=markup
+    # )
     return logger.info(
         f'команда: "{message.text}" - '
         f'пользователь: {message.from_user.username} - '
@@ -1460,7 +1610,8 @@ def get_text_messages(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Заполнить форму",
                    url="https://forms.yandex.ru/u/64f4d1a4068ff09dca58ac3c/"))
-        bot.send_message(message.chat.id, 'Форма обратной связи', reply_markup=markup)
+        bot.send_message(message.chat.id,
+                         'Форма обратной связи', reply_markup=markup)
 
     else:
         message.text == 'Информация о боте'
@@ -1470,7 +1621,11 @@ def get_text_messages(message):
         bot.send_message(
             message.from_user.id,
             'Переходи в главное меню и узнай самую важную '
-            'информацию о нефтесервисных активах!',
+            'информацию о нефтесервисных активах!\n'
+            'Для администратора и модераторов чат-бота '
+            'доступны дополнительные команды:\n'
+            '/admin\n'
+            '/moderator\n',
             parse_mode='html',
             reply_markup=markup,
             )
