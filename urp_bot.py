@@ -3,7 +3,6 @@ import os
 import sqlite3
 import datetime as dt
 
-
 import telebot
 from dotenv import load_dotenv
 from telebot import types
@@ -234,7 +233,7 @@ def create_new_code(message: telebot.types.Message):
         get_new_code(generate__new_code)
         bot.send_message(message.chat.id,
                          'Код сохранен и доступен для регистрации:')
-        bot.send_message(message.chat.id, generate__new_code)
+        bot.send_message(message.chat.id, f'/code {generate__new_code}')
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
@@ -747,6 +746,7 @@ def get_text_messages(message):
         bot.send_document(
             message.chat.id,
             doc_1,
+            protect_content=True,
             caption='Корпоративная безопасность',
             parse_mode="html"
             )
