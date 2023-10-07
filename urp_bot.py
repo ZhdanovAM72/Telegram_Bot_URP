@@ -43,7 +43,7 @@ def get_admin_access(user_id: int) -> tuple:
 
 
 def get_moderator_access(user_id: int) -> tuple:
-    """"Проверяем данные администратора в БД."""
+    """"Проверяем данные модератора в БД."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
         cursor.execute(
