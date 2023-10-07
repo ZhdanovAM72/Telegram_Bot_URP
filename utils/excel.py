@@ -1,31 +1,8 @@
-import pandas as pd
-import logging
 import sqlite3
-from logging.handlers import RotatingFileHandler
 
+import pandas as pd
 
-LOG_FILE = 'bot_log.txt'
-
-
-def init_logger() -> logging.Logger:
-    """Определяем настройки логгера."""
-    logging.basicConfig(
-        format=('%(asctime)s - %(levelname)s - %(name)s - '
-                'строка: %(lineno)d - %(message)s'),
-        level=logging.INFO,
-        handlers=[
-            logging.StreamHandler(),
-            RotatingFileHandler(
-                filename=LOG_FILE,
-                maxBytes=5_000_000,
-                backupCount=5
-            )
-        ],
-    )
-    return logging.getLogger(__name__)
-
-
-logger = init_logger()
+from logger_setting.logger_bot import logger
 
 
 def excel_export():
