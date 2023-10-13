@@ -307,7 +307,7 @@ def export_db(message: telebot.types.Message):
             parse_mode="html"
             )
     return logger.info(
-        f'команда: "dbinfo" - '
+        f'команда: {message.text} - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
         f'имя: {message.from_user.first_name} - '
