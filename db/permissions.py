@@ -43,3 +43,14 @@ def get_moderator_access(user_id: int) -> tuple:
             f'id пользователя: {user_id} - '
         )
         return moderator_check
+
+
+def get_user_access(user_id):
+    """Проверяем пользователя в БД."""
+    with sqlite3.connect('users_v2.sqlite') as conn:
+        cursor = conn.cursor()
+        user_check_in_db = 'SELECT id, user_id FROM bot_users WHERE user_id=?'
+        cursor.execute(user_check_in_db, (user_id,))
+        user_check = cursor.fetchone()
+        cursor.close()
+        return user_check
