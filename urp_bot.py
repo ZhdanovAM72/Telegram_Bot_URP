@@ -82,17 +82,11 @@ def create_moderator(message: telebot.types.Message):
         'Пример: \n/createmoderator 111111111'
     )
     if input_code == '/createmoderator':
-        logger.info(
-            f'команда: "{message.text}" - '
-            f'пользователь: {message.from_user.username} - '
-            f'id пользователя: {message.chat.id} - '
-            f'имя: {message.from_user.first_name} - '
-            f'фамилия: {message.from_user.last_name}'
-        )
-        return bot.send_message(
+        bot.send_message(
             message.chat.id,
             erorr_code_message
         )
+        return log_user_command(message)
     user_id = input_code.split()
     if len(user_id) <= 1 or len(user_id) > 2:
         return bot.send_message(
@@ -131,14 +125,7 @@ def check_moderator_permissions(message: telebot.types.Message):
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав модератора!')
-    logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'данные в БД {access} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['deleteuser'])
