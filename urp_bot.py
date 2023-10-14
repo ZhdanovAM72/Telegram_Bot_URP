@@ -9,7 +9,11 @@ from telebot import types
 
 from db.db_users import get_new_user, get_new_code, create_new_moderator
 from db.delete_utils import delete_code, delete_user
-from db.permissions import get_admin_access, get_moderator_access
+from db.permissions import (
+    get_admin_access,
+    get_moderator_access,
+    get_user_access,
+)
 from logger_setting.logger_bot import logger
 from utils.password_generator import generate_code
 from utils.excel import excel_export
@@ -21,6 +25,17 @@ STOP_COMMAND = os.getenv('STOP_COMMAND')
 
 bot = telebot.TeleBot(API_TOKEN)
 
+
+def log_user_command(message):
+    """Логгирование команд."""
+    log_message = logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+    logger.info(log_message)
 
 @bot.message_handler(commands=['admin'])
 def check_admin_permissions(message: telebot.types.Message):
@@ -34,23 +49,22 @@ def check_admin_permissions(message: telebot.types.Message):
         bot.send_message(
             message.chat.id,
             'Для Вас доступны следующие команды:\n'
-            '1. Создание уникального ключа доступа (/createcode).\n'
-            '/createcode\n'
-            '2. Выгрузка, базы данных и лог-файлов (/dbinfo).\n'
+            '1. Выгрузка, базы данных и лог-файлов.\n'
             '/dbinfo\n'
-            '3. Выгрузка лог-файлов (/log).\n'
-            '/dbinfo'
+            '2. Создание уникального ключа доступа.\n'
+            '/createcode\n'
+            '3. Удаление пользователя по user_id.\n'
+            '/deleteuser user_id\n'
+            '4. Удаление пользователя по user_id.\n'
+            '/deletecode unique_code\n'
+            '5. Назначение модератора.\n'
+            '/createmoderator'
+            '6. Лишение прав модератора.\n'
+            '/deletemoderator user_id'
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
-    logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'данные в БД {access} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['createmoderator'])
@@ -96,13 +110,7 @@ def create_moderator(message: telebot.types.Message):
         'Пользователь не найден в системе!\n'
         'Проверьте user_id в БД. '
     )
-    return logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['moderator'])
@@ -147,17 +155,9 @@ def delete_user_from_db(message: telebot.types.Message):
         'Пример: \n/deleteuser 111111111'
     )
     if input_code == '/deleteuser':
-        logger.info(
-            f'команда: "{message.text}" - '
-            f'пользователь: {message.from_user.username} - '
-            f'id пользователя: {message.chat.id} - '
-            f'имя: {message.from_user.first_name} - '
-            f'фамилия: {message.from_user.last_name}'
-        )
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
+        bot.send_message(message.chat.id, erorr_code_message)
+        return log_user_command(message)
+
     delete_user_id = input_code.split()
     if len(delete_user_id) <= 1 or len(delete_user_id) > 2:
         return bot.send_message(
@@ -174,13 +174,7 @@ def delete_user_from_db(message: telebot.types.Message):
         'Пользователь не найден в системе!\n'
         'Проверьте user_id в БД. '
     )
-    return logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['deletecode'])
@@ -197,17 +191,8 @@ def delete_code_from_db(message: telebot.types.Message):
         'Пример: \n/deletecode jifads9af8@!1'
     )
     if input_code == '/deletecode':
-        logger.info(
-            f'команда: "{message.text}" - '
-            f'пользователь: {message.from_user.username} - '
-            f'id пользователя: {message.chat.id} - '
-            f'имя: {message.from_user.first_name} - '
-            f'фамилия: {message.from_user.last_name}'
-        )
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
+        bot.send_message(message.chat.id, erorr_code_message)
+        return log_user_command(message)
     clear_code = input_code.split()
     if len(clear_code) <= 1 or len(clear_code) > 2:
         return bot.send_message(
@@ -224,13 +209,7 @@ def delete_code_from_db(message: telebot.types.Message):
         'Код не найден в системе!\n'
         'Проверьте код в БД. '
     )
-    return logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['dbinfo'])
@@ -265,13 +244,7 @@ def export_db(message: telebot.types.Message):
             caption=f'Файл БД {date_info.date()}',
             parse_mode="html"
             )
-    return logger.info(
-        f'команда: {message.text} - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['createcode'])
@@ -301,13 +274,7 @@ def create_code(message: telebot.types.Message):
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
-    return logger.info(
-        f'команда: "createcode" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['createnewcode'])
@@ -337,24 +304,7 @@ def create_new_code(message: telebot.types.Message):
     else:
         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
-    return logger.info(
-        f'команда: "createcode" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
-
-
-def get_user_access(user_id):
-    """Проверяем пользователя в БД."""
-    with sqlite3.connect('users_v2.sqlite') as conn:
-        cursor = conn.cursor()
-        user_check_in_db = 'SELECT id, user_id FROM bot_users WHERE user_id=?'
-        cursor.execute(user_check_in_db, (user_id,))
-        user_check = cursor.fetchone()
-        cursor.close()
-        return user_check
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['start'])
@@ -424,17 +374,11 @@ def login_user(message):
         'Пример: \n/code jifads9af8@!1'
     )
     if input_code == '/code':
-        logger.info(
-            f'команда: "{message.text}" - '
-            f'пользователь: {message.from_user.username} - '
-            f'id пользователя: {message.chat.id} - '
-            f'имя: {message.from_user.first_name} - '
-            f'фамилия: {message.from_user.last_name}'
-        )
-        return bot.send_message(
+        bot.send_message(
             message.chat.id,
             erorr_code_message
         )
+        return log_user_command(message)
     clear_code = input_code.split()
     if len(clear_code) <= 1 or len(clear_code) > 2:
         return bot.send_message(
@@ -460,13 +404,7 @@ def login_user(message):
         'Запросите код у администратора проекта, '
         'либо используйте имеющийся.'
     )
-    return logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=['dev_test_command'])
@@ -504,22 +442,7 @@ def start(message):
     bot.send_message(message.chat.id,
                      start_message, parse_mode='html',
                      reply_markup=markup)
-    # Убрать в обратную связь
-    # bot.send_message(
-    #     message.chat.id,
-    #     'Используйте команды /admin или /moderator для получении '
-    #     'информации о доступных командах по управлению чат-ботом!\n'
-    #     'Получение дополнительных прав доступно сотрудникам HR, пожалуйста запросите е',
-    #     parse_mode='html',
-    #     reply_markup=markup
-    # )
-    return logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(commands=[STOP_COMMAND])  # Усложнить команду
