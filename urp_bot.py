@@ -9,6 +9,7 @@ from telebot import types
 
 from db.db_users import get_new_user, get_new_code, create_new_moderator
 from db.delete_utils import delete_code, delete_user
+from db.permissions import get_admin_access, get_moderator_access
 from logger_setting.logger_bot import logger
 from utils.password_generator import generate_code
 from utils.excel import excel_export
@@ -19,48 +20,6 @@ API_TOKEN = os.getenv('URP_BOT_TOKEN')
 STOP_COMMAND = os.getenv('STOP_COMMAND')
 
 bot = telebot.TeleBot(API_TOKEN)
-
-
-def get_admin_access(user_id: int) -> tuple:
-    """"Проверяем данные администратора в БД."""
-    with sqlite3.connect('users_v2.sqlite') as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            SELECT auth_code, user_id
-            FROM bot_users
-            WHERE user_id=? AND auth_code LIKE 'admin%'
-            """,
-            (user_id,)
-        )
-        admin_check = cursor.fetchone()
-        cursor.close()
-        logger.info(
-            f'проверка прав администратора - '
-            f'id пользователя: {user_id} - '
-        )
-        return admin_check
-
-
-def get_moderator_access(user_id: int) -> tuple:
-    """"Проверяем данные модератора в БД."""
-    with sqlite3.connect('users_v2.sqlite') as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            SELECT auth_code, user_id
-            FROM bot_users
-            WHERE user_id=? AND auth_code LIKE 'moderator%'
-            """,
-            (user_id,)
-        )
-        moderator_check = cursor.fetchone()
-        cursor.close()
-        logger.info(
-            f'проверка прав модератора - '
-            f'id пользователя: {user_id} - '
-        )
-        return moderator_check
 
 
 @bot.message_handler(commands=['admin'])
