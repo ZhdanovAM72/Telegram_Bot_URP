@@ -37,6 +37,7 @@ def log_user_command(message):
     )
     logger.info(log_message)
 
+
 @bot.message_handler(commands=['admin'])
 def check_admin_permissions(message: telebot.types.Message):
     """"Проверяем права администратора."""
