@@ -244,7 +244,11 @@ def create_code(message: telebot.types.Message):
                                 'У Вас нет административных прав!')
 
     bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
-    generate__new_code = generate_code()
+    company = message.text.split()
+    if len(company) == 1:
+        return bot.send_message(message.chat.id, 'Неверная команда.')
+    company_name = company[1]
+    generate__new_code = generate_code(company_name)
     check = search_code_in_db(generate__new_code)
     if check is not None and check[0] == generate__new_code:
         bot.send_message(
@@ -274,7 +278,11 @@ def create_new_code(message: telebot.types.Message):
                                 'У Вас нет прав модератора!')
 
     bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
-    generate__new_code = generate_code()
+    company = message.text.split()
+    if len(company) == 1:
+        return bot.send_message(message.chat.id, 'Неверная команда.')
+    company_name = company[1]
+    generate__new_code = generate_code(company_name)
     check = search_code_in_db(generate__new_code)
     if check is not None and check[0] == generate__new_code:
         bot.send_message(
