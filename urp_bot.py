@@ -52,8 +52,16 @@ def check_admin_permissions(message: telebot.types.Message):
             'Для Вас доступны следующие команды:\n'
             '1. Выгрузка, базы данных и лог-файлов.\n'
             '/dbinfo\n'
-            '2. Создание уникального ключа доступа.\n'
-            '/createcode\n'
+            '2. Создание уникального ключа доступа для регистрации новых '
+            'сотрудников.\n'
+            'Для сотрудника Энергосистем:\n'
+            '/createcode_ES\n'
+            'Для сотрудника Сервисных Технологий:\n'
+            '/createcode_ST\n'
+            'Для сотрудника Нефтесервисных Решений:\n'
+            '/createcode_NR\n'
+            'Для сотрудника Инженерно-технологического сервиса:\n'
+            '/createcode_ITS\n'
             '3. Удаление пользователя по user_id.\n'
             '/deleteuser user_id\n'
             '4. Удаление пользователя по user_id.\n'
@@ -61,7 +69,7 @@ def check_admin_permissions(message: telebot.types.Message):
             '5. Назначение модератора.\n'
             '/createmoderator'
             '6. Лишение прав модератора.\n'
-            '/deletemoderator user_id'
+            '/deletemoderator user_id',
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
@@ -119,10 +127,17 @@ def check_moderator_permissions(message: telebot.types.Message):
         bot.send_message(message.chat.id, 'Привет Moderator!')
         bot.send_message(
             message.chat.id,
-            'Для Вас доступна следующая команда команда:\n'
-            'Создание уникального ключа доступа для регистрации новых '
-            'сотрудников (/createnewcode).\n'
-            '/createnewcode\n'
+            'Для Вас доступны следующие команды:\n'
+            '\n1. Создание уникального ключа доступа для регистрации новых '
+            'сотрудников.\n'
+            '\nДля сотрудника Энергосистем:\n'
+            '/createnewcode_ES\n'
+            '\nДля сотрудника Сервисных Технологий:\n'
+            '/createnewcode_ST\n'
+            '\nДля сотрудника Нефтесервисных Решений:\n'
+            '/createnewcode_NR\n'
+            '\nДля сотрудника Инженерно-технологического сервиса:\n'
+            '/createnewcode_ITS\n',
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав модератора!')
@@ -235,20 +250,25 @@ def export_db(message: telebot.types.Message):
     return log_user_command(message)
 
 
-@bot.message_handler(commands=['createcode'])
+@bot.message_handler(
+        commands=[
+            'createcode_ES',
+            'createcode_ST',
+            'createcode_NR',
+            'createcode_ITS'
+        ]
+    )
 def create_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id,
                                 'У Вас нет административных прав!')
-
-    bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
-    company = message.text.split()
+    company = message.text.split('_')
     if len(company) == 1:
         return bot.send_message(message.chat.id, 'Неверная команда.')
     company_name = company[1]
-    generate__new_code = generate_code(company_name)
+    generate__new_code = generate_code(company_name.lower())
     check = search_code_in_db(generate__new_code)
     if check is not None and check[0] == generate__new_code:
         bot.send_message(
@@ -257,8 +277,6 @@ def create_code(message: telebot.types.Message):
             'повторите команду.'
         )
     elif check is None:
-        bot.send_message(message.chat.id, 'Создаем новый.')
-        bot.send_message(message.chat.id, 'Записываем код в БД.')
         get_new_code(generate__new_code)
         bot.send_message(message.chat.id,
                          'Код сохранен и доступен для регистрации:')
@@ -269,20 +287,25 @@ def create_code(message: telebot.types.Message):
     return log_user_command(message)
 
 
-@bot.message_handler(commands=['createnewcode'])
+@bot.message_handler(
+        commands=[
+            'createnewcode_ES',
+            'createnewcode_ST',
+            'createnewcode_NR',
+            'createnewcode_ITS'
+        ]
+    )
 def create_new_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_moderator_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id,
                                 'У Вас нет прав модератора!')
-
-    bot.send_message(message.chat.id, 'Пытаемся создать новый код.')
-    company = message.text.split()
+    company = message.text.split('_')
     if len(company) == 1:
         return bot.send_message(message.chat.id, 'Неверная команда.')
     company_name = company[1]
-    generate__new_code = generate_code(company_name)
+    generate__new_code = generate_code(company_name.lower())
     check = search_code_in_db(generate__new_code)
     if check is not None and check[0] == generate__new_code:
         bot.send_message(
@@ -291,8 +314,6 @@ def create_new_code(message: telebot.types.Message):
             'повторите команду.'
         )
     elif check is None:
-        bot.send_message(message.chat.id, 'Создаем новый.')
-        bot.send_message(message.chat.id, 'Записываем код в БД.')
         get_new_code(generate__new_code)
         bot.send_message(message.chat.id,
                          'Код сохранен и доступен для регистрации:')
