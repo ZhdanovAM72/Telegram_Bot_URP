@@ -533,7 +533,7 @@ def get_text_messages(message):
           or message.text == '🔙 вернуться в раздел Выбрать ДО'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
-        btn_do_2 = types.KeyboardButton('ГПН НС')
+        btn_do_2 = types.KeyboardButton('Нефтесервисные решения')
         btn_do_3 = types.KeyboardButton('Газпромнефть Энергосистемы')
         btn_do_4 = types.KeyboardButton('Инженерно-технологический сервис')
         btn_do_5 = types.KeyboardButton('Сервисные технологии')
@@ -542,6 +542,75 @@ def get_text_messages(message):
             message.from_user.id,
             "⬇ Выбрать ДО",
             reply_markup=markup
+            )
+
+    # Сервисные технологии
+    elif (message.text == 'Сервисные технологии'
+          or message.text == '🔙 вернуться в раздел Сервисные технологии'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
+        btn_2 = types.KeyboardButton('Структура СТ')
+        # btn_3 = types.KeyboardButton('Контакты НР')
+        btn_4 = types.KeyboardButton('История СТ')
+        markup.add(btn_2, btn_4, btn_1)
+        bot.send_message(
+            message.from_user.id,
+            "⬇ Сервисные технологии",
+            reply_markup=markup
+            )
+
+    # Сервисные технологии
+    elif message.text == 'История СТ':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Сервисные технологии')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/СТ/история/about_us.pdf', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_es,
+            caption='История ООО "Сервисные технологии"',
+            parse_mode="html"
+            )
+
+    # Сервисные технологии
+    elif message.text == 'Структура СТ':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Сервисные технологии')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/СТ/структура/structure.pdf', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_es,
+            caption='Структура ООО "Сервисные технологии"',
+            parse_mode="html"
+            )
+
+    # Нефтесервисные решения
+    elif (message.text == 'Нефтесервисные решения'
+          or message.text == '🔙 вернуться в раздел Нефтесервисные решения'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
+        # btn_2 = types.KeyboardButton('Структура НР')
+        # btn_3 = types.KeyboardButton('Контакты НР')
+        btn_4 = types.KeyboardButton('История НР')
+        markup.add(btn_4, btn_1)
+        bot.send_message(
+            message.from_user.id,
+            "⬇ Нефтесервисные решения",
+            reply_markup=markup
+            )
+
+    # ННГГФ (ИТС) Контакты
+    elif message.text == 'История НР':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Нефтесервисные решения')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/НР/История/about_us.pptx', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_es,
+            caption='История ООО "Нефтесервисные решения"',
+            parse_mode="html"
             )
 
     # ННГГФ (ИТС)
@@ -1646,7 +1715,7 @@ def get_user_photo(message):
         message.chat.id,
         'У меня нет глаз, '
         'я не понимаю что на этой картинке.\n'
-        'Давай продолжим работать в меню.'
+        'Давайте продолжим работать в меню.'
         )
     return logger.info(
         f'изображение - {message.photo}'
@@ -1677,7 +1746,7 @@ def get_user_stiсker(message):
         message.chat.id,
         'У меня нет глаз, '
         'я не вижу этот стикер.\n'
-        'Давай продолжим работать в меню.'
+        'Давайте продолжим работать в меню.'
         )
     return logger.info(
         f'стикер {message.sticker} - '
