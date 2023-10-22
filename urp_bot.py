@@ -144,7 +144,7 @@ def check_moderator_permissions(message: telebot.types.Message):
     return log_user_command(message)
 
 
-@bot.message_handler(commands=['deleteuser'])
+@bot.message_handler(commands=['deleteuser', 'deletemoderator'])
 def delete_user_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по user_id."""
     access = get_admin_access(message.chat.id)
@@ -157,7 +157,7 @@ def delete_user_from_db(message: telebot.types.Message):
         'введите запрос как показано на примере!\n'
         'Пример: \n/deleteuser 111111111'
     )
-    if input_code == '/deleteuser':
+    if input_code == '/deleteuser' or input_code == '/deletemoderator':
         bot.send_message(message.chat.id, erorr_code_message)
         return log_user_command(message)
 
