@@ -67,8 +67,8 @@ def check_admin_permissions(message: telebot.types.Message):
             '4. Удаление пользователя по user_id.\n'
             '/deletecode unique_code\n'
             '5. Назначение модератора.\n'
-            '/createmoderator'
-            '6. Лишение прав модератора.\n'
+            '/createmoderator\n'
+            '6. Удаление модератора.\n'
             '/deletemoderator user_id',
         )
     else:
@@ -512,7 +512,7 @@ def get_text_messages(message):
           or message.text == '🔙 вернуться в раздел О компании'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         btn_about_1 = types.KeyboardButton('🔙 Главное меню')
-        btn_about_2 = types.KeyboardButton('Подробнее')
+        btn_about_2 = types.KeyboardButton('Выбрать ДО')
         btn_about_3 = types.KeyboardButton('Корпоративные ценности')
         btn_about_4 = types.KeyboardButton('Сервисы для сотрудников')
         btn_about_5 = types.KeyboardButton('Новостная лента')
@@ -529,26 +529,115 @@ def get_text_messages(message):
             reply_markup=markup
             )
 
-    elif (message.text == 'Подробнее'
-          or message.text == '🔙 вернуться в раздел Подробнее'):
+    elif (message.text == 'Выбрать ДО'
+          or message.text == '🔙 вернуться в раздел Выбрать ДО'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
-        # btn_do_2 = types.KeyboardButton('ГПН НС')
+        btn_do_2 = types.KeyboardButton('ГПН НС')
         btn_do_3 = types.KeyboardButton('Газпромнефть Энергосистемы')
-        # btn_do_4 = types.KeyboardButton('ННГГФ')
-        # markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_1)
-        markup.add(btn_do_3, btn_do_1)
+        btn_do_4 = types.KeyboardButton('Инженерно-технологический сервис')
+        btn_do_5 = types.KeyboardButton('Сервисные технологии')
+        markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_5, btn_do_1)
         bot.send_message(
             message.from_user.id,
-            "⬇ Подробнее",
+            "⬇ Выбрать ДО",
             reply_markup=markup
+            )
+
+    # ННГГФ (ИТС)
+    elif (message.text == 'Инженерно-технологический сервис'
+          or message.text == '🔙 вернуться в раздел Инженерно-технологический сервис'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
+        btn_es_2 = types.KeyboardButton('Структура ИТС')
+        btn_es_3 = types.KeyboardButton('НМД ИТС')
+        btn_es_4 = types.KeyboardButton('Контакты ИТС')
+        btn_es_5 = types.KeyboardButton('История ИТС')
+        markup.add(btn_es_2, btn_es_3, btn_es_4, btn_es_5, btn_es_1)
+        bot.send_message(
+            message.from_user.id,
+            "⬇ Инженерно-технологический сервис",
+            reply_markup=markup
+            )
+
+    # ННГГФ (ИТС) Контакты
+    elif message.text == 'Контакты ИТС':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Инженерно-технологический сервис')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/ННГГФ/Контакты/info.docx', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_es,
+            caption='Контакты ООО "Инженерно-технологический сервис"',
+            parse_mode="html"
+            )
+
+    # ННГГФ (ИТС) История
+    elif message.text == 'История ИТС':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Инженерно-технологический сервис')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/ННГГФ/История/about_us.pdf', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_es,
+            caption='История ООО "Инженерно-технологический сервис"',
+            parse_mode="html"
+            )
+
+    # ННГГФ (ИТС) Структура
+    elif message.text == 'Структура ИТС':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Инженерно-технологический сервис')
+        doc_es = open('prod_data/о_компании/выбрать_ДО/ННГГФ/Структура/structure.pdf', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_es,
+            caption='Структура ООО "Инженерно-технологический сервис"',
+            parse_mode="html"
+            )
+
+    # ННГГФ (ИТС) НМД ИТС
+    elif message.text == 'НМД ИТС':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button = types.KeyboardButton('🔙 вернуться в раздел Инженерно-технологический сервис')
+        doc_1 = open('prod_data/о_компании/выбрать_ДО/ННГГФ/НМД/8.pdf', 'rb')
+        doc_2 = open('prod_data/о_компании/выбрать_ДО/ННГГФ/НМД/ib.pdf', 'rb')
+        doc_3 = open('prod_data/о_компании/выбрать_ДО/ННГГФ/НМД/ptvr.pdf', 'rb')
+        doc_4 = open('prod_data/о_компании/выбрать_ДО/ННГГФ/НМД/vahta.pdf', 'rb')
+        markup.add(button)
+        bot.send_document(
+            message.chat.id,
+            doc_1,
+            caption='Пропускной и внутреобъектовый режимы ООО "Инженерно-технологический сервис"',
+            parse_mode="html"
+            )
+        bot.send_document(
+            message.chat.id,
+            doc_2,
+            caption='Памятка по ИБ',
+            parse_mode="html"
+            )
+        bot.send_document(
+            message.chat.id,
+            doc_3,
+            caption='Правила внутреннего трудового распорядка ООО "Инженерно-технологический сервис"',
+            parse_mode="html"
+            )
+        bot.send_document(
+            message.chat.id,
+            doc_4,
+            caption='Положение о вахтовом методе работы ООО "Инженерно-технологический сервис"',
+            parse_mode="html"
             )
 
     # ГПН ЭС
     elif (message.text == 'Газпромнефть Энергосистемы'
           or message.text == '🔙 вернуться в раздел Газпромнефть Энергосистемы'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Подробнее')
+        btn_es_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
         btn_es_2 = types.KeyboardButton('История Энергосистем')
         btn_es_3 = types.KeyboardButton('Структура Энергосистем')
         btn_es_4 = types.KeyboardButton('Контакты Энергосистем')
