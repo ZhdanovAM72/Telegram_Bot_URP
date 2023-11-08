@@ -333,7 +333,7 @@ def create_code(message: telebot.types.Message):
             'createnewcode_ES',
             'createnewcode_ST',
             'createnewcode_NR',
-            'createnewcode_ITS'
+            'createnewcode_ITS',
         ]
     )
 def create_new_code(message: telebot.types.Message):
@@ -662,7 +662,7 @@ def get_text_messages(message):
             message.from_user.id,
             "⬇ Нефтесервисные решения",
             reply_markup=markup
-            )
+        )
 
     # ННГГФ (ИТС) Контакты
     elif message.text == 'История НР':
@@ -680,7 +680,7 @@ def get_text_messages(message):
             doc_es,
             caption='История ООО "Нефтесервисные решения"',
             parse_mode="html"
-            )
+        )
 
     # ННГГФ (ИТС)
     elif (message.text == 'Инженерно-технологический сервис'
@@ -697,7 +697,7 @@ def get_text_messages(message):
             message.from_user.id,
             "⬇ Инженерно-технологический сервис",
             reply_markup=markup
-            )
+        )
 
     # ННГГФ (ИТС) Контакты
     elif message.text == 'Контакты ИТС':
@@ -715,7 +715,7 @@ def get_text_messages(message):
             doc_es,
             caption='Контакты ООО "Инженерно-технологический сервис"',
             parse_mode="html"
-            )
+        )
 
     # ННГГФ (ИТС) История
     elif message.text == 'История ИТС':
@@ -733,7 +733,7 @@ def get_text_messages(message):
             doc_es,
             caption='История ООО "Инженерно-технологический сервис"',
             parse_mode="html"
-            )
+        )
 
     # ННГГФ (ИТС) Структура
     elif message.text == 'Структура ИТС':
@@ -751,7 +751,7 @@ def get_text_messages(message):
             doc_es,
             caption='Структура ООО "Инженерно-технологический сервис"',
             parse_mode="html"
-            )
+        )
 
     # ННГГФ (ИТС) НМД ИТС
     elif message.text == 'НМД ИТС':
@@ -784,13 +784,13 @@ def get_text_messages(message):
                 'ООО "Инженерно-технологический сервис"'
             ),
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Памятка по ИБ',
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_3,
@@ -799,7 +799,7 @@ def get_text_messages(message):
                 'ООО "Инженерно-технологический сервис"'
             ),
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_4,
@@ -808,7 +808,7 @@ def get_text_messages(message):
                 'ООО "Инженерно-технологический сервис"'
             ),
             parse_mode="html"
-            )
+        )
 
     # ГПН ЭС
     elif (message.text == 'Газпромнефть Энергосистемы'
@@ -824,7 +824,7 @@ def get_text_messages(message):
             message.from_user.id,
             "⬇ Газпромнефть Энергосистемы",
             reply_markup=markup
-            )
+        )
 
     # ГПН ЭС история
     elif message.text == 'История Энергосистем':
@@ -842,7 +842,7 @@ def get_text_messages(message):
             doc_es,
             caption='История ООО "Газпромнефть Энергосистемы"',
             parse_mode="html"
-            )
+        )
 
     # ГПН ЭС структура
     elif message.text == 'Структура Энергосистем':
@@ -860,7 +860,7 @@ def get_text_messages(message):
             doc_es,
             caption='Структура компании ООО "Газпромнефть Энергосистемы"',
             parse_mode="html"
-            )
+        )
 
     # ГПН ЭС контакты
     elif message.text == 'Контакты Энергосистем':
@@ -878,7 +878,7 @@ def get_text_messages(message):
             doc_es,
             caption='Контакты компании ООО "Газпромнефть Энергосистемы"',
             parse_mode="html"
-            )
+        )
 
     elif message.text == 'Корпоративные ценности':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -893,7 +893,7 @@ def get_text_messages(message):
             doc_include,
             caption='Корпоративные ценности',
             parse_mode="html",
-            )
+        )
 
     elif message.text == 'Новостная лента':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
@@ -906,7 +906,7 @@ def get_text_messages(message):
             message.from_user.id,
             "⬇ Новостная лента",
             reply_markup=markup
-            )
+        )
 
     elif message.text == 'Корпоративный портал':
         markup = types.InlineKeyboardMarkup()
@@ -922,7 +922,7 @@ def get_text_messages(message):
             message.chat.id,
             'Корпоративные ресурсы',
             reply_markup=markup
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_1,
@@ -1016,7 +1016,7 @@ def get_text_messages(message):
             message.from_user.id,
             "⬇ Сервисы для сотрудников",
             reply_markup=markup
-            )
+        )
 
     elif message.text == 'Сервисы самообслуживания':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -1031,7 +1031,7 @@ def get_text_messages(message):
             doc,
             caption='Сервисы самообслуживания',
             parse_mode="html"
-            )
+        )
 
     elif message.text == 'Контакт центр':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -1046,7 +1046,7 @@ def get_text_messages(message):
             doc,
             caption='Контакт центр',
             parse_mode="html"
-            )
+        )
 
     # АДАПТАЦИЯ
     elif (message.text == 'Адаптация'
@@ -1077,7 +1077,7 @@ def get_text_messages(message):
             message.from_user.id,
             "Адаптация",
             reply_markup=markup
-            )
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Корпоративная безопасность':
@@ -1105,7 +1105,7 @@ def get_text_messages(message):
             doc_2,
             caption='Памятка по информационной безопасности',
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_1,
@@ -1115,7 +1115,7 @@ def get_text_messages(message):
                 'ООО "Газпромнефть Энергосистемы"'
             ),
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_3,
@@ -1125,14 +1125,14 @@ def get_text_messages(message):
                 'ООО "Инженерно-технологический сервис"'
             ),
             parse_mode="html"
-            )
+        )
         bot.send_document(
             message.chat.id,
             doc_4,
             protect_content=True,
             caption='Корпоративная безопасность ООО "Сервисные технологии"',
             parse_mode="html"
-            )
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Производственная безопасность':
@@ -1158,8 +1158,8 @@ def get_text_messages(message):
                 'Производственная безопасность '
                 'ООО "Газпромнефть Энергосистемы"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_2,
@@ -1167,8 +1167,8 @@ def get_text_messages(message):
                 'Производственная безопасность '
                 'ООО "Инженерно-технологический сервис"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_3,
@@ -1177,8 +1177,8 @@ def get_text_messages(message):
                 'ООО "Нефтесервисные решения" и '
                 'ООО "Газпромнефть Сервисные технологии"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Хоз. и транспорт. обеспечение':
@@ -1195,8 +1195,8 @@ def get_text_messages(message):
                 'Хозяйственное и транспортное обеспечение '
                 'ООО "Газпромнефть Энергосистемы"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_2,
@@ -1204,8 +1204,8 @@ def get_text_messages(message):
                 'Хозяйственное и транспортное обеспечение '
                 'ООО "Инженерно-технологический Сервис"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_3,
@@ -1213,8 +1213,8 @@ def get_text_messages(message):
                 'Хозяйственное и транспортное обеспечение '
                 'ООО "Нефтесервисные Решения"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Трудовой распорядок':
@@ -1222,27 +1222,27 @@ def get_text_messages(message):
         button = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         document_1 = open(
             'prod_data/Адаптация/trudovoi_raspor/es_trud.pdf',
-            'rb'
+            'rb',
         )
         document_2 = open(
             'prod_data/Адаптация/trudovoi_raspor/its_trud.pdf',
-            'rb'
+            'rb',
         )
         document_3 = open(
             'prod_data/Адаптация/trudovoi_raspor/nr_trud.pdf',
-            'rb'
+            'rb',
         )
         document_4 = open(
             'prod_data/Адаптация/trudovoi_raspor/st_trud.pdf',
-            'rb'
+            'rb',
         )
         markup.add(button)
         bot.send_document(
             message.chat.id,
             document_1,
             caption='Трудовой распорядок в ООО "Газпромнефть Энергосистемы"',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_2,
@@ -1250,14 +1250,14 @@ def get_text_messages(message):
                 'Трудовой распорядок в '
                 'ООО "Инженерно-технологический Сервис"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_3,
             caption='Трудовой распорядок в ООО "Нефтесервисные Решения"',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             document_4,
@@ -1265,8 +1265,8 @@ def get_text_messages(message):
                 'Трудовой распорядок в '
                 'ООО "Газпромнефть Сервисные технологии"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Внешний вид. Спецодежда и СИЗ':
@@ -1278,8 +1278,8 @@ def get_text_messages(message):
             message.chat.id,
             doc,
             caption='Внешний вид. Спецодежда и СИЗ',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Мотивация персонала':
@@ -1293,7 +1293,7 @@ def get_text_messages(message):
         bot.send_message(
             message.from_user.id,
             "⬇ Мотивация персонала",
-            reply_markup=markup
+            reply_markup=markup,
         )
 
     # АДАПТАЦИЯ =
@@ -1302,15 +1302,15 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в Мотивация персонала')
         document = open(
             'prod_data/Адаптация/мотивация_персонала/ES_motivate.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             document,
             caption='Мотивация сотрудников ООО "Газпромнефть Энергосистемы"',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Мотивация НР':
@@ -1318,15 +1318,15 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в Мотивация персонала')
         document = open(
             'prod_data/Адаптация/мотивация_персонала/NR_motivate.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             document,
             caption='Мотивация сотрудников ООО "Нефтесервисные решения"',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Мотивация ИТС':
@@ -1334,7 +1334,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в Мотивация персонала')
         document = open(
             'prod_data/Адаптация/мотивация_персонала/ITS_motivate.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -1345,7 +1345,7 @@ def get_text_messages(message):
                 'ООО "Инженерно-технологический сервис"'
             ),
             parse_mode="html"
-            )
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Мотивация СТ':
@@ -1353,7 +1353,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в Мотивация персонала')
         document = open(
             'prod_data/Адаптация/мотивация_персонала/ST_motivate.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -1363,8 +1363,8 @@ def get_text_messages(message):
                 'Мотивация сотрудников '
                 'ООО "Газпромнефть Сервисные технологии"'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Буклеты для сотрудников.':
@@ -1372,35 +1372,35 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc_1 = open(
             'prod_data/Адаптация/буклеты_для_сотрудников/ES_2023.pdf',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/Адаптация/буклеты_для_сотрудников/NR_2023.pdf',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Адаптация/буклеты_для_сотрудников/ST_2023.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
             message.chat.id,
             doc_1,
             caption='Буклет сотрудника ООО "Газпромнефть Энергосистемы.',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Буклет сотрудника ООО "Нефтесервисные решения.',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_3,
             caption='Буклет сотрудника ООО "Газпромнефть Сервисные технологии',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Книги для сотрудников.':
@@ -1408,19 +1408,19 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc_1 = open(
             'prod_data/Адаптация/книги_для_новых_сотрудников/ES_book.pdf',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/Адаптация/книги_для_новых_сотрудников/NR_book.pdf',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Адаптация/книги_для_новых_сотрудников/ITS_book.pdf',
-            'rb'
+            'rb',
         )
         doc_4 = open(
             'prod_data/Адаптация/книги_для_новых_сотрудников/ST_book.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -1430,8 +1430,8 @@ def get_text_messages(message):
                 'Книга для нового сотрудника '
                 'ООО "Газпромнефть Энергосистемы".'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
@@ -1439,8 +1439,8 @@ def get_text_messages(message):
                 'Книга для нового сотрудника '
                 'ООО "Нефтесервисные решения".'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_3,
@@ -1448,8 +1448,8 @@ def get_text_messages(message):
                 'Книга для нового сотрудника '
                 'ООО "Инженерно-технологический сервис".'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_4,
@@ -1457,8 +1457,8 @@ def get_text_messages(message):
                 'Книга для нового сотрудника '
                 'ООО "Газпромнефть Сервисные технологии".'
             ),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # ДМС и РВЛ
     elif (message.text == 'ДМС и РВЛ'
@@ -1476,14 +1476,14 @@ def get_text_messages(message):
         bot.send_message(
             message.from_user.id,
             "ДМС и РВЛ",
-            reply_markup=markup
+            reply_markup=markup,
         )
         bot.send_document(
             message.chat.id,
             doc,
             caption='Кураторы программы в ДО и подразделениях',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # ДМС и РВЛ
     elif message.text == 'ДМС':
@@ -1497,20 +1497,20 @@ def get_text_messages(message):
             message.chat.id,
             doc_1,
             caption='Памятка по лечению',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Перечень поликлиник',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_3,
             caption='Программа ДМС',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # ДМС и РВЛ
     elif message.text == 'РВЛ':
@@ -1522,8 +1522,8 @@ def get_text_messages(message):
             message.chat.id,
             doc,
             caption='Памятка по санаториям',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif (message.text == 'Карьерное развитие'
@@ -1544,7 +1544,7 @@ def get_text_messages(message):
         bot.send_message(
             message.from_user.id,
             "Карьерное развитие",
-            reply_markup=markup
+            reply_markup=markup,
         )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
@@ -1557,8 +1557,8 @@ def get_text_messages(message):
             message.chat.id,
             doc,
             caption='Мой трек и карьерные опции',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Мой профиль':
@@ -1566,11 +1566,11 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         doc_1 = open(
             'prod_data/карьерное_развитие/profile_on_portal/info.pdf',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/карьерное_развитие/profile_on_portal/profile.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_message(
@@ -1592,13 +1592,13 @@ def get_text_messages(message):
             message.chat.id,
             doc_1,
             caption='Памятка по заполнению профиля',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Профиль сотрудника',
-            parse_mode="html"
+            parse_mode="html",
         )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
@@ -1609,26 +1609,26 @@ def get_text_messages(message):
         )
         document_1 = open(
             'prod_data/карьерное_развитие/individual_plan/instruction.pdf',
-            'rb'
+            'rb',
         )
         document_2 = open(
             'prod_data/карьерное_развитие/individual_plan/IPR.pdf',
-            'rb'
+            'rb',
         )
         document_3 = open(
             'prod_data/карьерное_развитие/individual_plan/menu.pdf',
-            'rb'
+            'rb',
         )
         document_4 = open(
             'prod_data/карьерное_развитие/individual_plan/plan.pdf',
-            'rb'
+            'rb',
         )
         markup.add(button)
         bot.send_document(
             message.chat.id,
             document_2,
             caption='Индивидуальный план развития - памятка для сотрудника',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
@@ -1637,19 +1637,19 @@ def get_text_messages(message):
                 'Формирование плана развития - '
                 'Памятка для сотрудников 2023'
             ),
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             document_3,
             caption='Меню развивающих действий',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             document_1,
             caption='Актуализация ИПР - Инструкция для сотрудников',
-            parse_mode="html"
+            parse_mode="html",
         )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
@@ -1670,14 +1670,14 @@ def get_text_messages(message):
             'изменений в профессиональной деятельности.\n'
             '\nВы можете записаться на карьерную консультацию на'
             ' Карьерном портале при условии, что Ваш профиль '
-            'заполнен не менее чем на 80%.'
+            'заполнен не менее чем на 80%.',
         )
         bot.send_document(
             message.chat.id,
             doc,
             caption='Карьерное консультирование',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif (message.text == 'Цикл управления талантами'
@@ -1702,7 +1702,7 @@ def get_text_messages(message):
         bot.send_message(
             message.from_user.id,
             "Цикл управления талантами",
-            reply_markup=markup
+            reply_markup=markup,
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
@@ -1715,11 +1715,11 @@ def get_text_messages(message):
         btn_1 = types.KeyboardButton('Комиссия по оценке вклада')
         doc_2 = open(
             'prod_data/Цикл_управления_талантами/Регулярная_оценка/Процедуры.pdf',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Цикл_управления_талантами/Регулярная_оценка/для_сотрудников.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn_1, btn)
 
@@ -1728,13 +1728,13 @@ def get_text_messages(message):
             doc_2,
             reply_markup=markup,
             caption='Процедуры ежегодной оценки в ГПН',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             doc_3,
             caption='Регулярная оценка для сотрудников',
-            parse_mode="html"
+            parse_mode="html",
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
@@ -1744,24 +1744,24 @@ def get_text_messages(message):
         markup.add(btn)
         doc_1 = open(
             'prod_data/Цикл_управления_талантами/Регулярная_оценка/Комиссия.pdf',
-            'rb'
+            'rb',
         )
         bot.send_document(
             message.chat.id,
             doc_1,
             caption='Комиссия по оценке вклада для сотрудников',
-            parse_mode="html"
+            parse_mode="html",
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Диалоги об эффективности':
         doc_2 = open(
             'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/Инструкция.pdf',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/ДоЭФ.PNG',
-            'rb'
+            'rb',
         )
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("смотреть видео",
@@ -1769,34 +1769,34 @@ def get_text_messages(message):
         bot.send_message(
             message.chat.id,
             'Диалог об эффективности',
-            reply_markup=markup
+            reply_markup=markup,
         )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Инструкция по чтению отчета регулярной оценки 2023',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             doc_3,
             caption='Помятка для сотрудника',
-            parse_mode="html"
+            parse_mode="html",
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Комитеты по талантам':
         doc_1 = open(
             'prod_data/Цикл_управления_талантами/comitet/nmd.pdf',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/Цикл_управления_талантами/comitet/PR_criteria.pdf',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Цикл_управления_талантами/comitet/rules.pdf',
-            'rb'
+            'rb',
         )
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("смотреть видео",
@@ -1804,25 +1804,25 @@ def get_text_messages(message):
         bot.send_message(
             message.chat.id,
             'Комитеты по талантам',
-            reply_markup=markup
+            reply_markup=markup,
         )
         bot.send_document(
             message.chat.id,
             doc_1,
             caption='Комитеты по талантам методология',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Критерии включения в кадровый резерв',
-            parse_mode="html"
+            parse_mode="html",
         )
         bot.send_document(
             message.chat.id,
             doc_3,
             caption='Правила нахождения в кадровом резерве',
-            parse_mode="html"
+            parse_mode="html",
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
@@ -1833,11 +1833,11 @@ def get_text_messages(message):
         )
         doc_1 = open(
             'prod_data/Цикл_управления_талантами/Диалоги_о_развитии/Методология.pdf',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/Цикл_управления_талантами/Диалоги_о_развитии/difference.pdf',
-            'rb'
+            'rb',
         )
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("смотреть видео",
@@ -1847,15 +1847,15 @@ def get_text_messages(message):
             message.chat.id,
             doc_1,
             caption='Диалог о развитии - Методология',
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption=('Разница между диалогом о развитии'
                      ' и диалогом об эффективности'),
-            parse_mode="html"
-            )
+            parse_mode="html",
+        )
 
     # СТАЖИРОВКА
     elif (message.text == 'Стажировка' or message.text == '🔙 вернуться в '
@@ -1865,7 +1865,7 @@ def get_text_messages(message):
         markup.add(btn_1)
         doc_1 = open(
             'prod_data/Стажировка/Бланк_плана_стажировки_сотрудника.xlsx',
-            'rb'
+            'rb',
         )
         doc_2 = open('prod_data/Стажировка/Стажировки_БРД.pdf', 'rb')
         message_text = (
@@ -1883,19 +1883,19 @@ def get_text_messages(message):
         bot.send_message(
             message.chat.id,
             message_text,
-            reply_markup=markup
+            reply_markup=markup,
         )
         bot.send_document(
             message.chat.id,
             doc_2,
             caption='Стажировки БРД',
-            parse_mode='html'
+            parse_mode='html',
         )
         bot.send_document(
             message.chat.id,
             doc_1,
             caption='Бланк плана стажировки сотрудника',
-            parse_mode='html'
+            parse_mode='html',
         )
 
     # ОБУЧЕНИЕ
@@ -1922,7 +1922,7 @@ def get_text_messages(message):
                                    'раздел Обучение')
         doc_1 = open(
             'prod_data/Обучение/ГПН_ЭС/Почитать/электронные_библиотеки.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -1939,7 +1939,7 @@ def get_text_messages(message):
                                    'раздел Обучение')
         doc_1 = open(
             'prod_data/Обучение/ГПН_ЭС/Целевые_образовательные_программы/educate.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -1956,7 +1956,7 @@ def get_text_messages(message):
                                    'раздел Обучение')
         doc_1 = open(
             'prod_data/Обучение/ГПН_ЭС/Каталог_программ/Рекомендованные_образовательные_программы.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -2006,7 +2006,7 @@ def get_text_messages(message):
                                    'раздел Молодежный совет')
         doc = open(
             'prod_data/Молодежная_политика/MS/Направления_деятельности/napravlenya.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -2023,15 +2023,15 @@ def get_text_messages(message):
                                    'раздел Молодежный совет')
         doc_1 = open(
             'prod_data/Молодежная_политика/MS/Положение_мотивация/workorgMS.pdf',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/Молодежная_политика/MS/Положение_мотивация/trackMS.pdf',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Молодежная_политика/MS/Положение_мотивация/AnketaMS.docx',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -2059,7 +2059,7 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Молодежный совет')
         doc = open(
             'prod_data/Молодежная_политика/MS/Структура/structuraMS.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -2093,19 +2093,19 @@ def get_text_messages(message):
                                    'раздел Развитие молодых специалистов')
         doc_1 = open(
             'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Заявка_Шаблон.docx',
-            'rb'
+            'rb',
         )
         doc_2 = open(
             'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_одностраничника.pptx',
-            'rb'
+            'rb',
         )
         doc_3 = open(
             'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_презентации.pptx',
-            'rb'
+            'rb',
         )
         doc_4 = open(
             'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/dk.pdf',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_message(
@@ -2167,7 +2167,7 @@ def get_text_messages(message):
                                    'раздел Развитие молодых специалистов')
         doc = open(
             'prod_data/Молодежная_политика/Развитие_молодых_специалистов/Слет_МС/Слет_МС.pptx',
-            'rb'
+            'rb',
         )
         markup.add(btn)
         bot.send_document(
@@ -2202,7 +2202,7 @@ def get_text_messages(message):
             '/moderator\n',
             parse_mode='html',
             reply_markup=markup,
-            )
+        )
     return logger.info(
         f'команда: {message.text} - '
         f'пользователь: {message.from_user.username} - '
@@ -2232,7 +2232,7 @@ def get_user_photo(message):
         message.chat.id,
         'У меня нет глаз, '
         'я не понимаю что на этой картинке.\n'
-        'Давайте продолжим работать в меню.'
+        'Давайте продолжим работать в меню.',
         )
     return logger.info(
         f'изображение - {message.photo}'
@@ -2263,8 +2263,8 @@ def get_user_stiсker(message):
         message.chat.id,
         'У меня нет глаз, '
         'я не вижу этот стикер.\n'
-        'Давайте продолжим работать в меню.'
-        )
+        'Давайте продолжим работать в меню.',
+    )
     return logger.info(
         f'стикер {message.sticker} - '
         f'пользователь: {message.from_user.username} - '
