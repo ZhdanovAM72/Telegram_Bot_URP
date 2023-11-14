@@ -29,3 +29,7 @@ def search_code_in_db(code):
         search_code = cursor.fetchone()
         cursor.close()
         return search_code
+
+
+def serch_all_user_id():
+    pass
