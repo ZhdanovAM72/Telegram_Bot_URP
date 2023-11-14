@@ -2244,5 +2244,21 @@ def get_user_stiсker(message):
     )
 
 
+@bot.message_handler(commands=['updates'])
+def updates_info_message(message):
+    """Рассылка информации о последних обновлениях."""
+    # функция для рассылки обновлений чат-бота
+    # информация из отдельного файла
+    pass
+
+
+@bot.message_handler(commands=['massmess'])
+def message_to_all_auth_user(message):
+    """Сообщение всем зарегистрированным пользователям."""
+    # функция для рассылки информации
+    # (забирать инфу из аргумента после команды)
+    pass
+
+
 if __name__ == '__main__':
     bot.polling(none_stop=True, interval=0)
