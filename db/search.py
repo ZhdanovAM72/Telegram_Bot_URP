@@ -31,5 +31,14 @@ def search_code_in_db(code):
         return search_code
 
 
-def serch_all_user_id():
-    pass
+def search_all_user_id():
+    with sqlite3.connect('users_v2.sqlite') as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT user_id FROM bot_users WHERE user_id IS NOT NULL
+            """
+        )
+        search_all_ids = cursor.fetchall()
+        cursor.close()
+        return search_all_ids
