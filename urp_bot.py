@@ -1,6 +1,5 @@
-import os
-import sqlite3
 import datetime as dt
+import os
 
 import telebot
 from dotenv import load_dotenv
@@ -2257,13 +2256,7 @@ def get_text_messages(message):
             parse_mode='html',
             reply_markup=markup,
         )
-    return logger.info(
-        f'команда: {message.text} - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_user_command(message)
 
 
 @bot.message_handler(content_types=['photo'])
@@ -2304,7 +2297,7 @@ def get_user_stiсker(message):
     if check_user is None or check_user[1] != message.chat.id:
         # Необходим рефакторинг логгера
         logger.info(
-            f'изображение {message.photo} - '
+            f'изображение {message.sticker} - '
             f'пользователь: {message.from_user.username} - '
             f'id пользователя: {message.chat.id} - '
             f'имя: {message.from_user.first_name} - '
