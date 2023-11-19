@@ -14,10 +14,12 @@ from db.permissions import (
     get_moderator_access,
     get_user_access,
 )
-from db.search import search_user_id_in_db, search_code_in_db
+from db.search import (search_user_id_in_db,
+                       search_code_in_db, search_all_user_id)
 from logger_setting.logger_bot import logger
 from utils.password_generator import generate_code
 from utils.excel import excel_export
+from updates import UPDATE_MESSAGE
 
 load_dotenv()
 
@@ -72,7 +74,9 @@ def check_admin_permissions(message: telebot.types.Message):
             '6. Удаление модератора.\n'
             '/deletemoderator user_id\n'
             '7. Обновление кода в БД.\n'
-            '/updatecode old_code company_name(es)\n',
+            '/updatecode old_code company_name(es)\n'
+            '8. Сообщение об обновлении чат-бота:\n'
+            '/updates',
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
@@ -437,6 +441,42 @@ def login_user(message):
     return log_user_command(message)
 
 
+@bot.message_handler(commands=['updates'])
+def updates_info_message(message):
+    """Рассылка информации о последних обновлениях."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+    update_message = UPDATE_MESSAGE
+    users = search_all_user_id()
+    # Убрать срез на проде.
+    for i in users[:2]:
+        try:
+            bot.send_message(chat_id=i[0], text=update_message)
+            print(i[0])
+        except Exception:
+            raise bot.send_message(
+                message.chat.id,
+                f'ошибка отправки пользователю с id № {i[0]}'
+            )
+        finally:
+            continue
+    return log_user_command(message)
+
+
+# Неказонченный функционал
+@bot.message_handler(commands=['massmess'])
+def message_to_all_auth_user(message):
+    """Сообщение всем зарегистрированным пользователям."""
+    access = get_admin_access(message.chat.id)
+    if access is None or access[1] != message.chat.id:
+        return bot.send_message(message.chat.id,
+                                'У Вас нет административных прав!')
+    # функция для рассылки информации
+    # (забирать инфу из аргумента после команды)
+    return log_user_command(message)
+
 @bot.message_handler(commands=['dev_test_command'])
 def start(message):
     """Приветствуем пользователя и включаем меню бота."""
@@ -483,13 +523,7 @@ def stop_command(message):
         return bot.send_message(message.chat.id,
                                 'У Вас нет административных прав!')
     bot.send_message(message.chat.id, 'OK, stop...')
-    logger.critical(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    log_user_command(message)
     return bot.stop_polling()
 
 
@@ -1871,17 +1905,46 @@ def get_text_messages(message):
     # ОБУЧЕНИЕ
     elif (message.text == 'Обучение' or message.text == '🔙 вернуться в '
           'раздел Обучение'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton(
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_1 = types.KeyboardButton(
             '🔙 вернуться в раздел Цикл управления талантами'
         )
-        btn_2 = types.KeyboardButton('Цикл планирования обучения')
-        btn_3 = types.KeyboardButton('Каталог программ')
-        btn_4 = types.KeyboardButton('Полезная литература')
-        markup.add(btn_3, btn_2, btn_4, btn_1)
+        button_2 = types.KeyboardButton('Цикл планирования обучения')
+        button_3 = types.KeyboardButton('Каталог программ')
+        button_4 = types.KeyboardButton('Полезная литература')
+        button_5 = types.KeyboardButton('Планирование обучения')
+        markup.add(button_3, button_2, button_4, button_5, button_1)
         bot.send_message(
             message.from_user.id,
             "Обучение",
+            reply_markup=markup,
+        )
+
+    # ОБУЧЕНИЕ
+    elif message.text == 'Планирование обучения':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button_1 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Обучение')
+        document_1 = open(
+            'prod_data/Обучение/ГПН_ЭС/plan/employee.pdf',
+            'rb',
+        )
+        document_2 = open(
+            'prod_data/Обучение/ГПН_ЭС/plan/supervisor.pdf',
+            'rb',
+        )
+        markup.add(button_1)
+        bot.send_document(
+            message.chat.id,
+            document_1,
+            caption='Планирование обучения - Сотрудник',
+            parse_mode="html",
+        )
+        bot.send_document(
+            message.chat.id,
+            document_2,
+            caption='Планирование обучения - Руководитель',
+            parse_mode="html",
             reply_markup=markup,
         )
 
@@ -2242,22 +2305,6 @@ def get_user_stiсker(message):
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
-
-
-@bot.message_handler(commands=['updates'])
-def updates_info_message(message):
-    """Рассылка информации о последних обновлениях."""
-    # функция для рассылки обновлений чат-бота
-    # информация из отдельного файла
-    pass
-
-
-@bot.message_handler(commands=['massmess'])
-def message_to_all_auth_user(message):
-    """Сообщение всем зарегистрированным пользователям."""
-    # функция для рассылки информации
-    # (забирать инфу из аргумента после команды)
-    pass
 
 
 if __name__ == '__main__':
