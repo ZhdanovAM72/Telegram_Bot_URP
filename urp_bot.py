@@ -1627,6 +1627,10 @@ def get_text_messages(message):
             'prod_data/карьерное_развитие/individual_plan/plan.pdf',
             'rb',
         )
+        document_5 = open(
+            'prod_data/карьерное_развитие/individual_plan/done.pdf',
+            'rb',
+        )
         markup.add(button)
         bot.send_document(
             message.chat.id,
@@ -1654,6 +1658,13 @@ def get_text_messages(message):
             document_1,
             caption='Актуализация ИПР - Инструкция для сотрудников',
             parse_mode="html",
+        )
+        bot.send_document(
+            message.chat.id,
+            document_5,
+            caption='Факт выполнения целей в ИПР',
+            parse_mode="html",
+            reply_markup=markup,
         )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
