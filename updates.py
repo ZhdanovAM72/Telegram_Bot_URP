@@ -4,7 +4,7 @@ import datetime as dt
 DATE_INFO = dt.datetime.now()
 AUTHOR = 'Александр Жданов'
 
-version = '1.1'
+version = '1.7'
 
 main_changes = (
     'Добавлены документы:\n'
