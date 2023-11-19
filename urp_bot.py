@@ -914,8 +914,12 @@ def get_text_messages(message):
 
     elif message.text == 'Корпоративный портал':
         markup = types.InlineKeyboardMarkup()
-        doc_1 = open(
+        document_1 = open(
             'prod_data/о_компании/новостная_лента/corp_portal/guide.pdf',
+            'rb'
+        )
+        document_2 = open(
+            'prod_data/о_компании/новостная_лента/corp_portal/enter.pdf',
             'rb'
         )
         markup.add(types.InlineKeyboardButton(
@@ -929,8 +933,14 @@ def get_text_messages(message):
         )
         bot.send_document(
             message.chat.id,
-            doc_1,
+            document_1,
             caption='Как через Интернет войти на Портал знаний',
+            parse_mode="html",
+        )
+        bot.send_document(
+            message.chat.id,
+            document_2,
+            caption='Как войти в личный кабинет на портале знаний',
             parse_mode="html",
         )
 
