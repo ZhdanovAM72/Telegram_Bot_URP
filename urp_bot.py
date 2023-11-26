@@ -763,16 +763,16 @@ def get_text_messages(message):
             '🔙 вернуться в раздел Инженерно-технологический сервис'
         )
         markup.add(button)
-        parrent_path = 'prod_data/о_компании/выбрать_ДО/ННГГФ/НМД'
-        file_1 = open(f'{parrent_path}/8.pdf', 'rb')
+        parrent_path = 'prod_data/о_компании/выбрать_ДО/ННГГФ/НМД/'
+        file_1 = open(f'{parrent_path}8.pdf', 'rb')
         filename_1 = ('Пропускной и внутреобъектовый режимы '
                       'ООО "Инженерно-технологический сервис"')
-        file_2 = open(f'{parrent_path}/ib.pdf', 'rb')
+        file_2 = open(f'{parrent_path}ib.pdf', 'rb')
         filename_2 = 'Памятка по ИБ'
-        file_3 = open(f'{parrent_path}/ptvr.pdf', 'rb')
+        file_3 = open(f'{parrent_path}ptvr.pdf', 'rb')
         filename_3 = ('Правила внутреннего трудового распорядка '
                       'ООО "Инженерно-технологический сервис"')
-        file_4 = open(f'{parrent_path}/vahta.pdf', 'rb')
+        file_4 = open(f'{parrent_path}vahta.pdf', 'rb')
         filename_4 = ('Положение о вахтовом методе работы '
                       'ООО "Инженерно-технологический сервис"')
         files_dict = {
@@ -1174,89 +1174,70 @@ def get_text_messages(message):
     elif message.text == 'Хоз. и транспорт. обеспечение':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        document_1 = open('prod_data/Адаптация/hoz_trans/ES.pdf', 'rb')
-        document_2 = open('prod_data/Адаптация/hoz_trans/ITS.pdf', 'rb')
-        document_3 = open('prod_data/Адаптация/hoz_trans/NR.pdf', 'rb')
         markup.add(button)
-        bot.send_document(
-            message.chat.id,
-            document_1,
-            caption=(
-                'Хозяйственное и транспортное обеспечение '
-                'ООО "Газпромнефть Энергосистемы"'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_2,
-            caption=(
-                'Хозяйственное и транспортное обеспечение '
-                'ООО "Инженерно-технологический Сервис"'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_3,
-            caption=(
-                'Хозяйственное и транспортное обеспечение '
-                'ООО "Нефтесервисные Решения"'
-            ),
-            parse_mode="html",
-        )
+
+        parrent_path = 'prod_data/Адаптация/hoz_trans/'
+        file_1 = open(f'{parrent_path}ES.pdf', 'rb')
+        file_2 = open(f'{parrent_path}ITS.pdf', 'rb')
+        file_3 = open(f'{parrent_path}NR.pdf', 'rb')
+
+        filename_1 = ('Хозяйственное и транспортное обеспечение '
+                      'ООО "Газпромнефть Энергосистемы"')
+        filename_2 = ('Хозяйственное и транспортное обеспечение '
+                      'ООО "Инженерно-технологический сервис"')
+        filename_3 = ('Хозяйственное и транспортное обеспечение '
+                      'ООО "Нефтесервисные решения"')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+                reply_markup=markup,
+            )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Трудовой распорядок':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        document_1 = open(
-            'prod_data/Адаптация/trudovoi_raspor/es_trud.pdf',
-            'rb',
-        )
-        document_2 = open(
-            'prod_data/Адаптация/trudovoi_raspor/its_trud.pdf',
-            'rb',
-        )
-        document_3 = open(
-            'prod_data/Адаптация/trudovoi_raspor/nr_trud.pdf',
-            'rb',
-        )
-        document_4 = open(
-            'prod_data/Адаптация/trudovoi_raspor/st_trud.pdf',
-            'rb',
-        )
         markup.add(button)
-        bot.send_document(
-            message.chat.id,
-            document_1,
-            caption='Трудовой распорядок в ООО "Газпромнефть Энергосистемы"',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_2,
-            caption=(
-                'Трудовой распорядок в '
-                'ООО "Инженерно-технологический Сервис"'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_3,
-            caption='Трудовой распорядок в ООО "Нефтесервисные Решения"',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_4,
-            caption=(
-                'Трудовой распорядок в '
-                'ООО "Газпромнефть Сервисные технологии"'
-            ),
-            parse_mode="html",
-        )
+
+        parrent_path = 'prod_data/Адаптация/trudovoi_raspor/'
+        document_1 = open(f'{parrent_path}es_trud.pdf', 'rb')
+        document_2 = open(f'{parrent_path}its_trud.pdf', 'rb')
+        document_3 = open(f'{parrent_path}nr_trud.pdf', 'rb')
+        document_4 = open(f'{parrent_path}st_trud.pdf', 'rb')
+
+        filename_1 = ('Трудовой распорядок в '
+                      'ООО "Газпромнефть Энергосистемы"')
+        filename_2 = ('Трудовой распорядок в '
+                      'ООО "Инженерно-технологический Сервис"')
+        filename_3 = ('Трудовой распорядок в ООО "Нефтесервисные Решения"')
+        filename_4 = ('Трудовой распорядок в '
+                      'ООО "Газпромнефть Сервисные технологии"')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+                reply_markup=markup,
+            )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Внешний вид. Спецодежда и СИЗ':
