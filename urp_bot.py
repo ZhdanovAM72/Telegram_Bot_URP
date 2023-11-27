@@ -2133,7 +2133,7 @@ def get_text_messages(message):
     elif message.text == 'СЛЕТ МС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Развитие молодых специалистов')
+                                      'раздел Развитие молодых специалистов')
         markup.add(button)
 
         file = open(
