@@ -19,6 +19,7 @@ from logger_setting.logger_bot import logger
 from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
+from massages import ABOUT_NTK
 
 load_dotenv()
 
@@ -1691,80 +1692,75 @@ def get_text_messages(message):
     elif (message.text == 'Регулярная оценка'
           or message.text == '🔙 вернуться в раздел Регулярная оценка'):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn = types.KeyboardButton(
+        button = types.KeyboardButton(
             '🔙 вернуться в раздел Цикл управления талантами'
         )
-        btn_1 = types.KeyboardButton('Комиссия по оценке вклада')
-        doc_2 = open(
-            'prod_data/Цикл_управления_талантами/Регулярная_оценка/Процедуры.pdf',
-            'rb',
-        )
-        doc_3 = open(
-            'prod_data/Цикл_управления_талантами/Регулярная_оценка/для_сотрудников.pdf',
-            'rb',
-        )
-        markup.add(btn_1, btn)
+        markup.add(button)
 
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            reply_markup=markup,
-            caption='Процедуры ежегодной оценки в ГПН',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption='Регулярная оценка для сотрудников',
-            parse_mode="html",
-        )
+        parrent_path = 'prod_data/Цикл_управления_талантами/Регулярная_оценка/'
+        file_1 = open(f'{parrent_path}Процедуры.pdf', 'rb')
+        file_2 = open(f'{parrent_path}для_сотрудников.pdf', 'rb')
+        filename_1 = 'Процедуры ежегодной оценки в ГПН'
+        filename_2 = 'Регулярная оценка для сотрудников'
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+                reply_markup=markup,
+            )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Комиссия по оценке вклада':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
         markup.add(btn)
-        doc_1 = open(
-            'prod_data/Цикл_управления_талантами/Регулярная_оценка/Комиссия.pdf',
-            'rb',
-        )
+
+        parrent_path = 'prod_data/Цикл_управления_талантами/Регулярная_оценка/'
+        file = open(f'{parrent_path}Комиссия.pdf', 'rb')
         bot.send_document(
             message.chat.id,
-            doc_1,
+            file,
             caption='Комиссия по оценке вклада для сотрудников',
             parse_mode="html",
+            reply_markup=markup,
         )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Диалоги об эффективности':
-        doc_2 = open(
-            'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/Инструкция.pdf',
-            'rb',
-        )
-        doc_3 = open(
-            'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/ДоЭФ.PNG',
-            'rb',
-        )
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("смотреть видео",
                    url="https://youtu.be/O2JyX9iL8Hs"))
+
+        parrent_path = 'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/'
+        file_1 = open(f'{parrent_path}Инструкция.pdf', 'rb')
+        file_2 = open(f'{parrent_path}ДоЭФ.PNG', 'rb')
+        filename_1 = 'Инструкция по чтению отчета регулярной оценки 2023'
+        filename_2 = 'Помятка для сотрудника'
+
         bot.send_message(
             message.chat.id,
             'Диалог об эффективности',
             reply_markup=markup,
         )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Инструкция по чтению отчета регулярной оценки 2023',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption='Помятка для сотрудника',
-            parse_mode="html",
-        )
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif message.text == 'Комитеты по талантам':
@@ -2085,12 +2081,12 @@ def get_text_messages(message):
           or message.text == ('🔙 вернуться в раздел '
                               'Развитие молодых специалистов')):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton(
+        button_1 = types.KeyboardButton('НТК МС')
+        button_2 = types.KeyboardButton('СЛЕТ МС')
+        button_3 = types.KeyboardButton(
             '🔙 вернуться в раздел Молодежная политика'
         )
-        btn_2 = types.KeyboardButton('НТК МС')
-        btn_3 = types.KeyboardButton('СЛЕТ МС')
-        markup.add(btn_2, btn_3, btn_1)
+        markup.add(button_1, button_2, button_3)
         bot.send_message(
             message.from_user.id,
             "Молодежный совет",
@@ -2100,98 +2096,61 @@ def get_text_messages(message):
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif message.text == 'НТК МС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Развитие молодых специалистов')
-        doc_1 = open(
-            'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Заявка_Шаблон.docx',
-            'rb',
-        )
-        doc_2 = open(
-            'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_одностраничника.pptx',
-            'rb',
-        )
-        doc_3 = open(
-            'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/Шаблон_презентации.pptx',
-            'rb',
-        )
-        doc_4 = open(
-            'prod_data/Молодежная_политика/Развитие_молодых_специалистов/НТК/dk.pdf',
-            'rb',
-        )
-        markup.add(btn)
-        bot.send_message(
-            message.from_user.id,
-            'Научно – техническая конференция – это мероприятие, '
-            'проводящееся на ежегодной основе, с целью продвижения '
-            'научного потенциала молодых специалистов и работников компании,'
-            ' а также с целью обмена опытом между молодыми специалистами '
-            'дочерних обществ и совместных предприятий, демонстрации '
-            'инноваций, апробирования новых технологий и процессов, '
-            'укрепления имиджа компании и повышения заинтересованности '
-            'работников в совершенствовании профессиональных навыков.\n'
-            '\nНТК проводится в 3 этапа:\n'
-            'Локальная НТК\n'
-            'НТК Блока разведки и добычи\n'
-            'Корпоративный финал НТК \n'
-            '\nПочему стоит принять участие в конференции?\n'
-            '-  Возможность раскрыть потенциал и заявить о себе;\n'
-            '-  Возможность повысить экспертизу в рамках направления своей '
-            'деятельности;\n'
-            '-  Возможность принять участие в дальнейшей реализации '
-            'проектов;\n'
-            '-  Возможность найти единомышленников.',
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Заявка - Шаблон',
-            parse_mode="html",
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Шаблон одностраничника',
-            parse_mode="html",
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption='Шаблон презентации',
-            parse_mode="html",
-            reply_markup=markup,
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_4,
-            caption='Шаблон презентации',
-            parse_mode="html",
-            reply_markup=markup,
-        )
+        button = types.KeyboardButton('🔙 вернуться в '
+                                      'раздел Развитие молодых специалистов')
+        markup.add(button)
+
+        parrent_path = ('prod_data/Молодежная_политика'
+                        '/Развитие_молодых_специалистов/НТК/')
+
+        file_1 = open(f'{parrent_path}Заявка_Шаблон.docx', 'rb')
+        file_2 = open(f'{parrent_path}Шаблон_одностраничника.pptx', 'rb')
+        file_3 = open(f'{parrent_path}Шаблон_презентации.pptx', 'rb')
+        file_4 = open(f'{parrent_path}dk.pdf', 'rb')
+        filename_1 = 'Заявка - Шаблон'
+        filename_2 = 'Шаблон одностраничника'
+        filename_3 = 'Шаблон презентации'
+        filename_4 = 'Дорожная карта'
+
+        bot.send_message(message.from_user.id, ABOUT_NTK, reply_markup=markup)
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+                reply_markup=markup,
+            )
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif message.text == 'СЛЕТ МС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в '
+        button = types.KeyboardButton('🔙 вернуться в '
                                    'раздел Развитие молодых специалистов')
-        doc = open(
-            'prod_data/Молодежная_политика/Развитие_молодых_специалистов/Слет_МС/Слет_МС.pptx',
+        markup.add(button)
+
+        file = open(
+            'prod_data/Молодежная_политика/'
+            'Развитие_молодых_специалистов/Слет_МС/Слет_МС.pptx',
             'rb',
         )
-        markup.add(btn)
+
         bot.send_document(
             message.chat.id,
-            doc,
+            file,
             caption='Слет МС',
             parse_mode="html",
             reply_markup=markup,
         )
 
     elif message.text == 'Обратная связь':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton('Главное меню')
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Заполнить форму",
                    url="https://forms.yandex.ru/u/64f4d1a4068ff09dca58ac3c/"))
