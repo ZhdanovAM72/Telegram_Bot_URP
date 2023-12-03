@@ -20,6 +20,7 @@ from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
 from massages import ABOUT_NTK
+from constant import ES, ITS, NR, NNGGF, ST
 
 load_dotenv()
 
@@ -2177,17 +2178,89 @@ def get_text_messages(message):
         )
 
     # БЛАНКИ ЗАЯВЛЕНИЙ
-    elif (message.text == 'Молодежная политика'
-          or message.text == '🔙 вернуться в раздел Молодежная политика'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton('🔙 Главное меню')
-        btn_2 = types.KeyboardButton('Молодежный совет')
-        btn_4 = types.KeyboardButton('Развитие молодых специалистов')
-        markup.add(btn_2, btn_4, btn_1)
+    elif (message.text == 'Бланки заявлений'
+          or message.text == '🔙 вернуться в раздел Бланки заявлений'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_1 = types.KeyboardButton('Авансовый отчет')
+        button_2 = types.KeyboardButton('Банковские реквизиты')
+        button_3 = types.KeyboardButton('Изменение трудового договора')
+        button_4 = types.KeyboardButton('Оформление отпусков')
+        button_5 = types.KeyboardButton('Прекращение трудового договора')
+        button_6 = types.KeyboardButton('Рождение ребенка')
+        button_7 = types.KeyboardButton('Учет рабочего времени')
+        button_8 = types.KeyboardButton('🔙 Главное меню')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+            button_7,
+            button_8,
+        )
         bot.send_message(
             message.from_user.id,
-            "Молодежная политика",
+            'Бланки заявлений',
             reply_markup=markup,
+        )
+
+    elif message.text == 'Авансовый отчет':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Авансовый бланки {ES}')
+        button_2 = types.KeyboardButton(f'Авансовый бланки {NR}')
+        button_3 = types.KeyboardButton(f'Авансовый бланки {ST}')
+        button_4 = types.KeyboardButton(f'Авансовый бланки {ITS}')
+        button_5 = types.KeyboardButton(f'Авансовый бланки {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Бланки заявлений')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Авансовый отчет',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Авансовый бланки {ES}':
+        parrent_path = 'prod_data/blanks/avansov/ES/'
+        file_1 = open(f'{parrent_path}blank.doc', 'rb')
+        file_2 = open(f'{parrent_path}info.docx', 'rb')
+        filename_1 = 'Авансовый отчет - бланк'
+        filename_2 = 'Инструкция по заполнению АО'
+
+        bot.send_message(
+            message.from_user.id,
+            f'Авансовый бланки {ES}',
+        )
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Авансовый бланки {NR}':
+        parrent_path = 'prod_data/blanks/avansov/NR/'
+        file_1 = open(f'{parrent_path}SOP.pdf', 'rb')
+        filename_1 = 'СОП по оформлению отчета по командировке с 01.10.23'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
         )
 
     elif message.text == 'Обратная связь':
