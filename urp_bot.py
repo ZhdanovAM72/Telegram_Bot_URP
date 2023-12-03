@@ -76,7 +76,9 @@ def check_admin_permissions(message: telebot.types.Message):
             '7. Обновление кода в БД.\n'
             '/updatecode old_code company_name(es)\n'
             '8. Сообщение об обновлении чат-бота:\n'
-            '/updates',
+            '/updates'
+            '9. Массовое сообщение пользователям чат-бота:\n'
+            '/massmess your_message_here',
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
@@ -450,11 +452,9 @@ def updates_info_message(message):
                                 'У Вас нет административных прав!')
     update_message = UPDATE_MESSAGE
     users = search_all_user_id()
-    # Убрать срез на проде.
-    for i in users[:2]:
+    for i in users:
         try:
             bot.send_message(chat_id=i[0], text=update_message)
-            print(i[0])
         except Exception:
             raise bot.send_message(
                 message.chat.id,
@@ -465,7 +465,7 @@ def updates_info_message(message):
     return log_user_command(message)
 
 
-# Неказонченный функционал
+# Массовая рассылка для всех пользователей
 @bot.message_handler(commands=['massmess'])
 def message_to_all_auth_user(message):
     """Сообщение всем зарегистрированным пользователям."""
@@ -473,9 +473,36 @@ def message_to_all_auth_user(message):
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id,
                                 'У Вас нет административных прав!')
-    # функция для рассылки информации
-    # (забирать инфу из аргумента после команды)
+    input_message = message.text.split()
+    mass_message = ' '.join(input_message[1:])
+    print(mass_message)
+    erorr_code_message = (
+        'Команда использована неверно, '
+        'введите запрос как показано на примере!\n'
+        'Пример: \n/massmess your_message\n'
+        '\nМаксимально 100 слов!'
+    )
+    if input_message == '/massmess' or input_message == '/massmess ':
+        bot.send_message(message.chat.id, erorr_code_message)
+        return log_user_command(message)
+    if len(input_message) <= 1 or len(input_message) > 100:
+        return bot.send_message(
+            message.chat.id,
+            erorr_code_message
+        )
+    users = search_all_user_id()
+    for i in users:
+        try:
+            bot.send_message(chat_id=i[0], text=mass_message)
+        except Exception:
+            raise bot.send_message(
+                message.chat.id,
+                f'ошибка отправки пользователю с id № {i[0]}'
+            )
+        finally:
+            continue
     return log_user_command(message)
+
 
 @bot.message_handler(commands=['dev_test_command'])
 def start(message):
@@ -539,25 +566,25 @@ def get_text_messages(message):
                                 'Вы не зарегистрированны в системе!')
     if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        btn1 = types.KeyboardButton('О компании')
-        btn2 = types.KeyboardButton('Адаптация')
-        btn3 = types.KeyboardButton('Карьерное развитие')
-        btn4 = types.KeyboardButton('Цикл управления талантами')
-        # btn5 = types.KeyboardButton('Обучение')
-        btn6 = types.KeyboardButton('Стажировка')
-        btn7 = types.KeyboardButton('ДМС и РВЛ')
-        btn8 = types.KeyboardButton('Молодежная политика')
-        btn9 = types.KeyboardButton('Обратная связь')
+        button_1 = types.KeyboardButton('О компании')
+        button_2 = types.KeyboardButton('Адаптация')
+        button_3 = types.KeyboardButton('Карьерное развитие')
+        button_4 = types.KeyboardButton('Цикл управления талантами')
+        button_5 = types.KeyboardButton('Стажировка')
+        button_6 = types.KeyboardButton('ДМС и РВЛ')
+        button_7 = types.KeyboardButton('Молодежная политика')
+        button_8 = types.KeyboardButton('Обратная связь')
+        button_9 = types.KeyboardButton('Бланки заявлений')
         markup.add(
-            btn1,
-            btn2,
-            btn3,
-            btn4,
-            # btn5,
-            btn6,
-            btn7,
-            btn8,
-            btn9
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+            button_7,
+            button_8,
+            button_9,
         )
         bot.send_message(message.from_user.id,
                          "Добро пожаловать в главное меню чат-бота",
@@ -1979,7 +2006,6 @@ def get_text_messages(message):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         btn_1 = types.KeyboardButton('🔙 Главное меню')
         btn_2 = types.KeyboardButton('Молодежный совет')
-        # btn_3 = types.KeyboardButton('Организация практики')
         btn_4 = types.KeyboardButton('Развитие молодых специалистов')
         markup.add(btn_2, btn_4, btn_1)
         bot.send_message(
@@ -2147,6 +2173,20 @@ def get_text_messages(message):
             file,
             caption='Слет МС',
             parse_mode="html",
+            reply_markup=markup,
+        )
+
+    # БЛАНКИ ЗАЯВЛЕНИЙ
+    elif (message.text == 'Молодежная политика'
+          or message.text == '🔙 вернуться в раздел Молодежная политика'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        btn_1 = types.KeyboardButton('🔙 Главное меню')
+        btn_2 = types.KeyboardButton('Молодежный совет')
+        btn_4 = types.KeyboardButton('Развитие молодых специалистов')
+        markup.add(btn_2, btn_4, btn_1)
+        bot.send_message(
+            message.from_user.id,
+            "Молодежная политика",
             reply_markup=markup,
         )
 
