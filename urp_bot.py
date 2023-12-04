@@ -2205,6 +2205,172 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Рождение ребенка':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Рождение ребенка {ES}')
+        button_2 = types.KeyboardButton(f'Рождение ребенка {NR}')
+        button_3 = types.KeyboardButton(f'Рождение ребенка {ST}')
+        button_4 = types.KeyboardButton(f'Рождение ребенка {ITS}')
+        button_5 = types.KeyboardButton(f'Рождение ребенка {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Бланки заявлений')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Рождение ребенка',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Рождение ребенка {ES}':
+        parrent_path = 'prod_data/blanks/baby_born/ES/'
+        file_1 = open(f'{parrent_path}rodi.doc', 'rb')
+        file_2 = open(f'{parrent_path}ranie_rodi.doc', 'rb')
+        file_3 = open(f'{parrent_path}posobie_3.doc', 'rb')
+        file_4 = open(f'{parrent_path}premia.doc', 'rb')
+        file_5 = open(f'{parrent_path}posobie_1.5.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-13 Заявление об отпуске '
+                      'по беременности и родам')
+        filename_2 = ('Ш-14.03.06-14 Заявление о выплате пособия '
+                      'за постановку на учет в ранние сроки беременности')
+        filename_3 = ('Ш-14.03.06-15 Заявление об отпуске '
+                      'по уходу за ребенком до 3х лет')
+        filename_4 = ('Ш-14.03.06-16 Заявление о выплате '
+                      'единовременного пособия по рождению ребенка')
+        filename_5 = ('Ш-14.03.06-17 Заявление о выплате пособия '
+                      'по уходу за ребенком до 1.5 лет')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+            filename_5: file_5,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Рождение ребенка {ITS}':
+        parrent_path = 'prod_data/blanks/baby_born/ITS/'
+        file_1 = open(f'{parrent_path}rodi.doc', 'rb')
+        file_2 = open(f'{parrent_path}ranie_rodi.doc', 'rb')
+        file_3 = open(f'{parrent_path}posobie_3.doc', 'rb')
+        file_4 = open(f'{parrent_path}premia.doc', 'rb')
+        file_5 = open(f'{parrent_path}posobie_1.5.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-13 Заявление об отпуске '
+                      'по беременности и родам')
+        filename_2 = ('Ш-14.03.06-14 Заявление о выплате пособия '
+                      'за постановку на учет в ранние сроки беременности')
+        filename_3 = ('Ш-14.03.06-15 Заявление об отпуске '
+                      'по уходу за ребенком до 3х лет')
+        filename_4 = ('Ш-14.03.06-16 Заявление о выплате '
+                      'единовременного пособия по рождению ребенка')
+        filename_5 = ('Ш-14.03.06-17 Заявление о выплате пособия '
+                      'по уходу за ребенком до 1.5 лет')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+            filename_5: file_5,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Рождение ребенка {NNGGF}':
+        parrent_path = 'prod_data/blanks/baby_born/NNGGF/'
+        file_1 = open(f'{parrent_path}prervat_otpusk.docx', 'rb')
+        file_2 = open(f'{parrent_path}otpusk_rodi.doc', 'rb')
+        file_3 = open(f'{parrent_path}posobie_ranie.doc', 'rb')
+        file_4 = open(f'{parrent_path}otpusk_uhod.doc', 'rb')
+        file_5 = open(f'{parrent_path}premia.doc', 'rb')
+        file_6 = open(f'{parrent_path}posobie.doc', 'rb')
+        filename_1 = ('Ш-14.03.05-04 Заявление о досрочном '
+                      'выходе из отпуска по уходу за ребенком_ГПН-ННГГФ')
+        filename_2 = ('Ш-14.03.06-13 Заявление об отпуске '
+                      'по беременности и родам_2 круг')
+        filename_3 = ('Ш-14.03.06-14 Заявление о выплате пособия за '
+                      'постановку на учет в ранние сроки беременности_2 круг')
+        filename_4 = ('Ш-14.03.06-15 Заявление об отпуске по '
+                      'уходу за ребенком до 3х лет')
+        filename_5 = ('Ш-14.03.06-16 Заявление о выплате единовременного '
+                      'пособия по рождению ребенка_2 круг')
+        filename_6 = ('Ш-14.03.06-17 Заявление о выплате пособия по '
+                      'уходу за ребенком до 1.5 лет_2 круг')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+            filename_5: file_5,
+            filename_6: file_6,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Рождение ребенка {NR}':
+        parrent_path = 'prod_data/blanks/baby_born/NR/'
+        file_1 = open(f'{parrent_path}premia.docx', 'rb')
+        filename_1 = 'Заявление ГПН-НС_материальная помощь на рождение'
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Рождение ребенка {ST}':
+        parrent_path = 'prod_data/blanks/baby_born/ST/'
+        file_1 = open(f'{parrent_path}rodi.doc', 'rb')
+        file_2 = open(f'{parrent_path}ranie_rodi.doc', 'rb')
+        file_3 = open(f'{parrent_path}posobie_3.doc', 'rb')
+        file_4 = open(f'{parrent_path}premia.doc', 'rb')
+        file_5 = open(f'{parrent_path}posobie_1.5.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-13 Заявление об отпуске '
+                      'по беременности и родам')
+        filename_2 = ('Ш-14.03.06-14 Заявление о выплате пособия '
+                      'за постановку на учет в ранние сроки беременности')
+        filename_3 = ('Ш-14.03.06-15 Заявление об отпуске '
+                      'по уходу за ребенком до 3х лет')
+        filename_4 = ('Ш-14.03.06-16 Заявление о выплате '
+                      'единовременного пособия по рождению ребенка')
+        filename_5 = ('Ш-14.03.06-17 Заявление о выплате пособия '
+                      'по уходу за ребенком до 1.5 лет')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+            filename_5: file_5,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif message.text == 'Прекращение трудового договора':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Прекращение ТД {ES}')
