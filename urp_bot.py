@@ -2232,6 +2232,145 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Сдача крови':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Сдача крови {ES}')
+        button_2 = types.KeyboardButton(f'Сдача крови {NR}')
+        button_3 = types.KeyboardButton(f'Сдача крови {ST}')
+        button_4 = types.KeyboardButton(f'Сдача крови {ITS}')
+        button_5 = types.KeyboardButton(f'Сдача крови {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Оформление отпусков')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Сдача крови',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Сдача крови {ES}':
+        parrent_path = ('prod_data/blanks/vacation_registration/blood/ES/')
+        file_1 = open(f'{parrent_path}osvobodit.doc', 'rb')
+        file_2 = open(f'{parrent_path}drugoi.doc', 'rb')
+        file_3 = open(f'{parrent_path}dop.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-23 Заявление об освобождении '
+                      'от работы в день сдачи крови')
+        filename_2 = ('Ш-14.03.06-24 Заявление о предоставлении '
+                      'другого дня отдыха в связи со сдачей крови')
+        filename_3 = ('Ш-14.03.06-26 Заявление о предоставлении '
+                      'дополнительного дня отдыха в связи со сдачей крови')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Сдача крови {ITS}':
+        parrent_path = ('prod_data/blanks/vacation_registration/blood/ITS/')
+        file_1 = open(f'{parrent_path}osvobodit.doc', 'rb')
+        file_2 = open(f'{parrent_path}drugoi.doc', 'rb')
+        file_3 = open(f'{parrent_path}dop.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-23 Заявление об освобождении '
+                      'от работы в день сдачи крови')
+        filename_2 = ('Ш-14.03.06-24 Заявление о предоставлении '
+                      'другого дня отдыха в связи со сдачей крови')
+        filename_3 = ('Ш-14.03.06-26 Заявление о предоставлении '
+                      'дополнительного дня отдыха в связи со сдачей крови')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Сдача крови {NNGGF}':
+        parrent_path = ('prod_data/blanks/vacation_registration/blood/NNGGF/')
+        file_1 = open(f'{parrent_path}osvobodit.doc', 'rb')
+        file_2 = open(f'{parrent_path}drugoi.doc', 'rb')
+        file_3 = open(f'{parrent_path}dop.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-23 Заявление об освобождении '
+                      'от работы в день сдачи крови')
+        filename_2 = ('Ш-14.03.06-24 Заявление о предоставлении '
+                      'другого дня отдыха в связи со сдачей крови')
+        filename_3 = ('Ш-14.03.06-26 Заявление о предоставлении '
+                      'дополнительного дня отдыха в связи со сдачей крови')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Сдача крови {NR}':
+        parrent_path = ('prod_data/blanks/vacation_registration/blood/NR/')
+        file_1 = open(f'{parrent_path}drugoi.doc', 'rb')
+        file_2 = open(f'{parrent_path}dop.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-24 Заявление о предоставлении '
+                      'другого дня отдыха в связи со сдачей крови')
+        filename_2 = ('Ш-14.03.06-26 Заявление о предоставлении '
+                      'дополнительного дня отдыха в связи со сдачей крови')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Сдача крови {ST}':
+        parrent_path = ('prod_data/blanks/vacation_registration/blood/ST/')
+        file_1 = open(f'{parrent_path}osvobodit.doc', 'rb')
+        file_2 = open(f'{parrent_path}drugoi.doc', 'rb')
+        file_3 = open(f'{parrent_path}dop.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-23 Заявление об освобождении '
+                      'от работы в день сдачи крови')
+        filename_2 = ('Ш-14.03.06-24 Заявление о предоставлении '
+                      'другого дня отдыха в связи со сдачей крови')
+        filename_3 = ('Ш-14.03.06-26 Заявление о предоставлении '
+                      'дополнительного дня отдыха в связи со сдачей крови')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif message.text == 'Перенос, продление отпуска':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Перенос, продление отпуска {ES}')
