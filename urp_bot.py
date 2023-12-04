@@ -2232,6 +2232,93 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Отпуск без сохранения зп':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Отпуск без сохранения зп {ES}')
+        button_2 = types.KeyboardButton(f'Отпуск без сохранения зп {NR}')
+        button_3 = types.KeyboardButton(f'Отпуск без сохранения зп {ST}')
+        button_4 = types.KeyboardButton(f'Отпуск без сохранения зп {ITS}')
+        button_5 = types.KeyboardButton(f'Отпуск без сохранения зп {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Оформление отпусков')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Отпуск без сохранения зп',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Отпуск без сохранения зп {ES}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'vacation_without_money/ES/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-21 Заявление о предоставлении '
+                      'отпуска без сохранения заработной платы')
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Отпуск без сохранения зп {ITS}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'vacation_without_money/ITS/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-21 Заявление о предоставлении '
+                      'отпуска без сохранения заработной платы')
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Отпуск без сохранения зп {NNGGF}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'vacation_without_money/NNGGF/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-21 Заявление о предоставлении '
+                      'отпуска без сохранения заработной платы')
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Отпуск без сохранения зп {NR}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'vacation_without_money/NR/')
+        file_1 = open(f'{parrent_path}application.docx', 'rb')
+        filename_1 = 'Заявление о предоставлении отпуска'
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Отпуск без сохранения зп {ST}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'vacation_without_money/ST/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-21 Заявление о предоставлении '
+                      'отпуска без сохранения заработной платы')
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
     elif message.text == 'Отмена, отзыв из отпуска':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Отмена, отзыв из отпуска {ES}')
