@@ -2205,6 +2205,440 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif (
+        message.text == 'Изменение трудового договора'
+        or message.text == '🔙 вернуться в раздел '
+        'Изменение трудового договора'
+    ):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton('Дополнительная работа')
+        button_2 = types.KeyboardButton('Переводы')
+        button_3 = types.KeyboardButton('Режим рабочего времени')
+        button_4 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Бланки заявлений')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Изменение трудового договора',
+            reply_markup=markup,
+        )
+
+    elif message.text == 'Режим рабочего времени':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Режим рабочего времени {ES}')
+        button_2 = types.KeyboardButton(f'Режим рабочего времени {NR}')
+        button_3 = types.KeyboardButton(f'Режим рабочего времени {ST}')
+        button_4 = types.KeyboardButton(f'Режим рабочего времени {ITS}')
+        button_5 = types.KeyboardButton(f'Режим рабочего времени {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Изменение трудового договора')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Режим рабочего времени',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Режим рабочего времени {ES}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ES/'
+        file_1 = open(f'{parrent_path}work_down.doc', 'rb')
+        file_2 = open(f'{parrent_path}change_work_hours.docx', 'rb')
+        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
+                      'норм выработки_норм обслуживания')
+        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
+                      'режима рабочего времени')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Режим рабочего времени {ITS}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ITS/'
+        file_1 = open(f'{parrent_path}ITS_work_down.doc', 'rb')
+        file_2 = open(f'{parrent_path}ITS_change_work_hours.docx', 'rb')
+        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
+                      'норм выработки_норм обслуживания_ООО ИТС')
+        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
+                      'режима рабочего времени_ООО ИТС')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Режим рабочего времени {NNGGF}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ITS/'
+        file_1 = open(f'{parrent_path}NNGGF_work_down.doc', 'rb')
+        file_2 = open(f'{parrent_path}NNGGF_change_work_hours.docx', 'rb')
+        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
+                      'норм выработки_норм обслуживания_ГПН-ННГГФ')
+        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
+                      'режима рабочего времени_ГПН-ННГГФ')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Режим рабочего времени {NR}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/NR/'
+        file_1 = open(f'{parrent_path}change_work_hours.docx', 'rb')
+        filename_1 = ('Ш-14.03.02-03 Заявление об изменении '
+                      'режима рабочего времени')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Режим рабочего времени {ST}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ST/'
+        file_1 = open(f'{parrent_path}work_down.doc', 'rb')
+        file_2 = open(f'{parrent_path}change_work_hours.docx', 'rb')
+        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
+                      'норм выработки_норм обслуживания')
+        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
+                      'режима рабочего времени')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == 'Переводы':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Переводы {ES}')
+        button_2 = types.KeyboardButton(f'Переводы {NR}')
+        button_3 = types.KeyboardButton(f'Переводы {ST}')
+        button_4 = types.KeyboardButton(f'Переводы {ITS}')
+        button_5 = types.KeyboardButton(f'Переводы {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Изменение трудового договора')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Переводы',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Переводы {ES}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/transfers/ES/'
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ.docx', 'rb')
+        file_3 = open(f'{parrent_path}application_health_risk_work.doc', 'rb')
+        filename_1 = ('Ш-14.03.02-01 Заявление о переводе на другую работу')
+        filename_2 = ('Ш-14.03.02-07 Служебная записка о переводе '
+                      'на другую работу')
+        filename_3 = ('Ш-14.03.02-15 Заявление о переводе '
+                      'на другую работу в связи с беременностью')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Переводы {ITS}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/transfers/ITS/'
+        file_1 = open(f'{parrent_path}ITS_application.doc', 'rb')
+        file_2 = open(f'{parrent_path}ITS_SZ.docx', 'rb')
+        file_3 = open(f'{parrent_path}ITS_application_health_risk_work.doc',
+                      'rb')
+        filename_1 = ('Ш-14.03.02-01 Заявление о переводе '
+                      'на другую работу_ООО ИТС')
+        filename_2 = ('Ш-14.03.02-07 Служебная записка о переводе '
+                      'на другую работу_фин_ООО ИТС')
+        filename_3 = ('Ш-14.03.02-15 Заявление о переводе '
+                      'на другую работу в связи с беременностью_ООО ИТС')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Переводы {NNGGF}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/transfers/ITS/'
+        file_1 = open(f'{parrent_path}NNGGF_application.doc', 'rb')
+        file_2 = open(f'{parrent_path}NNGGF_SZ.docx', 'rb')
+        file_3 = open(f'{parrent_path}NNGGF_application_health_risk_work.doc',
+                      'rb')
+        filename_1 = ('Ш-14.03.02-01 Заявление о переводе '
+                      'на другую работу_ГПН-ННГГФ')
+        filename_2 = ('Ш-14.03.02-07 Служебная записка о переводе '
+                      'на другую работу_фин_ГПН_ННГГФ')
+        filename_3 = ('Ш-14.03.02-15 Заявление о переводе '
+                      'на другую работу в связи с беременностью_ГПН_ННГГФ')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Переводы {NR}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/transfers/NR/'
+        file_1 = open(f'{parrent_path}application.docx', 'rb')
+        filename_1 = ('Заявление на перевод')
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Переводы {ST}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/transfers/ST/'
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ.docx', 'rb')
+        filename_1 = ('Ш-14.03.02-01 Заявление о переводе '
+                      'на другую работу')
+        filename_2 = ('Ш-14.03.02-07 Служебная записка '
+                      'о переводе на другую работу')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                document=file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == 'Дополнительная работа':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Доп. работа {ES}')
+        button_2 = types.KeyboardButton(f'Доп. работа {NR}')
+        button_3 = types.KeyboardButton(f'Доп. работа {ST}')
+        button_4 = types.KeyboardButton(f'Доп. работа {ITS}')
+        button_5 = types.KeyboardButton(f'Доп. работа {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Изменение трудового договора')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Дополнительная работа',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Доп. работа {ES}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/dop_work/ES/'
+        file_1 = open(f'{parrent_path}SZ.doc', 'rb')
+        filename_1 = ('Ш-14.03.02-10 Служебная записка '
+                      'о поручении дополнительной работы')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Доп. работа {ITS}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/dop_work/ITS/'
+        file_1 = open(f'{parrent_path}SZ_ITS.doc', 'rb')
+        filename_1 = ('Ш-14.03.02-10 Служебная записка '
+                      'о поручении дополнительной работы_ООО ИТС')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Доп. работа {NNGGF}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/dop_work/ITS/'
+        file_1 = open(f'{parrent_path}SZ_NNGGF.doc', 'rb')
+        filename_1 = ('Ш-14.03.02-10 Служебная записка '
+                      'о поручении дополнительной работы_ГПН_ННГГФ')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Доп. работа {NR}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/dop_work/NR/'
+        file_1 = open(f'{parrent_path}SZ.doc', 'rb')
+        filename_1 = ('Ш-14.03.02-10 Служебная записка '
+                      'о поручении дополнительной работы')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Доп. работа {ST}':
+        parrent_path = 'prod_data/blanks/TK_RF_changes/dop_work/ST/'
+        file_1 = open(f'{parrent_path}SZ.doc', 'rb')
+        filename_1 = ('Ш-14.03.02-10 Служебная записка '
+                      'о поручении дополнительной работы')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == 'Банковские реквизиты':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Банковские реквизиты {ES}')
+        button_2 = types.KeyboardButton(f'Банковские реквизиты {NR}')
+        button_3 = types.KeyboardButton(f'Банковские реквизиты {ST}')
+        button_4 = types.KeyboardButton(f'Банковские реквизиты {ITS}')
+        button_5 = types.KeyboardButton(f'Банковские реквизиты {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Бланки заявлений')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Банковские реквизиты',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Банковские реквизиты {ES}':
+        parrent_path = 'prod_data/blanks/bank_details/ES/'
+        file_1 = open(f'{parrent_path}statement.doc', 'rb')
+        filename_1 = 'Заявление на перечисление ЗП по реквизитам'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Банковские реквизиты {ITS}':
+        parrent_path = 'prod_data/blanks/bank_details/ITS/'
+        file_1 = open(f'{parrent_path}stateman_ITS.doc', 'rb')
+        filename_1 = 'Заявление о принятии и смене банка и реквизитов'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Банковские реквизиты {NNGGF}':
+        parrent_path = 'prod_data/blanks/bank_details/ITS/'
+        file_1 = open(f'{parrent_path}stateman_NNGGF.doc', 'rb')
+        filename_1 = 'Заявление о принятии и смене банка и реквизитов'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Банковские реквизиты {NR}':
+        parrent_path = 'prod_data/blanks/bank_details/NR/'
+        file_1 = open(f'{parrent_path}statement.docx', 'rb')
+        filename_1 = 'Заявление на перечисление ЗП по реквизитам'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Банковские реквизиты {ST}':
+        parrent_path = 'prod_data/blanks/bank_details/ST/'
+        file_1 = open(f'{parrent_path}statement.doc', 'rb')
+        filename_1 = 'Заявление на перечисление ЗП по реквизитам'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
     elif message.text == 'Авансовый отчет':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Авансовый бланки {ES}')
@@ -2295,7 +2729,7 @@ def get_text_messages(message):
                 caption=filename_1,
                 parse_mode="html",
         )
- 
+
     elif message.text == 'Обратная связь':
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Заполнить форму",
