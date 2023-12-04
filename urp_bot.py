@@ -2263,6 +2263,39 @@ def get_text_messages(message):
                 parse_mode="html",
         )
 
+    elif message.text == f'Авансовый бланки {ITS}':
+        parrent_path = 'prod_data/blanks/avansov/ITS/'
+        file_1 = open(f'{parrent_path}blank_1.xls', 'rb')
+        filename_1 = 'Бланк авансового отчета'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Авансовый бланки {NNGGF}':
+        parrent_path = 'prod_data/blanks/avansov/ITS/'
+        file_1 = open(f'{parrent_path}blank_2.xls', 'rb')
+        filename_1 = 'Бланк авансового отчета'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+
+    elif message.text == f'Авансовый бланки {ST}':
+        parrent_path = 'prod_data/blanks/avansov/ST/'
+        file_1 = open(f'{parrent_path}blank.doc', 'rb')
+        filename_1 = 'Бланк авансового отчета'
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+        )
+ 
     elif message.text == 'Обратная связь':
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Заполнить форму",
