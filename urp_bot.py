@@ -77,7 +77,7 @@ def check_admin_permissions(message: telebot.types.Message):
             '7. Обновление кода в БД.\n'
             '/updatecode old_code company_name(es)\n'
             '8. Сообщение об обновлении чат-бота:\n'
-            '/updates'
+            '/updates\n'
             '9. Массовое сообщение пользователям чат-бота:\n'
             '/massmess your_message_here',
         )
@@ -2228,6 +2228,97 @@ def get_text_messages(message):
             message.chat.id,
             'Учет рабочего времени',
             reply_markup=markup,
+        )
+
+    elif message.text == 'Работа в выходной день':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Работа в выходной день {ES}')
+        button_2 = types.KeyboardButton(f'Работа в выходной день {NR}')
+        button_3 = types.KeyboardButton(f'Работа в выходной день {ST}')
+        button_4 = types.KeyboardButton(f'Работа в выходной день {ITS}')
+        button_5 = types.KeyboardButton(f'Работа в выходной день {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Учет рабочего времени')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Работа в выходной день',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Работа в выходной день {ES}':
+        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ES/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-15 Решение о привлечении к работе '
+            'в выходные нерабоч. праздничные дни или к сверхур.работе'
+        )
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Работа в выходной день {ITS}':
+        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ITS/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-15 Решение о привлечении к работе '
+            'в выходные нерабоч. праздничные дни или к сверхур.работе'
+        )
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Работа в выходной день {NNGGF}':
+        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/NNGGF/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-15 Решение о привлечении к работе '
+            'в выходные нерабоч. праздничные дни или к сверхур.работе'
+        )
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Работа в выходной день {NR}':
+        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/NR/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = ('Служебная записка на привлечение к работе '
+                      'в выходные дни')
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
+        )
+
+    elif message.text == f'Работа в выходной день {ST}':
+        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ST/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-15 Решение о привлечении к работе '
+            'в выходные нерабоч. праздничные дни или к сверхур.работе'
+        )
+        bot.send_document(
+            message.chat.id,
+            document=file_1,
+            caption=filename_1,
+            parse_mode="html",
         )
 
     elif message.text == 'Простой, задержка в пути':
