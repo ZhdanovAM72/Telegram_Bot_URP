@@ -2232,6 +2232,151 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Отмена, отзыв из отпуска':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Отмена, отзыв из отпуска {ES}')
+        button_2 = types.KeyboardButton(f'Отмена, отзыв из отпуска {NR}')
+        button_3 = types.KeyboardButton(f'Отмена, отзыв из отпуска {ST}')
+        button_4 = types.KeyboardButton(f'Отмена, отзыв из отпуска {ITS}')
+        button_5 = types.KeyboardButton(f'Отмена, отзыв из отпуска {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Оформление отпусков')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Отмена, отзыв из отпуска',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Отмена, отзыв из отпуска {ES}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'cancellation/ES/')
+        file_1 = open(f'{parrent_path}SZ_otziv.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ_otmena.doc', 'rb')
+        file_3 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-08 Служебная записка '
+                      'об отзыве из отпуска')
+        filename_2 = ('Ш-14.03.06-10 Служебная записка '
+                      'об отмене отпуска')
+        filename_3 = 'Ш-14.03.06-11 Заявление об отмене отпуска'
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Отмена, отзыв из отпуска {ITS}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'cancellation/ITS/')
+        file_1 = open(f'{parrent_path}SZ_otziv.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ_otmena.doc', 'rb')
+        file_3 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-08 Служебная записка '
+                      'об отзыве из отпуска')
+        filename_2 = ('Ш-14.03.06-10 Служебная записка '
+                      'об отмене отпуска')
+        filename_3 = 'Ш-14.03.06-11 Заявление об отмене отпуска'
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Отмена, отзыв из отпуска {NNGGF}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'cancellation/NNGGF/')
+        file_1 = open(f'{parrent_path}SZ_otziv.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ_otmena.doc', 'rb')
+        file_3 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-08 Служебная записка '
+                      'об отзыве из отпуска')
+        filename_2 = ('Ш-14.03.06-10 Служебная записка '
+                      'об отмене отпуска')
+        filename_3 = 'Ш-14.03.06-11 Заявление об отмене отпуска'
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Отмена, отзыв из отпуска {NR}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'cancellation/NR/')
+        file_1 = open(f'{parrent_path}SZ_otziv.docx', 'rb')
+        file_2 = open(f'{parrent_path}SZ_otmena.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-08 Служебная записка '
+                      'об отзыве из отпуска')
+        filename_2 = ('Ш-14.03.06-10 Служебная записка '
+                      'об отмене отпуска')
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Отмена, отзыв из отпуска {ST}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'cancellation/ST/')
+        file_1 = open(f'{parrent_path}SZ_otziv.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ_otmena.doc', 'rb')
+        file_3 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = ('Ш-14.03.06-08 Служебная записка '
+                      'об отзыве из отпуска')
+        filename_2 = ('Ш-14.03.06-10 Служебная записка '
+                      'об отмене отпуска')
+        filename_3 = 'Ш-14.03.06-11 Заявление об отмене отпуска'
+
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif message.text == 'Другие виды отпусков':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Другие виды отпусков {ES}')
