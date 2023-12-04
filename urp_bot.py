@@ -2230,6 +2230,117 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Простой, задержка в пути':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Простой, задержка в пути {ES}')
+        # button_2 = types.KeyboardButton(f'Простой, задержка в пути {NR}')
+        button_3 = types.KeyboardButton(f'Простой, задержка в пути {ST}')
+        button_4 = types.KeyboardButton(f'Простой, задержка в пути {ITS}')
+        button_5 = types.KeyboardButton(f'Простой, задержка в пути {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Учет рабочего времени')
+        markup.add(
+            button_1,
+            # button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Простой, задержка в пути',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Простой, задержка в пути {ES}':
+        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ES/'
+        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
+        file_2 = open(f'{parrent_path}list.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-16 Служебная записка о простое /'
+            'незапланированном простое, содержащая список работников'
+        )
+        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
+                      'необходимо оформить задержку в пути')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Простой, задержка в пути {ITS}':
+        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ITS/'
+        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
+        file_2 = open(f'{parrent_path}list.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-16 Служебная записка о простое /'
+            'незапланированном простое, содержащая список работников'
+        )
+        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
+                      'необходимо оформить задержку в пути')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Простой, задержка в пути {NNGGF}':
+        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/NNGGF/'
+        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
+        file_2 = open(f'{parrent_path}list.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-16 Служебная записка о простое /'
+            'незапланированном простое, содержащая список работников'
+        )
+        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
+                      'необходимо оформить задержку в пути')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Простой, задержка в пути {ST}':
+        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ST/'
+        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
+        file_2 = open(f'{parrent_path}list.docx', 'rb')
+        filename_1 = (
+            'Ш-14.03.05-16 Служебная записка о простое /'
+            'незапланированном простое, содержащая список работников'
+        )
+        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
+                      'необходимо оформить задержку в пути')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif message.text == 'Исполнение гос.обязанностей':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Исполнение гос.обязанностей {ES}')
