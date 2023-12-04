@@ -2205,6 +2205,254 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif (
+        message.text == 'Учет рабочего времени'
+        or message.text == '🔙 вернуться в раздел '
+        'Учет рабочего времени'
+    ):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton('Изменение графика работы')
+        button_2 = types.KeyboardButton('Исполнение гос.обязанностей')
+        button_3 = types.KeyboardButton('Простой, задержка в пути')
+        button_4 = types.KeyboardButton('Работа в выходной день')
+        button_5 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Бланки заявлений')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Учет рабочего времени',
+            reply_markup=markup,
+        )
+
+    elif message.text == 'Исполнение гос.обязанностей':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Исполнение гос.обязанностей {ES}')
+        # button_2 = types.KeyboardButton(f'Исполнение гос.обязанностей {NR}')
+        button_3 = types.KeyboardButton(f'Исполнение гос.обязанностей {ST}')
+        button_4 = types.KeyboardButton(f'Исполнение гос.обязанностей {ITS}')
+        button_5 = types.KeyboardButton(f'Исполнение гос.обязанностей {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Учет рабочего времени')
+        markup.add(
+            button_1,
+            # button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Исполнение гос.обязанностей',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Исполнение гос.обязанностей {ES}':
+        parrent_path = 'prod_data/blanks/time_tracking/government_duties/ES/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
+                      'государственных или общественных обязанностей')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Исполнение гос.обязанностей {ITS}':
+        parrent_path = 'prod_data/blanks/time_tracking/government_duties/ITS/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
+                      'государственных или общественных обязанностей')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Исполнение гос.обязанностей {NNGGF}':
+        parrent_path = ('prod_data/blanks/time_tracking/government_duties/'
+                        'NNGGF/')
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
+                      'государственных или общественных обязанностей')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Исполнение гос.обязанностей {ST}':
+        parrent_path = ('prod_data/blanks/time_tracking/government_duties/ST/')
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
+                      'государственных или общественных обязанностей')
+        bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+
+    elif message.text == 'Изменение графика работы':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Изменение графика {ES}')
+        button_2 = types.KeyboardButton(f'Изменение графика {NR}')
+        button_3 = types.KeyboardButton(f'Изменение графика {ST}')
+        button_4 = types.KeyboardButton(f'Изменение графика {ITS}')
+        button_5 = types.KeyboardButton(f'Изменение графика {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Учет рабочего времени')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Рождение ребенка',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Изменение графика {ES}':
+        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ES/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
+        file_3 = open(f'{parrent_path}change.docx', 'rb')
+        file_4 = open(f'{parrent_path}new.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
+                      'графика работы персонала')
+        filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
+                      'из отпуска по уходу за ребенком')
+        filename_3 = ('Ш-14.03.05-13 Служебная записка об изменении '
+                      'графика работы персонала')
+        filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
+                      'формирования нового графика работы персонала')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Изменение графика {ITS}':
+        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ITS/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
+        file_3 = open(f'{parrent_path}change.docx', 'rb')
+        file_4 = open(f'{parrent_path}new.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
+                      'графика работы персонала')
+        filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
+                      'из отпуска по уходу за ребенком')
+        filename_3 = ('Ш-14.03.05-13 Служебная записка об изменении '
+                      'графика работы персонала')
+        filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
+                      'формирования нового графика работы персонала')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Изменение графика {NNGGF}':
+        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NNGGF/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        file_2 = open(f'{parrent_path}change.docx', 'rb')
+        file_3 = open(f'{parrent_path}new.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
+                      'графика работы персонала')
+        filename_2 = ('Ш-14.03.05-13 Служебная записка об изменении '
+                      'графика работы персонала')
+        filename_3 = ('Ш-14.03.05-14 Служебная записка о необходимости '
+                      'формирования нового графика работы персонала')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Изменение графика {NR}':
+        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NR/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        file_2 = open(f'{parrent_path}change_grafik.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
+                      'графика работы персонала')
+        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
+                      'режима рабочего времени')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Изменение графика {ST}':
+        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ST/'
+        file_1 = open(f'{parrent_path}main.docx', 'rb')
+        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
+        file_3 = open(f'{parrent_path}change.docx', 'rb')
+        file_4 = open(f'{parrent_path}new.docx', 'rb')
+        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
+                      'графика работы персонала')
+        filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
+                      'из отпуска по уходу за ребенком')
+        filename_3 = ('Ш-14.03.05-13 Служебная записка об изменении '
+                      'графика работы персонала')
+        filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
+                      'формирования нового графика работы персонала')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif message.text == 'Рождение ребенка':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Рождение ребенка {ES}')
