@@ -2205,6 +2205,132 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Прекращение трудового договора':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Прекращение ТД {ES}')
+        button_2 = types.KeyboardButton(f'Прекращение ТД {NR}')
+        button_3 = types.KeyboardButton(f'Прекращение ТД {ST}')
+        button_4 = types.KeyboardButton(f'Прекращение ТД {ITS}')
+        button_5 = types.KeyboardButton(f'Прекращение ТД {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Бланки заявлений')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Прекращение ТД',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Прекращение ТД {ES}':
+        parrent_path = 'prod_data/blanks/termination_contract/ES/'
+        file_1 = open(f'{parrent_path}questionnaire.doc', 'rb')
+        file_2 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = 'Ш-14.03.03-01 Анкета при увольнении'
+        filename_2 = 'Ш-14.03.03-02 Заявление об увольнении'
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Прекращение ТД {ITS}':
+        parrent_path = 'prod_data/blanks/termination_contract/ITS/'
+        file_1 = open(f'{parrent_path}questionnaire.doc', 'rb')
+        file_2 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = 'Ш-14.03.03-01 Анкета при увольнении'
+        filename_2 = 'Ш-14.03.03-02 Заявление об увольнении'
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Прекращение ТД {NNGGF}':
+        parrent_path = 'prod_data/blanks/termination_contract/NNGGF/'
+        file_1 = open(f'{parrent_path}questionnaire.doc', 'rb')
+        file_2 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = 'Ш-14.03.03-01 Анкета при увольнении'
+        filename_2 = 'Ш-14.03.03-02 Заявление об увольнении'
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Прекращение ТД {NR}':
+        parrent_path = 'prod_data/blanks/termination_contract/NR/'
+        file_1 = open(f'{parrent_path}otpravka_trudovoi.doc', 'rb')
+        file_2 = open(f'{parrent_path}perevod.doc', 'rb')
+        file_3 = open(f'{parrent_path}cancel.docx', 'rb')
+        file_4 = open(f'{parrent_path}uvolnenie.doc', 'rb')
+        file_5 = open(f'{parrent_path}otpusk_uvolnenie.doc', 'rb')
+        filename_1 = 'Заявление на отправку трудовой книжки'
+        filename_2 = 'Заявление об увольнении в порядке перевода'
+        filename_3 = 'Отзыв увольнения'
+        filename_4 = 'Ш-14.03.03-02 Заявление об увольнении'
+        filename_5 = ('Ш-14.03.06-07 Заявление о '
+                      'предоставлении отпуска с увольнением')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+            filename_5: file_5,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Прекращение ТД {ST}':
+        parrent_path = 'prod_data/blanks/termination_contract/ST/'
+        file_1 = open(f'{parrent_path}raspiska.docx', 'rb')
+        file_2 = open(f'{parrent_path}questionnaire.doc', 'rb')
+        file_3 = open(f'{parrent_path}application.doc', 'rb')
+        filename_1 = 'Расписка при увольнении'
+        filename_2 = 'Ш-14.03.03-01 Анкета при увольнении'
+        filename_3 = 'Ш-14.03.03-02 Заявление об увольнении'
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif (
         message.text == 'Оформление отпусков'
         or message.text == '🔙 вернуться в раздел '
