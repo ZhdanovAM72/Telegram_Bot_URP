@@ -2232,6 +2232,144 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
+    elif message.text == 'Перенос, продление отпуска':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton(f'Перенос, продление отпуска {ES}')
+        button_2 = types.KeyboardButton(f'Перенос, продление отпуска {NR}')
+        button_3 = types.KeyboardButton(f'Перенос, продление отпуска {ST}')
+        button_4 = types.KeyboardButton(f'Перенос, продление отпуска {ITS}')
+        button_5 = types.KeyboardButton(f'Перенос, продление отпуска {NNGGF}')
+        button_6 = types.KeyboardButton('🔙 вернуться в '
+                                        'раздел Оформление отпусков')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.chat.id,
+            'Перенос, продление отпуска',
+            reply_markup=markup,
+        )
+
+    elif message.text == f'Перенос, продление отпуска {ES}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'transfer_vacation/ES/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ.doc', 'rb')
+        file_3 = open(f'{parrent_path}health.doc', 'rb')
+        filename_1 = 'Ш-14.03.06-05 Заявление о переносе отпуска'
+        filename_2 = 'Ш-14.03.06-06 Служебная записка о переносе отпуска'
+        filename_3 = ('Ш-14.03.06-30 Заявление о продлении-переносе '
+                      'отпуска в связи с временной нетрудоспособностью')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Перенос, продление отпуска {ITS}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'transfer_vacation/ITS/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ.doc', 'rb')
+        file_3 = open(f'{parrent_path}health.doc', 'rb')
+        filename_1 = 'Ш-14.03.06-05 Заявление о переносе отпуска'
+        filename_2 = 'Ш-14.03.06-06 Служебная записка о переносе отпуска'
+        filename_3 = ('Ш-14.03.06-30 Заявление о продлении-переносе '
+                      'отпуска в связи с временной нетрудоспособностью')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Перенос, продление отпуска {NNGGF}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'transfer_vacation/NNGGF/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ.doc', 'rb')
+        file_3 = open(f'{parrent_path}health.doc', 'rb')
+        filename_1 = 'Ш-14.03.06-05 Заявление о переносе отпуска'
+        filename_2 = 'Ш-14.03.06-06 Служебная записка о переносе отпуска'
+        filename_3 = ('Ш-14.03.06-30 Заявление о продлении-переносе '
+                      'отпуска в связи с временной нетрудоспособностью')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Перенос, продление отпуска {NR}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'transfer_vacation/NR/')
+        file_1 = open(f'{parrent_path}application.docx', 'rb')
+        file_2 = open(f'{parrent_path}health.docx', 'rb')
+        filename_1 = 'Перенос дней отдыха за РВД'
+        filename_2 = 'Перенос отпуска'
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
+    elif message.text == f'Перенос, продление отпуска {ST}':
+        parrent_path = ('prod_data/blanks/vacation_registration/'
+                        'transfer_vacation/ST/')
+        file_1 = open(f'{parrent_path}application.doc', 'rb')
+        file_2 = open(f'{parrent_path}SZ.doc', 'rb')
+        file_3 = open(f'{parrent_path}dop.doc', 'rb')
+        file_4 = open(f'{parrent_path}health.doc', 'rb')
+        filename_1 = 'Ш-14.03.06-05 Заявление о переносе отпуска'
+        filename_2 = 'Ш-14.03.06-06 Служебная записка о переносе отпуска'
+        filename_3 = ('Ш-14.03.06-07 Заявление о предоставлении '
+                      'иного вида отпуска')
+        filename_4 = ('Ш-14.03.06-30 Заявление о продлении-переносе '
+                      'отпуска в связи с временной нетрудоспособностью')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+        for caption, file in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=caption,
+                parse_mode="html",
+            )
+
     elif message.text == 'Отпуск без сохранения зп':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
         button_1 = types.KeyboardButton(f'Отпуск без сохранения зп {ES}')
