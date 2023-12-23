@@ -1079,8 +1079,8 @@ def get_text_messages(message):
         btn_5 = types.KeyboardButton('Трудовой распорядок')
         btn_6 = types.KeyboardButton('Внешний вид. Спецодежда и СИЗ')
         btn_7 = types.KeyboardButton('Мотивация персонала')
-        btn_8 = types.KeyboardButton('Буклеты для сотрудников.')
-        btn_9 = types.KeyboardButton('Книги для сотрудников.')
+        btn_8 = types.KeyboardButton('Буклеты для сотрудников')
+        btn_9 = types.KeyboardButton('Книги для сотрудников')
         markup.add(
             btn_8,
             btn_9,
@@ -1367,7 +1367,7 @@ def get_text_messages(message):
         )
 
     # АДАПТАЦИЯ =
-    elif message.text == 'Буклеты для сотрудников.':
+    elif message.text == 'Буклеты для сотрудников':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         doc_1 = open(
@@ -1403,62 +1403,37 @@ def get_text_messages(message):
         )
 
     # АДАПТАЦИЯ =
-    elif message.text == 'Книги для сотрудников.':
+    elif message.text == 'Книги для сотрудников':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        doc_1 = open(
-            'prod_data/Адаптация/книги_для_новых_сотрудников/ES_book.pdf',
-            'rb',
-        )
-        doc_2 = open(
-            'prod_data/Адаптация/книги_для_новых_сотрудников/NR_book.pdf',
-            'rb',
-        )
-        doc_3 = open(
-            'prod_data/Адаптация/книги_для_новых_сотрудников/ITS_book.pdf',
-            'rb',
-        )
-        doc_4 = open(
-            'prod_data/Адаптация/книги_для_новых_сотрудников/ST_book.pdf',
-            'rb',
-        )
         markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption=(
-                'Книга для нового сотрудника '
-                'ООО "Газпромнефть Энергосистемы".'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption=(
-                'Книга для нового сотрудника '
-                'ООО "Нефтесервисные решения".'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption=(
-                'Книга для нового сотрудника '
-                'ООО "Инженерно-технологический сервис".'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_4,
-            caption=(
-                'Книга для нового сотрудника '
-                'ООО "Газпромнефть Сервисные технологии".'
-            ),
-            parse_mode="html",
-        )
+        parrent_path = 'prod_data/Адаптация/книги_для_новых_сотрудников/'
+        file_1 = open(f'{parrent_path}ES_book.pdf', 'rb')
+        file_2 = open(f'{parrent_path}NR_book.pdf', 'rb')
+        file_3 = open(f'{parrent_path}ITS_book.pdf', 'rb')
+        file_4 = open(f'{parrent_path}ST_book.pdf', 'rb')
+        filename_1 = ('Книга для нового сотрудника '
+                      'ООО "Газпромнефть Энергосистемы".')
+        filename_2 = ('Книга для нового сотрудника '
+                      'ООО "Нефтесервисные решения".')
+        filename_3 = ('Книга для нового сотрудника '
+                      'ООО "Инженерно-технологический сервис".')
+        filename_4 = ('Книга для нового сотрудника '
+                      'ООО "Газпромнефть Сервисные технологии".')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+            filename_4: file_4,
+        }
+        for caption, document in files_dict.items():
+            bot.send_document(
+                message.chat.id,
+                document=document,
+                caption=caption,
+                parse_mode="html",
+                reply_markup=markup,
+            )
 
     # ДМС и РВЛ
     elif (message.text == 'ДМС и РВЛ'
@@ -1489,28 +1464,23 @@ def get_text_messages(message):
     elif message.text == 'ДМС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        doc_1 = open('prod_data/ДМС/ГПН_ЭС/ДМС/памятка_ДМС_2023.pdf', 'rb')
-        doc_2 = open('prod_data/ДМС/ГПН_ЭС/ДМС/med_list.pdf', 'rb')
-        doc_3 = open('prod_data/ДМС/ГПН_ЭС/ДМС/dms.pdf', 'rb')
         markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Памятка по лечению',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Перечень поликлиник',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption='Программа ДМС',
-            parse_mode="html",
-        )
+        parrent_path = 'prod_data/ДМС/ГПН_ЭС/ДМС/'
+        documents = {
+            'Памятка по лечению': f'{parrent_path}памятка_ДМС_2023.pdf',
+            'Перечень поликлиник': f'{parrent_path}med_list.pdf',
+            'Программа ДМС': f'{parrent_path}dms.pdf',
+        }
+        media_list = []
+        for doc_name, doc_path in documents.items():
+            file = open(doc_path, 'rb')
+            new_file = telebot.types.InputMediaDocument(
+                file,
+                caption=doc_name,
+                parse_mode='html'
+            )
+            media_list.append(new_file)
+        bot.send_media_group(message.chat.id, media=media_list)
 
     # ДМС и РВЛ
     elif message.text == 'РВЛ':
