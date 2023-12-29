@@ -15,12 +15,12 @@ from db.permissions import (
 )
 from db.search import (search_user_id_in_db,
                        search_code_in_db, search_all_user_id)
-from logger_setting.logger_bot import logger
+from logger_setting.logger_bot import logger, log_user_command
 from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
 from massages import ABOUT_NTK
-from constant import ES, ITS, NR, NNGGF, ST
+from constant import ES, ITS, NR, NNGGF, ST, ADMIN_COMMANDS
 
 load_dotenv()
 
@@ -28,18 +28,6 @@ API_TOKEN = os.getenv('URP_BOT_TOKEN')
 STOP_COMMAND = os.getenv('STOP_COMMAND')
 
 bot = telebot.TeleBot(API_TOKEN)
-
-
-def log_user_command(message):
-    """Логгирование команд."""
-    log_message = logger.info(
-        f'команда: "{message.text}" - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
-    logger.info(log_message)
 
 
 @bot.message_handler(commands=['admin'])
@@ -53,33 +41,7 @@ def check_admin_permissions(message: telebot.types.Message):
         bot.send_message(message.chat.id, 'Привет Admin!')
         bot.send_message(
             message.chat.id,
-            'Для Вас доступны следующие команды:\n'
-            '1. Выгрузка, базы данных и лог-файлов.\n'
-            '/dbinfo\n'
-            '2. Создание уникального ключа доступа для регистрации новых '
-            'сотрудников.\n'
-            'Для сотрудника Энергосистем:\n'
-            '/createcode_ES\n'
-            'Для сотрудника Сервисных Технологий:\n'
-            '/createcode_ST\n'
-            'Для сотрудника Нефтесервисных Решений:\n'
-            '/createcode_NR\n'
-            'Для сотрудника Инженерно-технологического сервиса:\n'
-            '/createcode_ITS\n'
-            '3. Удаление пользователя по user_id.\n'
-            '/deleteuser user_id\n'
-            '4. Удаление пользователя по user_id.\n'
-            '/deletecode unique_code\n'
-            '5. Назначение модератора.\n'
-            '/createmoderator\n'
-            '6. Удаление модератора.\n'
-            '/deletemoderator user_id\n'
-            '7. Обновление кода в БД.\n'
-            '/updatecode old_code company_name(es)\n'
-            '8. Сообщение об обновлении чат-бота:\n'
-            '/updates\n'
-            '9. Массовое сообщение пользователям чат-бота:\n'
-            '/massmess your_message_here',
+            entities=ADMIN_COMMANDS,
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
