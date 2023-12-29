@@ -23,3 +23,15 @@ def init_logger() -> logging.Logger:
 
 
 logger = init_logger()
+
+
+def log_user_command(message):
+    """Логгирование команд."""
+    log_message = logger.info(
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+    logger.info(log_message)
