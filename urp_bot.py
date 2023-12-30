@@ -15,7 +15,7 @@ from db.permissions import (
 )
 from db.search import (search_user_id_in_db,
                        search_code_in_db, search_all_user_id)
-from logger_setting.logger_bot import logger, log_user_command
+from logger_setting.logger_bot import logger, log_user_command, log_photo, log_sticker
 from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
@@ -4107,30 +4107,21 @@ def get_user_photo(message):
     """Ловим отправленные пользователем изобращения."""
     check_user = get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
-        # Рефакторинг логгера добавить
-        logger.info(
-            f'изображение - {message.photo}'
-            f'пользователь: {message.from_user.username} - '
-            f'id пользователя: {message.chat.id} - '
-            f'имя: {message.from_user.first_name} - '
-            f'фамилия: {message.from_user.last_name}'
-        )
+        log_photo(message)
         return bot.send_message(message.chat.id,
                                 'Вы не зарегистрированны в системе!')
 
     bot.send_message(
         message.chat.id,
-        'У меня нет глаз, '
-        'я не понимаю что на этой картинке.\n'
-        'Давайте продолжим работать в меню.',
-        )
-    return logger.info(
-        f'изображение - {message.photo}'
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
+        text=(
+            '''
+            У меня нет глаз,
+            я не понимаю что на этой картинке.\n'
+            Давайте продолжим работать в меню.
+            '''
+        ),
     )
+    return log_photo(message)
 
 
 @bot.message_handler(content_types=['sticker'])
@@ -4138,30 +4129,20 @@ def get_user_stiсker(message):
     """Ловим отправленные пользователем стикеры."""
     check_user = get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
-        # Необходим рефакторинг логгера
-        logger.info(
-            f'изображение {message.sticker} - '
-            f'пользователь: {message.from_user.username} - '
-            f'id пользователя: {message.chat.id} - '
-            f'имя: {message.from_user.first_name} - '
-            f'фамилия: {message.from_user.last_name}'
-        )
+        log_sticker(message)
         return bot.send_message(message.chat.id,
                                 'Вы не зарегистрированны в системе!')
 
     bot.send_message(
         message.chat.id,
-        'У меня нет глаз, '
-        'я не вижу этот стикер.\n'
-        'Давайте продолжим работать в меню.',
+        text=(
+            '''
+            У меня нет глаз, я не вижу этот стикер.
+            Давайте продолжим работать в меню.
+            '''
+        ),
     )
-    return logger.info(
-        f'стикер {message.sticker} - '
-        f'пользователь: {message.from_user.username} - '
-        f'id пользователя: {message.chat.id} - '
-        f'имя: {message.from_user.first_name} - '
-        f'фамилия: {message.from_user.last_name}'
-    )
+    return log_sticker(message)
 
 
 if __name__ == '__main__':
