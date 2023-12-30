@@ -20,7 +20,7 @@ from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
 from massages import ABOUT_NTK
-from constant import ES, ITS, NR, NNGGF, ST, ADMIN_COMMANDS
+from constant import ES, ITS, NR, NNGGF, ST, ADMIN_COMMANDS, NO_ADMIN_RIGHTS, MODERATOR_COMMANDS, NO_MODERATOR_RIGHTS
 
 load_dotenv()
 
@@ -36,15 +36,12 @@ def check_admin_permissions(message: telebot.types.Message):
     bot.send_message(message.chat.id, 'Проверяем права.')
     access = get_admin_access(message.chat.id)
     if access is None:
-        bot.send_message(message.chat.id, 'У Вас нет административных прав!')
+        bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     elif access[1] == message.chat.id:
         bot.send_message(message.chat.id, 'Привет Admin!')
-        bot.send_message(
-            message.chat.id,
-            text=ADMIN_COMMANDS,
-        )
+        bot.send_message(message.chat.id, text=ADMIN_COMMANDS)
     else:
-        bot.send_message(message.chat.id, 'У Вас нет административных прав!')
+        bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     return log_user_command(message)
 
 
@@ -53,8 +50,7 @@ def updatecode(message: telebot.types.Message):
     """Обновляем код в БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     input_code = message.text
     erorr_code_message = (
         'Команда использована неверно, '
@@ -133,25 +129,12 @@ def check_moderator_permissions(message: telebot.types.Message):
     bot.send_message(message.chat.id, 'Проверяем права.')
     access = get_moderator_access(message.chat.id)
     if access is None:
-        bot.send_message(message.chat.id, 'У Вас нет прав модератора!')
+        bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
     elif access[1] == message.chat.id:
         bot.send_message(message.chat.id, 'Привет Moderator!')
-        bot.send_message(
-            message.chat.id,
-            'Для Вас доступны следующие команды:\n'
-            '\n1. Создание уникального ключа доступа для регистрации новых '
-            'сотрудников.\n'
-            '\nДля сотрудника Энергосистем:\n'
-            '/createnewcode_ES\n'
-            '\nДля сотрудника Сервисных Технологий:\n'
-            '/createnewcode_ST\n'
-            '\nДля сотрудника Нефтесервисных Решений:\n'
-            '/createnewcode_NR\n'
-            '\nДля сотрудника Инженерно-технологического сервиса:\n'
-            '/createnewcode_ITS\n',
-        )
+        bot.send_message(message.chat.id, text=MODERATOR_COMMANDS)
     else:
-        bot.send_message(message.chat.id, 'У Вас нет прав модератора!')
+        bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
     return log_user_command(message)
 
 
@@ -160,8 +143,7 @@ def delete_user_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по user_id."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     input_code = message.text
     erorr_code_message = (
         'Команда использована неверно, '
@@ -196,8 +178,7 @@ def delete_code_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по коду доступа."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     input_code = message.text
     erorr_code_message = (
         'Команда использована неверно, '
@@ -231,8 +212,7 @@ def export_db(message: telebot.types.Message):
     """Экспортируем БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
 
     bot.send_message(message.chat.id, 'Попытка экспорта БД.')
     excel_export()
@@ -273,8 +253,7 @@ def create_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     company = message.text.split('_')
     if len(company) == 1:
         return bot.send_message(message.chat.id, 'Неверная команда.')
@@ -310,8 +289,7 @@ def create_new_code(message: telebot.types.Message):
     """Создаем новый код доступа в БД."""
     access = get_moderator_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет прав модератора!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     company = message.text.split('_')
     if len(company) == 1:
         return bot.send_message(message.chat.id, 'Неверная команда.')
@@ -411,20 +389,30 @@ def updates_info_message(message):
     """Рассылка информации о последних обновлениях."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     update_message = UPDATE_MESSAGE
     users = search_all_user_id()
+    send_count = 0
+    eror_count = 0
     for i in users:
         try:
+            send_count += 1
             bot.send_message(chat_id=i[0], text=update_message)
         except Exception:
+            eror_count += 1
             raise bot.send_message(
                 message.chat.id,
                 f'ошибка отправки пользователю с id № {i[0]}'
             )
         finally:
             continue
+    bot.send_message(
+        message.chat.id,
+        text=(
+            f'Сообщение успешно отправлено {send_count} пользователям!'
+            f'Сообщение не доставлено {eror_count} пользователям!'
+        )
+    )
     return log_user_command(message)
 
 
@@ -454,16 +442,27 @@ def message_to_all_auth_user(message):
             erorr_code_message
         )
     users = search_all_user_id()
+    send_count = 0
+    eror_count = 0
     for i in users:
         try:
+            send_count += 1
             bot.send_message(chat_id=i[0], text=mass_message)
         except Exception:
+            eror_count += 1
             raise bot.send_message(
                 message.chat.id,
                 f'ошибка отправки пользователю с id № {i[0]}'
             )
         finally:
             continue
+    bot.send_message(
+        message.chat.id,
+        text=(
+            f'Сообщение успешно отправлено {send_count} пользователям!'
+            f'Сообщение не доставлено {eror_count} пользователям!'
+        )
+    )
     return log_user_command(message)
 
 
@@ -510,8 +509,7 @@ def stop_command(message):
     """Останавливаем работу бота командой."""
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     bot.send_message(message.chat.id, 'OK, stop...')
     log_user_command(message)
     return bot.stop_polling()
