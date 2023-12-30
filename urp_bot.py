@@ -41,7 +41,7 @@ def check_admin_permissions(message: telebot.types.Message):
         bot.send_message(message.chat.id, 'Привет Admin!')
         bot.send_message(
             message.chat.id,
-            entities=ADMIN_COMMANDS,
+            text=ADMIN_COMMANDS,
         )
     else:
         bot.send_message(message.chat.id, 'У Вас нет административных прав!')
