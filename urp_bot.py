@@ -89,8 +89,7 @@ def create_moderator(message: telebot.types.Message):
     bot.send_message(message.chat.id, 'Проверяем права.')
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
+        return bot.send_message(message.chat.id, NO_ADMIN_RIGHTS)
     input_code = message.text
     erorr_code_message = (
         'Команда использована неверно, '
@@ -255,8 +254,6 @@ def create_code(message: telebot.types.Message):
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     company = message.text.split('_')
-    if len(company) == 1:
-        return bot.send_message(message.chat.id, 'Неверная команда.')
     company_name = company[1]
     generate__new_code = generate_code(company_name.lower())
     check = search_code_in_db(generate__new_code)
@@ -291,8 +288,6 @@ def create_new_code(message: telebot.types.Message):
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     company = message.text.split('_')
-    if len(company) == 1:
-        return bot.send_message(message.chat.id, 'Неверная команда.')
     company_name = company[1]
     generate__new_code = generate_code(company_name.lower())
     check = search_code_in_db(generate__new_code)
