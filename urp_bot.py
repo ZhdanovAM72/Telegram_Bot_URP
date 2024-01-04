@@ -15,12 +15,19 @@ from db.permissions import (
 )
 from db.search import (search_user_id_in_db,
                        search_code_in_db, search_all_user_id)
-from logger_setting.logger_bot import logger, log_user_command, log_photo, log_sticker
+from logger_setting.logger_bot import log_user_command, log_photo, log_sticker
 from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
 from massages import ABOUT_NTK
-from constant import ES, ITS, NR, NNGGF, ST, ADMIN_COMMANDS, NO_ADMIN_RIGHTS, MODERATOR_COMMANDS, NO_MODERATOR_RIGHTS
+from constant import (
+    ES, ITS, NR, NNGGF, ST,
+    ADMIN_COMMANDS,
+    NO_ADMIN_RIGHTS,
+    MODERATOR_COMMANDS,
+    NO_MODERATOR_RIGHTS,
+    MAX_MESSAGE_SYMBOLS
+)
 
 load_dotenv()
 
@@ -338,7 +345,7 @@ def check_user_permissions(message: telebot.types.Message):
 
 @bot.message_handler(commands=['code'])
 def login_user(message):
-    """"Определяем права пользователя."""
+    """Определяем права пользователя."""
     input_code = message.text
     erorr_code_message = (
         'Команда использована неверно, '
@@ -348,14 +355,14 @@ def login_user(message):
     if input_code == '/code':
         bot.send_message(
             message.chat.id,
-            erorr_code_message
+            erorr_code_message,
         )
         return log_user_command(message)
     clear_code = input_code.split()
     if len(clear_code) <= 1 or len(clear_code) > 2:
         return bot.send_message(
             message.chat.id,
-            erorr_code_message
+            erorr_code_message,
         )
     check = search_code_in_db(clear_code[1])
     if check is not None and check[0] == clear_code[1]:
@@ -367,95 +374,66 @@ def login_user(message):
             message.from_user.username,
             message.from_user.id,
             message.from_user.first_name,
-            message.from_user.last_name
+            message.from_user.last_name,
         )
         return check_user_permissions(message)
     bot.send_message(
         message.chat.id,
         'Код не найден в системе!\n'
         'Запросите код у администратора проекта, '
-        'либо используйте имеющийся.'
+        'либо используйте имеющийся.',
     )
     return log_user_command(message)
 
 
-@bot.message_handler(commands=['updates'])
-def updates_info_message(message):
-    """Рассылка информации о последних обновлениях."""
+@bot.message_handler(commands=['updates', 'massmess'])
+def mass_info_message(message):
+    """
+    Рассылка информации всем пользователям.
+    - updates: для заготовленных обновлений
+    - massmess: для любих сообщений (до 500 символов)
+    """
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    update_message = UPDATE_MESSAGE
-    users = search_all_user_id()
-    send_count = 0
-    eror_count = 0
-    for i in users:
-        try:
-            send_count += 1
-            bot.send_message(chat_id=i[0], text=update_message)
-        except Exception:
-            eror_count += 1
-            raise bot.send_message(
-                message.chat.id,
-                f'ошибка отправки пользователю с id № {i[0]}'
-            )
-        finally:
-            continue
-    bot.send_message(
-        message.chat.id,
-        text=(
-            f'Сообщение успешно отправлено {send_count} пользователям!'
-            f'Сообщение не доставлено {eror_count} пользователям!'
-        )
-    )
-    return log_user_command(message)
-
-
-# Массовая рассылка для всех пользователей
-@bot.message_handler(commands=['massmess'])
-def message_to_all_auth_user(message):
-    """Сообщение всем зарегистрированным пользователям."""
-    access = get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'У Вас нет административных прав!')
     input_message = message.text.split()
-    mass_message = ' '.join(input_message[1:])
-    print(mass_message)
-    erorr_code_message = (
-        'Команда использована неверно, '
-        'введите запрос как показано на примере!\n'
-        'Пример: \n/massmess your_message\n'
-        '\nМаксимально 100 слов!'
-    )
-    if input_message == '/massmess' or input_message == '/massmess ':
-        bot.send_message(message.chat.id, erorr_code_message)
-        return log_user_command(message)
-    if len(input_message) <= 1 or len(input_message) > 100:
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
+    if input_message[0] == '/updates':
+        message_for_users = UPDATE_MESSAGE
+    elif input_message[0] == '/massmess':
+        message_for_users = ' '.join(input_message[1:])
+        erorr_code_message = (
+            'Команда использована неверно, '
+            'введите запрос как показано на примере!\n'
+            'Пример: \n/massmess your_message\n'
+            f'\nМаксимально {MAX_MESSAGE_SYMBOLS} символов!'
         )
+        if (len(input_message) <= 1
+           or len(' '.join(input_message[1:]))) > MAX_MESSAGE_SYMBOLS:
+            bot.send_message(
+                message.chat.id,
+                erorr_code_message
+            )
+            return log_user_command(message)
     users = search_all_user_id()
     send_count = 0
     eror_count = 0
-    for i in users:
+    for user in users:
         try:
             send_count += 1
-            bot.send_message(chat_id=i[0], text=mass_message)
+            bot.send_message(chat_id=user[0], text=message_for_users)
         except Exception:
             eror_count += 1
             raise bot.send_message(
                 message.chat.id,
-                f'ошибка отправки пользователю с id № {i[0]}'
+                f'ошибка отправки пользователю с id № {user[0]}'
             )
         finally:
             continue
     bot.send_message(
         message.chat.id,
         text=(
-            f'Сообщение успешно отправлено {send_count} пользователям!'
-            f'Сообщение не доставлено {eror_count} пользователям!'
+            f'Сообщение успешно отправлено {send_count} пользователям!\n'
+            f'\nСообщение не доставлено {eror_count} пользователям!'
         )
     )
     return log_user_command(message)
