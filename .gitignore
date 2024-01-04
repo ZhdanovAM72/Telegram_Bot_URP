@@ -171,7 +171,7 @@ pictures/
 db_correct.py
 
 # тестовые файлы
-test.py
+test*.py
 mem.mp4
 zhdanov*
 changelog.txt
