@@ -19,9 +19,9 @@ from logger_setting.logger_bot import log_user_command, log_photo, log_sticker
 from utils.password_generator import generate_code
 from utils.excel import excel_export
 from updates import UPDATE_MESSAGE
-from massages import ABOUT_NTK
 from constant import (
     ES, ITS, NR, NNGGF, ST,
+    ABOUT_NTK,
     ADMIN_COMMANDS,
     NO_ADMIN_RIGHTS,
     MODERATOR_COMMANDS,
