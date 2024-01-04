@@ -32,6 +32,7 @@ def search_code_in_db(code):
 
 
 def search_all_user_id():
+    """Поиск всех пользователей в базе данных."""
     with sqlite3.connect('users_v2.sqlite') as conn:
         cursor = conn.cursor()
         cursor.execute(
