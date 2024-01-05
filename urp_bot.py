@@ -26,7 +26,8 @@ from constant import (
     NO_ADMIN_RIGHTS,
     MODERATOR_COMMANDS,
     NO_MODERATOR_RIGHTS,
-    MAX_MESSAGE_SYMBOLS
+    MAX_MESSAGE_SYMBOLS,
+    NOT_REGISTERED,
 )
 
 load_dotenv()
@@ -320,8 +321,7 @@ def check_user_permissions(message: telebot.types.Message):
     """"Определяем права пользователя."""
     access = get_user_access(message.chat.id)
     if access is None:
-        bot.send_message(message.chat.id,
-                         'Вы не зарегистрированны в системе!')
+        bot.send_message(message.chat.id, NOT_REGISTERED)
         bot.send_message(
             message.chat.id,
             'Запросите код у администратора проекта, '
@@ -444,8 +444,7 @@ def start(message):
     """Приветствуем пользователя и включаем меню бота."""
     check_user = get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'Вы не зарегистрированны в системе!')
+        return bot.send_message(message.chat.id, NOT_REGISTERED)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn01 = types.KeyboardButton('Информация о боте')
     btn02 = types.KeyboardButton('Главное меню')
@@ -496,8 +495,7 @@ def get_text_messages(message):
     """
     check_user = get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
-        return bot.send_message(message.chat.id,
-                                'Вы не зарегистрированны в системе!')
+        return bot.send_message(message.chat.id, NOT_REGISTERED)
     if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
         button_1 = types.KeyboardButton('О компании')
@@ -4081,8 +4079,7 @@ def get_user_photo(message):
     check_user = get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         log_photo(message)
-        return bot.send_message(message.chat.id,
-                                'Вы не зарегистрированны в системе!')
+        return bot.send_message(message.chat.id, NOT_REGISTERED)
 
     bot.send_message(
         message.chat.id,
@@ -4103,8 +4100,7 @@ def get_user_stiсker(message):
     check_user = get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         log_sticker(message)
-        return bot.send_message(message.chat.id,
-                                'Вы не зарегистрированны в системе!')
+        return bot.send_message(message.chat.id, NOT_REGISTERED)
 
     bot.send_message(
         message.chat.id,
