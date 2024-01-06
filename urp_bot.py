@@ -1397,21 +1397,28 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
         markup.add(btn)
         parrent_path = 'prod_data/ДМС/ГПН_ЭС/ДМС/'
-        documents = {
-            'Памятка по лечению': f'{parrent_path}памятка_ДМС_2023.pdf',
-            'Перечень поликлиник': f'{parrent_path}med_list.pdf',
-            'Программа ДМС': f'{parrent_path}dms.pdf',
-        }
-        media_list = []
-        for doc_name, doc_path in documents.items():
-            file = open(doc_path, 'rb')
-            new_file = telebot.types.InputMediaDocument(
-                file,
-                caption=doc_name,
-                parse_mode='html'
+        with (
+            open(f'{parrent_path}памятка_ДМС_2023.pdf', 'rb') as file_1,
+            open(f'{parrent_path}med_list.pdf', 'rb') as file_2,
+            open(f'{parrent_path}dms.pdf', 'rb') as file_3
+        ):
+            bot.send_media_group(
+                message.chat.id,
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption='Памятка по лечению',
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption='Перечень поликлиник',
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption='Программа ДМС',
+                    ),
+                ]
             )
-            media_list.append(new_file)
-        bot.send_media_group(message.chat.id, media=media_list)
 
     # ДМС и РВЛ
     elif message.text == 'РВЛ':
