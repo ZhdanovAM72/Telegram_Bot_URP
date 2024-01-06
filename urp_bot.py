@@ -1339,10 +1339,10 @@ def get_text_messages(message):
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
         markup.add(btn)
         parrent_path = 'prod_data/Адаптация/книги_для_новых_сотрудников/'
-        file_1 = open(f'{parrent_path}ES_book.pdf', 'rb')
-        file_2 = open(f'{parrent_path}NR_book.pdf', 'rb')
-        file_3 = open(f'{parrent_path}ITS_book.pdf', 'rb')
-        file_4 = open(f'{parrent_path}ST_book.pdf', 'rb')
+        file_1 = f'{parrent_path}ES_book.pdf'
+        file_2 = f'{parrent_path}NR_book.pdf'
+        file_3 = f'{parrent_path}ITS_book.pdf'
+        file_4 = f'{parrent_path}ST_book.pdf'
         filename_1 = ('Книга для нового сотрудника '
                       'ООО "Газпромнефть Энергосистемы".')
         filename_2 = ('Книга для нового сотрудника '
@@ -1358,13 +1358,14 @@ def get_text_messages(message):
             filename_4: file_4,
         }
         for caption, document in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                document=document,
-                caption=caption,
-                parse_mode="html",
-                reply_markup=markup,
-            )
+            with open(document, 'rb') as file:
+                bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=caption,
+                    parse_mode="html",
+                    reply_markup=markup,
+                )
 
     # ДМС и РВЛ
     elif (message.text == 'ДМС и РВЛ'
