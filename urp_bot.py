@@ -1301,37 +1301,29 @@ def get_text_messages(message):
     elif message.text == 'Буклеты для сотрудников':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        doc_1 = open(
-            'prod_data/Адаптация/буклеты_для_сотрудников/ES_2023.pdf',
-            'rb',
-        )
-        doc_2 = open(
-            'prod_data/Адаптация/буклеты_для_сотрудников/NR_2023.pdf',
-            'rb',
-        )
-        doc_3 = open(
-            'prod_data/Адаптация/буклеты_для_сотрудников/ST_2023.pdf',
-            'rb',
-        )
         markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Буклет сотрудника ООО "Газпромнефть Энергосистемы.',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Буклет сотрудника ООО "Нефтесервисные решения.',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            caption='Буклет сотрудника ООО "Газпромнефть Сервисные технологии',
-            parse_mode="html",
-        )
+        parrent_path = 'prod_data/Адаптация/буклеты_для_сотрудников/'
+        file_1 = f'{parrent_path}ES_2023.pdf'
+        file_2 = f'{parrent_path}NR_2023.pdf'
+        file_3 = f'{parrent_path}ST_2023.pdf'
+        filename_1 = ('Буклет сотрудника ООО "Газпромнефть Энергосистемы.')
+        filename_2 = ('Буклет сотрудника ООО "Нефтесервисные решения.')
+        filename_3 = ('Буклет сотрудника ООО '
+                      '"Газпромнефть Сервисные технологии')
+        files_dict = {
+            filename_1: file_1,
+            filename_2: file_2,
+            filename_3: file_3,
+        }
+        for caption, document in files_dict.items():
+            with open(document, 'rb') as file:
+                bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=caption,
+                    parse_mode="html",
+                    reply_markup=markup,
+                )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Книги для сотрудников':
