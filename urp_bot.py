@@ -1366,7 +1366,7 @@ def get_text_messages(message):
         btn_1 = types.KeyboardButton('🔙 Главное меню')
         btn_2 = types.KeyboardButton('ДМС')
         btn_3 = types.KeyboardButton('РВЛ')
-        doc = open('prod_data/ДМС/ГПН_ЭС/curators.pdf', 'rb')
+        document = 'prod_data/ДМС/ГПН_ЭС/curators.pdf'
         markup.add(
             btn_2,
             btn_3,
@@ -1377,12 +1377,13 @@ def get_text_messages(message):
             "ДМС и РВЛ",
             reply_markup=markup,
         )
-        bot.send_document(
-            message.chat.id,
-            doc,
-            caption='Кураторы программы в ДО и подразделениях',
-            parse_mode="html",
-        )
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document=file,
+                caption='Кураторы программы в ДО и подразделениях',
+                parse_mode="html",
+            )
 
     # ДМС и РВЛ
     elif message.text == 'ДМС':
@@ -1416,15 +1417,16 @@ def get_text_messages(message):
     # ДМС и РВЛ
     elif message.text == 'РВЛ':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        doc = open('prod_data/ДМС/ГПН_ЭС/РВЛ/памятка_санатории.pdf', 'rb')
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc,
-            caption='Памятка по санаториям',
-            parse_mode="html",
-        )
+        button = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        document = 'prod_data/ДМС/ГПН_ЭС/РВЛ/памятка_санатории.pdf'
+        markup.add(button)
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document=file,
+                caption='Памятка по санаториям',
+                parse_mode="html",
+            )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif (message.text == 'Карьерное развитие'
