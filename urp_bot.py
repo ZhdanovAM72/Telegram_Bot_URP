@@ -1453,15 +1453,16 @@ def get_text_messages(message):
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Мой трек':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        doc = open('prod_data/карьерное_развитие/my_track/my.pdf', 'rb')
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc,
-            caption='Мой трек и карьерные опции',
-            parse_mode="html",
-        )
+        button = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        document = 'prod_data/карьерное_развитие/my_track/my.pdf'
+        markup.add(button)
+        with open(button, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document=file,
+                caption='Мой трек и карьерные опции',
+                parse_mode="html",
+            )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Мой профиль':
