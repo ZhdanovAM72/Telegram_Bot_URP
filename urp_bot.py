@@ -985,18 +985,19 @@ def get_text_messages(message):
 
     elif message.text == 'Контакт центр':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
-        doc = open(
-            'prod_data/о_компании/сервисы_для_сотрудников/контакт_центр/кадровое_администрирование.pptx',
-            'rb'
+        button = types.KeyboardButton('🔙 вернуться в раздел Сервисы')
+        document = (
+            'prod_data/о_компании/сервисы_для_сотрудников/'
+            'контакт_центр/кадровое_администрирование.pptx'
         )
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc,
-            caption='Контакт центр',
-            parse_mode="html"
-        )
+        markup.add(button)
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document,
+                caption='Контакт центр',
+                parse_mode="html"
+            )
 
     # АДАПТАЦИЯ
     elif (message.text == 'Адаптация'
@@ -1032,103 +1033,105 @@ def get_text_messages(message):
     # АДАПТАЦИЯ =
     elif message.text == 'Корпоративная безопасность':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        doc_1 = open(
-            'prod_data/Адаптация/корпоративная_безопасность/ES.pdf',
-            'rb'
+        button = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
+        document_1 = (
+            'prod_data/Адаптация/корпоративная_безопасность/ES.pdf'
         )
-        doc_2 = open(
-            'prod_data/Адаптация/корпоративная_безопасность/памятка.pdf',
-            'rb'
+        document_2 = (
+            'prod_data/Адаптация/корпоративная_безопасность/памятка.pdf'
         )
-        doc_3 = open(
-            'prod_data/Адаптация/корпоративная_безопасность/ITS.pdf',
-            'rb'
+        document_3 = (
+            'prod_data/Адаптация/корпоративная_безопасность/ITS.pdf'
         )
-        doc_4 = open(
-            'prod_data/Адаптация/корпоративная_безопасность/ST.pdf',
-            'rb'
+        document_4 = (
+            'prod_data/Адаптация/корпоративная_безопасность/ST.pdf'
         )
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Памятка по информационной безопасности',
-            parse_mode="html"
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            protect_content=True,
-            caption=(
-                'Корпоративная безопасность '
-                'ООО "Газпромнефть Энергосистемы"'
-            ),
-            parse_mode="html"
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_3,
-            protect_content=True,
-            caption=(
-                'Корпоративная безопасность '
-                'ООО "Инженерно-технологический сервис"'
-            ),
-            parse_mode="html"
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_4,
-            protect_content=True,
-            caption='Корпоративная безопасность ООО "Сервисные технологии"',
-            parse_mode="html"
-        )
+        markup.add(button)
+        with open(document_2, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_2,
+                caption='Памятка по информационной безопасности',
+                parse_mode="html"
+            )
+        with open(document_1, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_1,
+                protect_content=True,
+                caption=(
+                    'Корпоративная безопасность '
+                    'ООО "Газпромнефть Энергосистемы"'
+                ),
+                parse_mode="html"
+            )
+        with open(document_3, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_3,
+                protect_content=True,
+                caption=(
+                    'Корпоративная безопасность '
+                    'ООО "Инженерно-технологический сервис"'
+                ),
+                parse_mode="html"
+            )
+        with open(document_4, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_4,
+                protect_content=True,
+                caption=(
+                    'Корпоративная безопасность ООО "Сервисные технологии"'
+                ),
+                parse_mode="html"
+            )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Производственная безопасность':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button = types.KeyboardButton('🔙 вернуться в раздел Адаптация')
-        document_1 = open(
-            'prod_data/Адаптация/производственная_безопасность/ES_pb.pdf',
-            'rb'
+        document_1 = (
+            'prod_data/Адаптация/производственная_безопасность/ES_pb.pdf'
         )
-        document_2 = open(
-            'prod_data/Адаптация/производственная_безопасность/ITS_pb.pdf',
-            'rb'
+        document_2 = (
+            'prod_data/Адаптация/производственная_безопасность/ITS_pb.pdf'
         )
-        document_3 = open(
-            'prod_data/Адаптация/производственная_безопасность/ST_NR_pb.pdf',
-            'rb'
+        document_3 = (
+            'prod_data/Адаптация/производственная_безопасность/ST_NR_pb.pdf'
         )
         markup.add(button)
-        bot.send_document(
-            message.chat.id,
-            document_1,
-            caption=(
-                'Производственная безопасность '
-                'ООО "Газпромнефть Энергосистемы"'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_2,
-            caption=(
-                'Производственная безопасность '
-                'ООО "Инженерно-технологический сервис"'
-            ),
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_3,
-            caption=(
-                'Производственная безопасность '
-                'ООО "Нефтесервисные решения" и '
-                'ООО "Газпромнефть Сервисные технологии"'
-            ),
-            parse_mode="html",
-        )
+        with open(document_1, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_1,
+                caption=(
+                    'Производственная безопасность '
+                    'ООО "Газпромнефть Энергосистемы"'
+                ),
+                parse_mode="html",
+            )
+        with open(document_2, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_2,
+                caption=(
+                    'Производственная безопасность '
+                    'ООО "Инженерно-технологический сервис"'
+                ),
+                parse_mode="html",
+            )
+        with open(document_3, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document_3,
+                caption=(
+                    'Производственная безопасность '
+                    'ООО "Нефтесервисные решения" и '
+                    'ООО "Газпромнефть Сервисные технологии"'
+                ),
+                parse_mode="html",
+            )
 
     # АДАПТАЦИЯ =
     elif message.text == 'Хоз. и транспорт. обеспечение':
@@ -1453,10 +1456,12 @@ def get_text_messages(message):
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Мой трек':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        button = types.KeyboardButton(
+            '🔙 вернуться в раздел Карьерное развитие'
+        )
         document = 'prod_data/карьерное_развитие/my_track/my.pdf'
         markup.add(button)
-        with open(button, 'rb') as file:
+        with open(document, 'rb') as file:
             bot.send_document(
                 message.chat.id,
                 document=file,
@@ -1467,16 +1472,14 @@ def get_text_messages(message):
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Мой профиль':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        doc_1 = open(
-            'prod_data/карьерное_развитие/profile_on_portal/info.pdf',
-            'rb',
+        button = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        document_1 = (
+            'prod_data/карьерное_развитие/profile_on_portal/info.pdf'
         )
-        doc_2 = open(
-            'prod_data/карьерное_развитие/profile_on_portal/profile.pdf',
-            'rb',
+        document_2 = (
+            'prod_data/карьерное_развитие/profile_on_portal/profile.pdf'
         )
-        markup.add(btn)
+        markup.add(button)
         bot.send_message(
             message.chat.id,
             'Профиль на карьерном портале -это Ваша визитная карточка, '
@@ -1492,18 +1495,20 @@ def get_text_messages(message):
             'смогли видеть самую актуальную информацию о Вас.',
             reply_markup=markup,
         )
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Памятка по заполнению профиля',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            doc_2,
-            caption='Профиль сотрудника',
-            parse_mode="html",
-        )
+        with open(document_1, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document=document_1,
+                caption='Памятка по заполнению профиля',
+                parse_mode="html",
+            )
+        with open(document_2, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                document=document_2,
+                caption='Профиль сотрудника',
+                parse_mode="html",
+            )
 
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Индивидуальный план развития':
