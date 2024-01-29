@@ -169,6 +169,7 @@ prod_data/
 /data
 pictures/
 db_correct.py
+new_data.tar*
 
 # тестовые файлы
 test*.py
