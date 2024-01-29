@@ -1619,14 +1619,17 @@ def get_text_messages(message):
                     telebot.types.InputMediaDocument(
                         file_1,
                         caption='Комитет по талантам - процедура проведения',
+                        parse_mode="html",
                     ),
                     telebot.types.InputMediaDocument(
                         file_2,
                         caption='Критерии включения в кадровый резерв',
+                        parse_mode="html",
                     ),
                     telebot.types.InputMediaDocument(
                         file_3,
                         caption='Правила нахождения в кадровом резерве',
+                        parse_mode="html",
                     ),
                 ]
             )
@@ -1726,48 +1729,38 @@ def get_text_messages(message):
 
     # ОБУЧЕНИЕ
     elif message.text == 'Планирование обучения':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_1 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Обучение')
-        document_1 = open(
-            'prod_data/Обучение/ГПН_ЭС/plan/employee.pdf',
-            'rb',
-        )
-        document_2 = open(
-            'prod_data/Обучение/ГПН_ЭС/plan/supervisor.pdf',
-            'rb',
-        )
-        markup.add(button_1)
-        bot.send_document(
-            message.chat.id,
-            document_1,
-            caption='Планирование обучения - Сотрудник',
-            parse_mode="html",
-        )
-        bot.send_document(
-            message.chat.id,
-            document_2,
-            caption='Планирование обучения - Руководитель',
-            parse_mode="html",
-            reply_markup=markup,
-        )
+        parrent_path = 'prod_data/Обучение/ГПН_ЭС/plan/'
+        with (
+            open(f'{parrent_path}employee.pdf', 'rb') as file_1,
+            open(f'{parrent_path}supervisor.pdf', 'rb') as file_2,
+        ):
+            bot.send_media_group(
+                message.chat.id,
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption='Планирование обучения - Сотрудник',
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption='Планирование обучения - Руководитель',
+                        parse_mode="html",
+                    )
+                ]
+            )
 
     # ОБУЧЕНИЕ
     elif message.text == 'Полезная литература':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Обучение')
-        doc_1 = open(
-            'prod_data/Обучение/ГПН_ЭС/Почитать/электронные_библиотеки.pdf',
-            'rb',
-        )
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Электронные библиотеки',
-            parse_mode="html",
-        )
+        document = ('prod_data/Обучение/ГПН_ЭС/Почитать/'
+                    'электронные_библиотеки.pdf')
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Электронные библиотеки',
+                parse_mode="html",
+            )
 
     # ОБУЧЕНИЕ
     elif message.text == 'Цикл планирования обучения':
