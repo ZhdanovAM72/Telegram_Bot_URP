@@ -14,7 +14,7 @@ def init_logger() -> logging.Logger:
             logging.StreamHandler(),
             RotatingFileHandler(
                 filename=LOG_FILE,
-                maxBytes=5_000_000,
+                maxBytes=500_000,
                 backupCount=5
             )
         ],
