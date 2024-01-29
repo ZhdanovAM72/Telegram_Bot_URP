@@ -1771,37 +1771,27 @@ def get_text_messages(message):
 
     # ОБУЧЕНИЕ
     elif message.text == 'Цикл планирования обучения':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Обучение')
-        doc_1 = open(
-            'prod_data/Обучение/ГПН_ЭС/Целевые_образовательные_программы/educate.pdf',
-            'rb',
-        )
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Цикл планирования обучения',
-            parse_mode="html",
-        )
+        document = ('prod_data/Обучение/ГПН_ЭС/'
+                    'Целевые_образовательные_программы/educate.pdf')
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Цикл планирования обучения',
+                parse_mode="html",
+            )
 
     # ОБУЧЕНИЕ
     elif message.text == 'Каталог программ':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в '
-                                   'раздел Обучение')
-        doc_1 = open(
-            'prod_data/Обучение/ГПН_ЭС/Каталог_программ/Рекомендованные_образовательные_программы.pdf',
-            'rb',
-        )
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc_1,
-            caption='Рекомендованные образовательные программы',
-            parse_mode="html",
-        )
+        document = ('prod_data/Обучение/ГПН_ЭС/Каталог_программ/'
+                    'Рекомендованные_образовательные_программы.pdf')
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Рекомендованные образовательные программы',
+                parse_mode="html",
+            )
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif (message.text == 'Молодежная политика'
@@ -1851,14 +1841,10 @@ def get_text_messages(message):
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif message.text == 'Направления деятельности МС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 вернуться в '
-                                      'раздел Молодежный совет')
         document = (
             'prod_data/Молодежная_политика/MS/'
             'Направления_деятельности/napravlenya.pdf'
         )
-        markup.add(button)
         with open(document, 'rb') as file:
             bot.send_document(
                 message.chat.id,
@@ -1892,19 +1878,17 @@ def get_text_messages(message):
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif message.text == 'Структура МС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Молодежный совет')
-        doc = open(
+        document = open(
             'prod_data/Молодежная_политика/MS/Структура/structuraMS.pdf',
             'rb',
         )
-        markup.add(btn)
-        bot.send_document(
-            message.chat.id,
-            doc,
-            caption='Структура МС',
-            parse_mode="html",
-        )
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Структура МС',
+                parse_mode="html",
+            )
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif (message.text == 'Развитие молодых специалистов'
@@ -1945,10 +1929,10 @@ def get_text_messages(message):
         parrent_path = ('prod_data/Молодежная_политика'
                         '/Развитие_молодых_специалистов/НТК/')
 
-        file_1 = open(f'{parrent_path}Заявка_Шаблон.docx', 'rb')
-        file_2 = open(f'{parrent_path}Шаблон_одностраничника.pptx', 'rb')
-        file_3 = open(f'{parrent_path}Шаблон_презентации.pptx', 'rb')
-        file_4 = open(f'{parrent_path}dk.pdf', 'rb')
+        file_1 = f'{parrent_path}Заявка_Шаблон.docx'
+        file_2 = f'{parrent_path}Шаблон_одностраничника.pptx'
+        file_3 = f'{parrent_path}Шаблон_презентации.pptx'
+        file_4 = f'{parrent_path}dk.pdf'
         filename_1 = 'Заявка - Шаблон'
         filename_2 = 'Шаблон одностраничника'
         filename_3 = 'Шаблон презентации'
@@ -1962,14 +1946,15 @@ def get_text_messages(message):
             filename_3: file_3,
             filename_4: file_4,
         }
-        for caption, file in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
-                reply_markup=markup,
-            )
+        for caption, document in files_dict.items():
+            with open(document, 'rb') as file:
+                bot.send_document(
+                    message.chat.id,
+                    file,
+                    caption=caption,
+                    parse_mode="html",
+                    reply_markup=markup,
+                )
 
     # МОЛОДЕЖНАЯ ПОЛИТИКА
     elif message.text == 'СЛЕТ МС':
@@ -2003,16 +1988,8 @@ def get_text_messages(message):
         button_6 = types.KeyboardButton('Рождение ребенка')
         button_7 = types.KeyboardButton('Учет рабочего времени')
         button_8 = types.KeyboardButton('🔙 Главное меню')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-            button_7,
-            button_8,
-        )
+        markup.add(button_1, button_2, button_3, button_4,
+                   button_5, button_6, button_7, button_8)
         bot.send_message(
             message.from_user.id,
             'Бланки заявлений',
@@ -2031,13 +2008,7 @@ def get_text_messages(message):
         button_4 = types.KeyboardButton('Работа в выходной день')
         button_5 = types.KeyboardButton('🔙 вернуться в '
                                         'раздел Бланки заявлений')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-        )
+        markup.add(button_1, button_2, button_3, button_4, button_5)
         bot.send_message(
             message.chat.id,
             'Учет рабочего времени',
@@ -2053,14 +2024,7 @@ def get_text_messages(message):
         button_5 = types.KeyboardButton(f'Работа в выходной день {NNGGF}')
         button_6 = types.KeyboardButton('🔙 вернуться в '
                                         'раздел Учет рабочего времени')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-        )
+        markup.add(button_1, button_2, button_3, button_4, button_5, button_6)
         bot.send_message(
             message.chat.id,
             'Работа в выходной день',
@@ -2069,71 +2033,76 @@ def get_text_messages(message):
 
     elif message.text == f'Работа в выходной день {ES}':
         parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ES/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = (
+        document = f'{parrent_path}main.docx'
+        filename = (
             'Ш-14.03.05-15 Решение о привлечении к работе '
             'в выходные нерабоч. праздничные дни или к сверхур.работе'
         )
-        bot.send_document(
-            message.chat.id,
-            document=file_1,
-            caption=filename_1,
-            parse_mode="html",
-        )
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=filename,
+                parse_mode="html",
+            )
 
     elif message.text == f'Работа в выходной день {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ITS/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = (
+        document = f'{parrent_path}main.docx'
+        filename = (
             'Ш-14.03.05-15 Решение о привлечении к работе '
             'в выходные нерабоч. праздничные дни или к сверхур.работе'
         )
-        bot.send_document(
-            message.chat.id,
-            document=file_1,
-            caption=filename_1,
-            parse_mode="html",
-        )
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=filename,
+                parse_mode="html",
+            )
 
     elif message.text == f'Работа в выходной день {NNGGF}':
         parrent_path = 'prod_data/blanks/time_tracking/working_day_off/NNGGF/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = (
+        document = f'{parrent_path}main.docx'
+        filename = (
             'Ш-14.03.05-15 Решение о привлечении к работе '
             'в выходные нерабоч. праздничные дни или к сверхур.работе'
         )
-        bot.send_document(
-            message.chat.id,
-            document=file_1,
-            caption=filename_1,
-            parse_mode="html",
-        )
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=filename,
+                parse_mode="html",
+            )
 
     elif message.text == f'Работа в выходной день {NR}':
         parrent_path = 'prod_data/blanks/time_tracking/working_day_off/NR/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Служебная записка на привлечение к работе '
-                      'в выходные дни')
-        bot.send_document(
-            message.chat.id,
-            document=file_1,
-            caption=filename_1,
-            parse_mode="html",
-        )
+        document = f'{parrent_path}main.docx'
+        filename = ('Служебная записка на привлечение к работе '
+                    'в выходные дни')
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=filename,
+                parse_mode="html",
+            )
 
     elif message.text == f'Работа в выходной день {ST}':
         parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ST/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = (
+        document = f'{parrent_path}main.docx'
+        filename = (
             'Ш-14.03.05-15 Решение о привлечении к работе '
             'в выходные нерабоч. праздничные дни или к сверхур.работе'
         )
-        bot.send_document(
-            message.chat.id,
-            document=file_1,
-            caption=filename_1,
-            parse_mode="html",
-        )
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption=filename,
+                parse_mode="html",
+            )
 
     elif message.text == 'Простой, задержка в пути':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
