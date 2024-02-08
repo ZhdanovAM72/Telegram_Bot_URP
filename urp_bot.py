@@ -2272,15 +2272,15 @@ def get_text_messages(message):
 
     elif message.text == f'Исполнение гос.обязанностей {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/government_duties/ITS/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
+        file_name = ('Ш-14.03.05-03 Заявление об исполнении '
                       'государственных или общественных обязанностей')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-            )
+        with open(f'{parrent_path}main.docx', 'rb') as file:
+            bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=file_name,
+                    parse_mode="html",
+                )
 
     elif message.text == f'Исполнение гос.обязанностей {NNGGF}':
         parrent_path = ('prod_data/blanks/time_tracking/government_duties/'
