@@ -1330,14 +1330,17 @@ def get_text_messages(message):
                     telebot.types.InputMediaDocument(
                         file_1,
                         caption='Памятка по лечению',
+                        parse_mode="html",
                     ),
                     telebot.types.InputMediaDocument(
                         file_2,
                         caption='Перечень поликлиник',
+                        parse_mode="html",
                     ),
                     telebot.types.InputMediaDocument(
                         file_3,
                         caption='Программа ДМС',
+                        parse_mode="html",
                     ),
                 ]
             )
@@ -2122,90 +2125,114 @@ def get_text_messages(message):
 
     elif message.text == f'Простой, задержка в пути {ES}':
         parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ES/'
-        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
-        file_2 = open(f'{parrent_path}list.docx', 'rb')
         filename_1 = (
             'Ш-14.03.05-16 Служебная записка о простое /'
             'незапланированном простое, содержащая список работников'
         )
         filename_2 = ('Ш-14.03.05-17 Список работников, которым '
                       'необходимо оформить задержку в пути')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
+            open(f'{parrent_path}list.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode='html',
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode='html',
+                    ),
+                ]
             )
 
     elif message.text == f'Простой, задержка в пути {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ITS/'
-        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
-        file_2 = open(f'{parrent_path}list.docx', 'rb')
         filename_1 = (
             'Ш-14.03.05-16 Служебная записка о простое /'
             'незапланированном простое, содержащая список работников'
         )
         filename_2 = ('Ш-14.03.05-17 Список работников, которым '
                       'необходимо оформить задержку в пути')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
+            open(f'{parrent_path}list.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode='html',
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode='html',
+                    ),
+                ]
             )
 
     elif message.text == f'Простой, задержка в пути {NNGGF}':
         parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/NNGGF/'
-        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
-        file_2 = open(f'{parrent_path}list.docx', 'rb')
         filename_1 = (
             'Ш-14.03.05-16 Служебная записка о простое /'
             'незапланированном простое, содержащая список работников'
         )
         filename_2 = ('Ш-14.03.05-17 Список работников, которым '
                       'необходимо оформить задержку в пути')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
+            open(f'{parrent_path}list.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode='html',
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode='html',
+                    ),
+                ]
             )
 
     elif message.text == f'Простой, задержка в пути {ST}':
         parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ST/'
-        file_1 = open(f'{parrent_path}SZ.docx', 'rb')
-        file_2 = open(f'{parrent_path}list.docx', 'rb')
         filename_1 = (
             'Ш-14.03.05-16 Служебная записка о простое /'
             'незапланированном простое, содержащая список работников'
         )
         filename_2 = ('Ш-14.03.05-17 Список работников, которым '
                       'необходимо оформить задержку в пути')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
+            open(f'{parrent_path}list.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode='html',
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode='html',
+                    ),
+                ]
             )
 
     elif message.text == 'Исполнение гос.обязанностей':
@@ -2233,15 +2260,15 @@ def get_text_messages(message):
 
     elif message.text == f'Исполнение гос.обязанностей {ES}':
         parrent_path = 'prod_data/blanks/time_tracking/government_duties/ES/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
-                      'государственных или общественных обязанностей')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-            )
+        filename = ('Ш-14.03.05-03 Заявление об исполнении '
+                    'государственных или общественных обязанностей')
+        with open(f'{parrent_path}main.docx', 'rb') as file:
+            bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=filename,
+                    parse_mode="html",
+                )
 
     elif message.text == f'Исполнение гос.обязанностей {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/government_duties/ITS/'
