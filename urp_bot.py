@@ -3160,7 +3160,7 @@ def get_text_messages(message):
         )
         bot.send_message(
             message.chat.id,
-            'Отмена, отзыв из отпуска',
+            'Отмена, отзыв из отпуска.',
             reply_markup=markup,
         )
 
