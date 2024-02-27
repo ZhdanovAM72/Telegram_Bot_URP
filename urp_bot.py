@@ -394,7 +394,7 @@ def mass_info_message(message):
     """
     Рассылка информации всем пользователям.
     - updates: для заготовленных обновлений
-    - massmess: для любих сообщений (до 500 символов)
+    - massmess: для любых сообщений (до 500 символов)
     """
     access = get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
@@ -2273,7 +2273,7 @@ def get_text_messages(message):
     elif message.text == f'Исполнение гос.обязанностей {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/government_duties/ITS/'
         file_name = ('Ш-14.03.05-03 Заявление об исполнении '
-                      'государственных или общественных обязанностей')
+                     'государственных или общественных обязанностей')
         with open(f'{parrent_path}main.docx', 'rb') as file:
             bot.send_document(
                     message.chat.id,
