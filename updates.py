@@ -4,10 +4,10 @@ import datetime as dt
 DATE_INFO = dt.datetime.now()
 AUTHOR = 'Александр Жданов'
 
-version = '1.3'
+version = '1.4'
 
 main_changes = (
-    'Обновлены документы и ссылки.'
+    'Обновлены наименования документов и пунктов меню.'
 )
 
 second_changes = (
