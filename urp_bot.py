@@ -2326,7 +2326,7 @@ def get_text_messages(message):
         )
         bot.send_message(
             message.chat.id,
-            'Рождение ребенка',
+            'Изменение графика работы',
             reply_markup=markup,
         )
 
