@@ -2281,27 +2281,27 @@ def get_text_messages(message):
     elif message.text == f'Исполнение гос.обязанностей {NNGGF}':
         parrent_path = ('prod_data/blanks/time_tracking/government_duties/'
                         'NNGGF/')
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
-                      'государственных или общественных обязанностей')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-            )
+        file_name = ('Ш-14.03.05-03 Заявление об исполнении '
+                     'государственных или общественных обязанностей')
+        with open(f'{parrent_path}main.docx', 'rb') as file:
+            bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=file_name,
+                    parse_mode="html",
+                )
 
     elif message.text == f'Исполнение гос.обязанностей {ST}':
         parrent_path = ('prod_data/blanks/time_tracking/government_duties/ST/')
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
-                      'государственных или общественных обязанностей')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-            )
+        file_name = ('Ш-14.03.05-03 Заявление об исполнении '
+                     'государственных или общественных обязанностей')
+        with open(f'{parrent_path}main.docx', 'rb') as file:
+            bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=file_name,
+                    parse_mode="html",
+                )
 
     elif message.text == 'Изменение графика работы':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
