@@ -2370,10 +2370,6 @@ def get_text_messages(message):
 
     elif message.text == f'Изменение графика {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ITS/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
-        file_3 = open(f'{parrent_path}change.docx', 'rb')
-        file_4 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
@@ -2382,70 +2378,100 @@ def get_text_messages(message):
                       'графика работы персонала')
         filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
+            open(f'{parrent_path}change.docx', 'rb') as file_3,
+            open(f'{parrent_path}new.docx', 'rb') as file_4,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_4,
+                        caption=filename_4,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {NNGGF}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NNGGF/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}change.docx', 'rb')
-        file_3 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-13 Служебная записка об изменении '
                       'графика работы персонала')
         filename_3 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}change.docx', 'rb') as file_2,
+            open(f'{parrent_path}new.docx', 'rb') as file_3,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {NR}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NR/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}change_grafik.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
                       'режима рабочего времени')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}change_grafik.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {ST}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ST/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
-        file_3 = open(f'{parrent_path}change.docx', 'rb')
-        file_4 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
@@ -2454,18 +2480,36 @@ def get_text_messages(message):
                       'графика работы персонала')
         filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
+            open(f'{parrent_path}change.docx', 'rb') as file_3,
+            open(f'{parrent_path}new.docx', 'rb') as file_4,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_4,
+                        caption=filename_4,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == 'Рождение ребенка':
