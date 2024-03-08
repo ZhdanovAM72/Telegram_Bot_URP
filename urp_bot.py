@@ -841,7 +841,7 @@ def get_text_messages(message):
         document_2 = (f'{parrent_path}enter.pdf')
         markup.add(types.InlineKeyboardButton(
             "Открыть портал знаний",
-            url="http://edu.gazprom-neft.ru"
+            url="https://edu.gazprom-neft.ru"
         ))
         bot.send_message(
             message.chat.id,
@@ -893,10 +893,6 @@ def get_text_messages(message):
 
     elif message.text == 'Телеграм-каналы':
         markup = types.InlineKeyboardMarkup(row_width=1)
-        button_1 = types.InlineKeyboardButton(
-            'КОМАНДА ГПН-НС',
-            url="https://t.me/+LmDKSVvewR0yMzEy",
-        )
         button_2 = types.InlineKeyboardButton(
             'КУЛЬТУРА И СПОРТ БРД',
             url="HTTPS://T.ME/SPORTCULTUREBRDHR",
@@ -913,25 +909,19 @@ def get_text_messages(message):
             'НТК',
             url="https://t.me/+TJe7-1a28tSJS-7Q",
         )
-        markup.add(button_1, button_2, button_3, button_4, button_5)
+        markup.add(button_2, button_3, button_4, button_5)
         bot.send_message(
             message.chat.id,
-            'Телеграм-каналы:\n'
-            '\n'
-            '1. «Команда ГПН-НС» Открытое общение '
-            'сотрудников нефтесервисных предприятий\n'
-            '\n'
-            '2. «Культура и спорт БРД» Оперативная, '
+            'Телеграм-каналы:\n\n'
+            '1. «Культура и спорт БРД» Оперативная, '
             'актуальная и эксклюзивная информация '
-            'про культуру, спорт и не только!\n'
-            '\n'
-            '3. «Новости нефтесервисов» Новости из '
-            'жизни нефтесервисов.\n'
-            '\n'
-            '4. «Совет молодых специалистов» '
+            'про культуру, спорт и не только!\n\n'
+            '2. «Новости нефтесервисов» Новости из '
+            'жизни нефтесервисов.\n\n'
+            '3. «Совет молодых специалистов» '
             'Актуальная информация о деятельности '
-            'Совета молодых специалистов.\n'
-            '5. «Научно-техническая конференция» '
+            'Совета молодых специалистов.\n\n'
+            '4. «Научно-техническая конференция» '
             'Актуальная информация о молодежной '
             'научно-технической конференции.\n',
             reply_markup=markup,
@@ -988,7 +978,7 @@ def get_text_messages(message):
         button_2 = types.KeyboardButton('Корпоративная безопасность')
         button_3 = types.KeyboardButton('Производственная безопасность')
         button_4 = types.KeyboardButton('Хоз. и транспорт. '
-                                     'обеспечение')
+                                        'обеспечение')
         button_5 = types.KeyboardButton('Трудовой распорядок')
         button_6 = types.KeyboardButton('Внешний вид. Спецодежда и СИЗ')
         button_7 = types.KeyboardButton('Мотивация персонала')
@@ -1348,7 +1338,9 @@ def get_text_messages(message):
     # ДМС и РВЛ
     elif message.text == 'РВЛ':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        button = types.KeyboardButton(
+            '🔙 вернуться в раздел Карьерное развитие'
+        )
         document = 'prod_data/ДМС/ГПН_ЭС/РВЛ/памятка_санатории.pdf'
         markup.add(button)
         with open(document, 'rb') as file:
@@ -1471,7 +1463,9 @@ def get_text_messages(message):
     # КАРЬЕРНОЕ РАЗВИТИЕ
     elif message.text == 'Карьерное консультирование':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
+        button = types.KeyboardButton(
+            '🔙 вернуться в раздел Карьерное развитие'
+        )
         markup.add(button)
         bot.send_message(
             message.chat.id,
@@ -2241,7 +2235,9 @@ def get_text_messages(message):
         # button_2 = types.KeyboardButton(f'Исполнение гос.обязанностей {NR}')
         button_3 = types.KeyboardButton(f'Исполнение гос.обязанностей {ST}')
         button_4 = types.KeyboardButton(f'Исполнение гос.обязанностей {ITS}')
-        button_5 = types.KeyboardButton(f'Исполнение гос.обязанностей {NNGGF}')
+        button_5 = types.KeyboardButton(
+            f'Исполнение гос.обязанностей {NNGGF}'
+        )
         button_6 = types.KeyboardButton('🔙 вернуться в '
                                         'раздел Учет рабочего времени')
         markup.add(
@@ -2285,27 +2281,27 @@ def get_text_messages(message):
     elif message.text == f'Исполнение гос.обязанностей {NNGGF}':
         parrent_path = ('prod_data/blanks/time_tracking/government_duties/'
                         'NNGGF/')
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
-                      'государственных или общественных обязанностей')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-            )
+        file_name = ('Ш-14.03.05-03 Заявление об исполнении '
+                     'государственных или общественных обязанностей')
+        with open(f'{parrent_path}main.docx', 'rb') as file:
+            bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=file_name,
+                    parse_mode="html",
+                )
 
     elif message.text == f'Исполнение гос.обязанностей {ST}':
         parrent_path = ('prod_data/blanks/time_tracking/government_duties/ST/')
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        filename_1 = ('Ш-14.03.05-03 Заявление об исполнении '
-                      'государственных или общественных обязанностей')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-            )
+        file_name = ('Ш-14.03.05-03 Заявление об исполнении '
+                     'государственных или общественных обязанностей')
+        with open(f'{parrent_path}main.docx', 'rb') as file:
+            bot.send_document(
+                    message.chat.id,
+                    document=file,
+                    caption=file_name,
+                    parse_mode="html",
+                )
 
     elif message.text == 'Изменение графика работы':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
@@ -2332,10 +2328,6 @@ def get_text_messages(message):
 
     elif message.text == f'Изменение графика {ES}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ES/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
-        file_3 = open(f'{parrent_path}change.docx', 'rb')
-        file_4 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
@@ -2344,26 +2336,40 @@ def get_text_messages(message):
                       'графика работы персонала')
         filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
+            open(f'{parrent_path}change.docx', 'rb') as file_3,
+            open(f'{parrent_path}new.docx', 'rb') as file_4,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_4,
+                        caption=filename_4,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ITS/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
-        file_3 = open(f'{parrent_path}change.docx', 'rb')
-        file_4 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
@@ -2372,70 +2378,100 @@ def get_text_messages(message):
                       'графика работы персонала')
         filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
+            open(f'{parrent_path}change.docx', 'rb') as file_3,
+            open(f'{parrent_path}new.docx', 'rb') as file_4,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_4,
+                        caption=filename_4,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {NNGGF}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NNGGF/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}change.docx', 'rb')
-        file_3 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-13 Служебная записка об изменении '
                       'графика работы персонала')
         filename_3 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}change.docx', 'rb') as file_2,
+            open(f'{parrent_path}new.docx', 'rb') as file_3,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {NR}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NR/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}change_grafik.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
                       'режима рабочего времени')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}change_grafik.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Изменение графика {ST}':
         parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ST/'
-        file_1 = open(f'{parrent_path}main.docx', 'rb')
-        file_2 = open(f'{parrent_path}baby_cancel.docx', 'rb')
-        file_3 = open(f'{parrent_path}change.docx', 'rb')
-        file_4 = open(f'{parrent_path}new.docx', 'rb')
         filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
                       'графика работы персонала')
         filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
@@ -2444,18 +2480,36 @@ def get_text_messages(message):
                       'графика работы персонала')
         filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
                       'формирования нового графика работы персонала')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}main.docx', 'rb') as file_1,
+            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
+            open(f'{parrent_path}change.docx', 'rb') as file_3,
+            open(f'{parrent_path}new.docx', 'rb') as file_4,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_4,
+                        caption=filename_4,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == 'Рождение ребенка':
@@ -3860,11 +3914,11 @@ def get_text_messages(message):
 
     elif message.text == 'Авансовый отчет':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton(f'Авансовый бланки {ES}')
-        button_2 = types.KeyboardButton(f'Авансовый бланки {NR}')
-        button_3 = types.KeyboardButton(f'Авансовый бланки {ST}')
-        button_4 = types.KeyboardButton(f'Авансовый бланки {ITS}')
-        button_5 = types.KeyboardButton(f'Авансовый бланки {NNGGF}')
+        button_1 = types.KeyboardButton(f'Бланки {ES}')
+        button_2 = types.KeyboardButton(f'Бланки {NR}')
+        button_3 = types.KeyboardButton(f'Бланки {ST}')
+        button_4 = types.KeyboardButton(f'Бланки {ITS}')
+        button_5 = types.KeyboardButton(f'Бланки {NNGGF}')
         button_6 = types.KeyboardButton('🔙 вернуться в '
                                         'раздел Бланки заявлений')
         markup.add(
@@ -3881,7 +3935,7 @@ def get_text_messages(message):
             reply_markup=markup,
         )
 
-    elif message.text == f'Авансовый бланки {ES}':
+    elif message.text == f'Бланки {ES}':
         parrent_path = 'prod_data/blanks/avansov/ES/'
         file_1 = open(f'{parrent_path}blank.doc', 'rb')
         file_2 = open(f'{parrent_path}info.docx', 'rb')
@@ -3905,7 +3959,7 @@ def get_text_messages(message):
                 parse_mode="html",
             )
 
-    elif message.text == f'Авансовый бланки {NR}':
+    elif message.text == f'Бланки {NR}':
         parrent_path = 'prod_data/blanks/avansov/NR/'
         file_1 = open(f'{parrent_path}SOP.pdf', 'rb')
         filename_1 = 'СОП по оформлению отчета по командировке с 01.10.23'
@@ -3916,7 +3970,7 @@ def get_text_messages(message):
                 parse_mode="html",
         )
 
-    elif message.text == f'Авансовый бланки {ITS}':
+    elif message.text == f'Бланки {ITS}':
         parrent_path = 'prod_data/blanks/avansov/ITS/'
         file_1 = open(f'{parrent_path}blank_1.xls', 'rb')
         filename_1 = 'Бланк авансового отчета'
@@ -3927,7 +3981,7 @@ def get_text_messages(message):
                 parse_mode="html",
         )
 
-    elif message.text == f'Авансовый бланки {NNGGF}':
+    elif message.text == f'Бланки {NNGGF}':
         parrent_path = 'prod_data/blanks/avansov/ITS/'
         file_1 = open(f'{parrent_path}blank_2.xls', 'rb')
         filename_1 = 'Бланк авансового отчета'
@@ -3938,7 +3992,7 @@ def get_text_messages(message):
                 parse_mode="html",
         )
 
-    elif message.text == f'Авансовый бланки {ST}':
+    elif message.text == f'Бланки {ST}':
         parrent_path = 'prod_data/blanks/avansov/ST/'
         file_1 = open(f'{parrent_path}blank.doc', 'rb')
         filename_1 = 'Бланк авансового отчета'

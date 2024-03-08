@@ -170,6 +170,7 @@ prod_data/
 pictures/
 db_correct.py
 new_data.tar*
+IMG_1475.MP4
 
 # тестовые файлы
 test*.py
