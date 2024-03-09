@@ -2537,11 +2537,6 @@ def get_text_messages(message):
 
     elif message.text == f'Рождение ребенка {ES}':
         parrent_path = 'prod_data/blanks/baby_born/ES/'
-        file_1 = open(f'{parrent_path}rodi.doc', 'rb')
-        file_2 = open(f'{parrent_path}ranie_rodi.doc', 'rb')
-        file_3 = open(f'{parrent_path}posobie_3.doc', 'rb')
-        file_4 = open(f'{parrent_path}premia.doc', 'rb')
-        file_5 = open(f'{parrent_path}posobie_1.5.doc', 'rb')
         filename_1 = ('Ш-14.03.06-13 Заявление об отпуске '
                       'по беременности и родам')
         filename_2 = ('Ш-14.03.06-14 Заявление о выплате пособия '
@@ -2552,19 +2547,42 @@ def get_text_messages(message):
                       'единовременного пособия по рождению ребенка')
         filename_5 = ('Ш-14.03.06-17 Заявление о выплате пособия '
                       'по уходу за ребенком до 1.5 лет')
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-            filename_5: file_5,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
+        with (
+            open(f'{parrent_path}rodi.doc', 'rb') as file_1,
+            open(f'{parrent_path}ranie_rodi.doc', 'rb') as file_2,
+            open(f'{parrent_path}posobie_3.doc', 'rb') as file_3,
+            open(f'{parrent_path}premia.doc', 'rb') as file_4,
+            open(f'{parrent_path}posobie_1.5.doc', 'rb') as file_5,
+        ):
+            bot.send_media_group(
                 message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_4,
+                        caption=filename_4,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_5,
+                        caption=filename_5,
+                        parse_mode="html",
+                    ),
+                ]
             )
 
     elif message.text == f'Рождение ребенка {ITS}':
