@@ -1306,8 +1306,10 @@ def get_text_messages(message):
     # ДМС и РВЛ
     elif message.text == 'ДМС':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Карьерное развитие')
-        markup.add(btn)
+        button = types.KeyboardButton(
+            '🔙 вернуться в раздел Карьерное развитие'
+        )
+        markup.add(button)
         parrent_path = 'prod_data/ДМС/ГПН_ЭС/ДМС/'
         with (
             open(f'{parrent_path}памятка_ДМС_2023.pdf', 'rb') as file_1,
