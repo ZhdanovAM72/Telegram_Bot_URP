@@ -406,15 +406,16 @@ def mass_info_message(message):
         message_for_users = ' '.join(input_message[1:])
         erorr_code_message = (
             'Команда использована неверно, '
-            'введите запрос как показано на примере!\n'
-            'Пример: \n/massmess your_message\n'
-            f'\nМаксимально {MAX_MESSAGE_SYMBOLS} символов!'
+            'введите запрос как показано на примере\!\n'
+            'Пример: \n\/massmess your_message\n'
+            f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'
         )
         if (len(input_message) <= 1
            or len(' '.join(input_message[1:]))) > MAX_MESSAGE_SYMBOLS:
             bot.send_message(
                 message.chat.id,
-                erorr_code_message
+                erorr_code_message,
+                parse_mode='MarkdownV2',
             )
             return log_user_command(message)
     users = search_all_user_id()
@@ -422,22 +423,27 @@ def mass_info_message(message):
     eror_count = 0
     for user in users:
         try:
+            bot.send_message(
+                chat_id=user[0],
+                text=message_for_users,
+            )
             send_count += 1
-            bot.send_message(chat_id=user[0], text=message_for_users)
         except Exception:
             eror_count += 1
             raise bot.send_message(
                 message.chat.id,
-                f'ошибка отправки пользователю с id № {user[0]}'
+                f'ошибка отправки пользователю с id № *{user[0]}*',
+                parse_mode='MarkdownV2',
             )
         finally:
             continue
     bot.send_message(
         message.chat.id,
         text=(
-            f'Сообщение успешно отправлено {send_count} пользователям!\n'
-            f'\nСообщение не доставлено {eror_count} пользователям!'
-        )
+            f'Сообщение успешно отправлено *{send_count}* пользователям\!\n'
+            f'\nСообщение не доставлено *{eror_count}* пользователям\!'
+        ),
+        parse_mode='MarkdownV2'
     )
     return log_user_command(message)
 
