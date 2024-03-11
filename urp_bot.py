@@ -1343,13 +1343,21 @@ def get_text_messages(message):
         button = types.KeyboardButton(
             '🔙 вернуться в раздел Карьерное развитие'
         )
-        document = 'prod_data/ДМС/ГПН_ЭС/РВЛ/памятка_санатории.pdf'
+        filename_1 = 'prod_data/ДМС/ГПН_ЭС/РВЛ/памятка_санатории.pdf'
+        filename_2 = 'prod_data/ДМС/ГПН_ЭС/РВЛ/sanatoriums_list.xls'
         markup.add(button)
-        with open(document, 'rb') as file:
+        with (open(filename_1, 'rb') as file_1,
+              open(filename_2, 'rb') as file_2):
             bot.send_document(
                 message.chat.id,
-                document=file,
+                document=file_1,
                 caption='Памятка по санаториям',
+                parse_mode="html",
+            )
+            bot.send_document(
+                message.chat.id,
+                document=file_2,
+                caption='Перечень рекомендованных санаториев на 2024 г.',
                 parse_mode="html",
             )
 
