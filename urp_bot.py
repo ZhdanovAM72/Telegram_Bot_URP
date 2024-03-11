@@ -509,8 +509,8 @@ def get_text_messages(message):
         button_6 = types.KeyboardButton('ДМС и РВЛ')
         button_7 = types.KeyboardButton('Молодежная политика')
         button_8 = types.KeyboardButton('Бланки заявлений')
-        button_9 = types.KeyboardButton('Обратная связь')
-        button_10 = types.KeyboardButton('Планирование закупок')
+        button_9 = types.KeyboardButton('Планирование закупок')
+        button_10 = types.KeyboardButton('Обратная связь')
         markup.add(
             button_1,
             button_2,
