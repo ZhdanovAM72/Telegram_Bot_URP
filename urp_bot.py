@@ -508,8 +508,9 @@ def get_text_messages(message):
         button_5 = types.KeyboardButton('Стажировка')
         button_6 = types.KeyboardButton('ДМС и РВЛ')
         button_7 = types.KeyboardButton('Молодежная политика')
-        button_8 = types.KeyboardButton('Обратная связь')
-        button_9 = types.KeyboardButton('Бланки заявлений')
+        button_8 = types.KeyboardButton('Бланки заявлений')
+        button_9 = types.KeyboardButton('Обратная связь')
+        button_10 = types.KeyboardButton('Планирование закупок')
         markup.add(
             button_1,
             button_2,
@@ -520,6 +521,7 @@ def get_text_messages(message):
             button_7,
             button_8,
             button_9,
+            button_10,
         )
         bot.send_message(message.from_user.id,
                          "Добро пожаловать в главное меню чат-бота",
@@ -4055,6 +4057,255 @@ def get_text_messages(message):
                    url="https://forms.yandex.ru/u/64f4d1a4068ff09dca58ac3c/"))
         bot.send_message(message.chat.id,
                          'Форма обратной связи', reply_markup=markup)
+
+    # ЗАКУПКИ
+    elif (message.text == 'Планирование закупок'
+          or message.text == '🔙 вернуться в раздел закупок'):
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        button_1 = types.KeyboardButton('Закупки у СМиСП')
+        button_2 = types.KeyboardButton('Код услуги')
+        button_3 = types.KeyboardButton('Комплект документов для закупки')
+        button_4 = types.KeyboardButton('Корректировки ГПЗ')
+        button_5 = types.KeyboardButton('Обоснование закупки')
+        button_6 = types.KeyboardButton('🔙 Главное меню')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        parrent_path = 'prod_data/zakupki/'
+        document = f'{parrent_path}planing_info.pdf'
+        bot.send_message(
+            message.from_user.id,
+            "Планирование закупок",
+            reply_markup=markup
+        )
+        if message.text == 'Планирование закупок':
+            with open(document, 'rb') as file:
+                bot.send_document(
+                    message.chat.id,
+                    file,
+                    caption='Памятка Инициатора по планированию закупок',
+                    parse_mode="html",
+                )
+
+    # ЗАКУПКИ
+    elif message.text == 'Закупки у СМиСП':
+        parrent_path = 'prod_data/zakupki/SM_and_SP/'
+        document = f'{parrent_path}SM_SP_list.xlsx'
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Перечень закупок у СМиСП ред. 5 от 07.02.2020г.',
+                parse_mode="html",
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Код услуги':
+        parrent_path = 'prod_data/zakupki/code_uslugi/'
+        document = f'{parrent_path}code_KT_777.xlsx'
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Код услуги КТ-777',
+                parse_mode="html",
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Корректировки ГПЗ':
+        parrent_path = 'prod_data/zakupki/GPZ_correct/'
+        filename_1 = 'Шаблон корректировки ГПЗ (Образец)'
+        filename_2 = 'Шаблон корректировки ГПЗ'
+        with (
+            open(f'{parrent_path}tamplate_sample.xlsx', 'rb') as file_1,
+            open(f'{parrent_path}template.xlsx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
+                message.chat.id,
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                ]
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Обоснование закупки':
+        parrent_path = 'prod_data/zakupki/zakupka_rationale/'
+        document = f'{parrent_path}justification.xlsx'
+        with open(document, 'rb') as file:
+            bot.send_document(
+                message.chat.id,
+                file,
+                caption='Обоснование закупки',
+                parse_mode="html",
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Комплект документов для закупки':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        button_1 = types.KeyboardButton('Безальтернативная закупка')
+        button_2 = types.KeyboardButton('Закупка ВЗЛ')
+        button_3 = types.KeyboardButton('Закупка у единственного поставщика')
+        button_4 = types.KeyboardButton('Конкурентный отбор')
+        button_5 = types.KeyboardButton('Расчет НМЦ')
+        button_6 = types.KeyboardButton('🔙 вернуться в раздел закупок')
+        markup.add(
+            button_1,
+            button_2,
+            button_3,
+            button_4,
+            button_5,
+            button_6,
+        )
+        bot.send_message(
+            message.from_user.id,
+            "Комплект документов для закупки",
+            reply_markup=markup
+        )
+
+    # ЗАКУПКИ
+    elif message.text == 'Безальтернативная закупка':
+        parrent_path = 'prod_data/zakupki/zakupka_docs/bez_alternative/'
+        filename_1 = '1. Реестр БАЗ'
+        filename_2 = '2. Техническое задание'
+        with (
+            open(f'{parrent_path}bd_catalog.xlsx', 'rb') as file_1,
+            open(f'{parrent_path}tz.docx', 'rb') as file_2,
+        ):
+            bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+            bot.send_document(
+                message.chat.id,
+                document=file_2,
+                caption=filename_2,
+                parse_mode="html",
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Закупка ВЗЛ':
+        parrent_path = 'prod_data/zakupki/zakupka_docs/VZL/'
+        filename_1 = '1. Расчет НМЦ (Прочий метод)'
+        filename_2 = '2. Техническое задание'
+        filename_3 = '3. Пояснение к закупке ВЗЛ'
+        with (
+            open(f'{parrent_path}calc_nmc_info.xlsx', 'rb') as file_1,
+            open(f'{parrent_path}info_vzl.docx', 'rb') as file_2,
+            open(f'{parrent_path}tz_vzl.docx', 'rb') as file_3,
+        ):
+            bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+            bot.send_document(
+                message.chat.id,
+                document=file_2,
+                caption=filename_2,
+                parse_mode="html",
+            )
+            bot.send_document(
+                message.chat.id,
+                document=file_3,
+                caption=filename_3,
+                parse_mode="html",
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Закупка у единственного поставщика':
+        parrent_path = 'prod_data/zakupki/zakupka_docs/one_postav/'
+        filename_1 = '1. Техническое задание'
+        filename_2 = '2. Заключение по итогам анализа рынка'
+        with (
+            open(f'{parrent_path}tz_one_person.docx', 'rb') as file_1,
+            open(f'{parrent_path}analitics_info.docx', 'rb') as file_2,
+        ):
+            bot.send_media_group(
+                message.chat.id,
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                ]
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Конкурентный отбор':
+        parrent_path = 'prod_data/zakupki/zakupka_docs/concurent/'
+        filename_1 = '1. Техническое задание'
+        filename_2 = '2. Обоснование ЗКО'
+        with (
+            open(f'{parrent_path}tz_concurent.docx', 'rb') as file_1,
+            open(f'{parrent_path}ZKO_info.pdf', 'rb') as file_2,
+        ):
+            bot.send_document(
+                message.chat.id,
+                document=file_1,
+                caption=filename_1,
+                parse_mode="html",
+            )
+            bot.send_document(
+                message.chat.id,
+                document=file_2,
+                caption=filename_2,
+                parse_mode="html",
+            )
+
+    # ЗАКУПКИ
+    elif message.text == 'Расчет НМЦ':
+        parrent_path = 'prod_data/zakupki/zakupka_docs/calc_NMC/'
+        filename_1 = 'Шаблон №1. Расчет НМЦ (затратный метод)'
+        filename_2 = 'Шаблон №2. Расчет НМЦ (метод сопоставимых рыночных цен)'
+        filename_3 = 'Шаблон №3. Расчет НМЦ (тарифный метод)'
+        with (
+            open(f'{parrent_path}calc_zatrat.xlsx', 'rb') as file_1,
+            open(f'{parrent_path}calc_rinok.xlsx', 'rb') as file_2,
+            open(f'{parrent_path}calc_tarif.xlsx', 'rb') as file_3,
+        ):
+            bot.send_media_group(
+                message.chat.id,
+                [
+                    telebot.types.InputMediaDocument(
+                        file_1,
+                        caption=filename_1,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_2,
+                        caption=filename_2,
+                        parse_mode="html",
+                    ),
+                    telebot.types.InputMediaDocument(
+                        file_3,
+                        caption=filename_3,
+                        parse_mode="html",
+                    ),
+                ]
+            )
 
     else:
         message.text == 'Информация о боте'
