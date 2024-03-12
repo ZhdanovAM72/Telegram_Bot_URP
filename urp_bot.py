@@ -406,9 +406,9 @@ def mass_info_message(message):
         message_for_users = ' '.join(input_message[1:])
         erorr_code_message = (
             'Команда использована неверно, '
-            'введите запрос как показано на примере\!\n'
-            'Пример: \n\/massmess your_message\n'
-            f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'
+            'введите запрос как показано на примере\!\n'  # noqa W605
+            'Пример: \n\/massmess your_message\n'  # noqa W605
+            f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'  # noqa W605
         )
         if (len(input_message) <= 1
            or len(' '.join(input_message[1:]))) > MAX_MESSAGE_SYMBOLS:
@@ -440,8 +440,8 @@ def mass_info_message(message):
     bot.send_message(
         message.chat.id,
         text=(
-            f'Сообщение успешно отправлено *{send_count}* пользователям\!\n'
-            f'\nСообщение не доставлено *{eror_count}* пользователям\!'
+            f'Сообщение успешно отправлено *{send_count}* пользователям\!\n'  # noqa W605
+            f'\nСообщение не доставлено *{eror_count}* пользователям\!'  # noqa W605
         ),
         parse_mode='MarkdownV2'
     )
