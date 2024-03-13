@@ -27,7 +27,7 @@ logger = init_logger()
 
 def log_user_command(message):
     """Логгирование команд пользователей."""
-    log_message = logger.info(
+    log_message = (
         f'команда: "{message.text}" - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
@@ -39,7 +39,7 @@ def log_user_command(message):
 
 def log_photo(message):
     """Логгирование изображений в чате."""
-    log_message = logger.info(
+    log_message = (
         f'изображение - {message.photo}'
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
@@ -51,7 +51,7 @@ def log_photo(message):
 
 def log_sticker(message):
     """Логгирование стикеров в чате."""
-    log_message = logger.info(
+    log_message = (
         f'изображение {message.sticker} - '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '

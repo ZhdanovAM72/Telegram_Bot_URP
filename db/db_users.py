@@ -37,7 +37,13 @@ def get_new_code(code: str):
             logger.info('Закрыто соединение с БД: users_v2')
 
 
-def get_new_user(code: str, username: str, user_id: int, first_name: str, last_name: str) -> None:
+def get_new_user(
+        code: str,
+        username: str,
+        user_id: int,
+        first_name: str,
+        last_name: str,
+     ) -> None:
     """Записываем данные пользователя по валидному коду."""
     try:
         con = sqlite3.connect('users_v2.sqlite')
