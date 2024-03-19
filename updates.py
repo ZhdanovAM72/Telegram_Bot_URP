@@ -22,5 +22,5 @@ UPDATE_MESSAGE = (
     f'{main_changes}\n'
     '\n\tПрочие обновления/изменения/исправления:\n'
     f'{second_changes}\n'
-    f'\nРазработчик чат-бота: {AUTHOR}'
+    f'\nОбновил: {AUTHOR}'
 )
