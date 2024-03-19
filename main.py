@@ -5,20 +5,12 @@ import telebot
 from dotenv import load_dotenv
 from telebot import types
 
-from db.db_users import (get_new_user, get_new_code,
-                         create_new_moderator, update_user_code)
-from db.delete_utils import delete_code, delete_user
-from db.permissions import (
-    get_admin_access,
-    get_moderator_access,
-    get_user_access,
-)
-from db.search import (search_user_id_in_db,
-                       search_code_in_db, search_all_user_id)
+from bot_menu import BaseBotMenu
+from db import BaseBotSQLMethods
 from logger_setting.logger_bot import log_user_command, log_photo, log_sticker
-from utils.password_generator import generate_code
-from utils.excel import excel_export
-from updates import UPDATE_MESSAGE
+from utils.code_generator import CodeGenerator
+from utils.excel_export import ExcelExport
+# from updates import UPDATE_MESSAGE
 from constant import (
     ES, ITS, NR, NNGGF, ST,
     ABOUT_NTK,
@@ -26,7 +18,7 @@ from constant import (
     NO_ADMIN_RIGHTS,
     MODERATOR_COMMANDS,
     NO_MODERATOR_RIGHTS,
-    MAX_MESSAGE_SYMBOLS,
+    # MAX_MESSAGE_SYMBOLS,
     NOT_REGISTERED,
 )
 
@@ -42,7 +34,7 @@ bot = telebot.TeleBot(API_TOKEN)
 def check_admin_permissions(message: telebot.types.Message):
     """"Проверяем права администратора."""
     bot.send_message(message.chat.id, 'Проверяем права.')
-    access = get_admin_access(message.chat.id)
+    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
     if access is None:
         bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     elif access[1] == message.chat.id:
@@ -56,7 +48,7 @@ def check_admin_permissions(message: telebot.types.Message):
 @bot.message_handler(commands=['updatecode'])
 def updatecode(message: telebot.types.Message):
     """Обновляем код в БД."""
-    access = get_admin_access(message.chat.id)
+    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     input_code = message.text
@@ -77,11 +69,11 @@ def updatecode(message: telebot.types.Message):
             message.chat.id,
             erorr_code_message
         )
-    check = search_code_in_db(old_code[1])
+    check = BaseBotSQLMethods.search_code_in_db(old_code[1])
     if check is not None and check[0] == str(old_code[1]):
         company_name = old_code[2]
-        new_code = generate_code(company_name.lower())
-        update_user_code(old_code[1], new_code)
+        new_code = CodeGenerator.generate_code(company_name.lower())
+        BaseBotSQLMethods.update_user_code(old_code[1], new_code)
         return bot.send_message(message.chat.id, 'Запись БД обновлена!')
     bot.send_message(
         message.chat.id,
@@ -95,7 +87,7 @@ def updatecode(message: telebot.types.Message):
 def create_moderator(message: telebot.types.Message):
     """Создаем модератора."""
     bot.send_message(message.chat.id, 'Проверяем права.')
-    access = get_admin_access(message.chat.id)
+    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, NO_ADMIN_RIGHTS)
     input_code = message.text
@@ -116,11 +108,11 @@ def create_moderator(message: telebot.types.Message):
             message.chat.id,
             erorr_code_message
         )
-    check = search_user_id_in_db(user_id[1])
+    check = BaseBotSQLMethods.search_user_id_in_db(user_id[1])
     if check is not None and check[0] == int(user_id[1]):
         bot.send_message(message.chat.id, 'Пользователь найден в базе!')
         moderator_code = 'moderator-' + check[1]
-        create_new_moderator(moderator_code, user_id[1])
+        BaseBotSQLMethods.update_user_to_moderator(moderator_code, user_id[1])
         return bot.send_message(message.chat.id, 'Запись БД обновлена!')
     bot.send_message(
         message.chat.id,
@@ -134,7 +126,7 @@ def create_moderator(message: telebot.types.Message):
 def check_moderator_permissions(message: telebot.types.Message):
     """"Проверяем права модератора."""
     bot.send_message(message.chat.id, 'Проверяем права.')
-    access = get_moderator_access(message.chat.id)
+    access = BaseBotSQLMethods.get_moderator_access(message.chat.id)
     if access is None:
         bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
     elif access[1] == message.chat.id:
@@ -148,7 +140,7 @@ def check_moderator_permissions(message: telebot.types.Message):
 @bot.message_handler(commands=['deleteuser', 'deletemoderator'])
 def delete_user_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по user_id."""
-    access = get_admin_access(message.chat.id)
+    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     input_code = message.text
@@ -167,10 +159,10 @@ def delete_user_from_db(message: telebot.types.Message):
             message.chat.id,
             erorr_code_message
         )
-    check = search_user_id_in_db(delete_user_id[1])
+    check = BaseBotSQLMethods.search_user_id_in_db(delete_user_id[1])
     if check is not None and check[0] == int(delete_user_id[1]):
         bot.send_message(message.chat.id, 'Код найден в базе!')
-        delete_user(delete_user_id[1])
+        BaseBotSQLMethods.delete_by_chat_id(delete_user_id[1])
         return bot.send_message(message.chat.id, 'Запись БД удалена!')
     bot.send_message(
         message.chat.id,
@@ -183,7 +175,7 @@ def delete_user_from_db(message: telebot.types.Message):
 @bot.message_handler(commands=['deletecode'])
 def delete_code_from_db(message: telebot.types.Message):
     """Удаляем запись из БД по коду доступа."""
-    access = get_admin_access(message.chat.id)
+    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
     input_code = message.text
@@ -201,10 +193,10 @@ def delete_code_from_db(message: telebot.types.Message):
             message.chat.id,
             erorr_code_message
         )
-    check = search_code_in_db(clear_code[1])
+    check = BaseBotSQLMethods.search_code_in_db(clear_code[1])
     if check is not None and check[0] == clear_code[1]:
         bot.send_message(message.chat.id, 'Код найден в базе!')
-        delete_code(clear_code[1])
+        BaseBotSQLMethods.delete_by_code(clear_code[1])
         return bot.send_message(message.chat.id, 'Запись БД удалена!')
     bot.send_message(
         message.chat.id,
@@ -217,12 +209,12 @@ def delete_code_from_db(message: telebot.types.Message):
 @bot.message_handler(commands=['dbinfo'])
 def export_db(message: telebot.types.Message):
     """Экспортируем БД."""
-    access = get_admin_access(message.chat.id)
+    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
     if access is None or access[1] != message.chat.id:
         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
 
     bot.send_message(message.chat.id, 'Попытка экспорта БД.')
-    excel_export()
+    ExcelExport.excel_export()
     export_document_1 = 'result.xlsx'
     export_document_2 = 'bot_log.txt'
     export_document_3 = 'users_v2.sqlite'
@@ -251,207 +243,185 @@ def export_db(message: telebot.types.Message):
     return log_user_command(message)
 
 
-@bot.message_handler(
-        commands=[
-            'createcode_ES',
-            'createcode_ST',
-            'createcode_NR',
-            'createcode_ITS'
-        ]
-    )
-def create_code(message: telebot.types.Message):
-    """Создаем новый код доступа в БД."""
-    access = get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    company = message.text.split('_')
-    company_name = company[1]
-    generate__new_code = generate_code(company_name.lower())
-    check = search_code_in_db(generate__new_code)
-    if check is not None and check[0] == generate__new_code:
-        bot.send_message(
-            message.chat.id,
-            'Данный код уже существует, '
-            'повторите команду.'
-        )
-    elif check is None:
-        get_new_code(generate__new_code)
-        bot.send_message(message.chat.id,
-                         'Код сохранен и доступен для регистрации:')
-        bot.send_message(message.chat.id, f'/code {generate__new_code}')
-    else:
-        bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
+# @bot.message_handler(
+#         commands=[
+#             'createcode_ES',
+#             'createcode_ST',
+#             'createcode_NR',
+#             'createcode_ITS'
+#         ]
+#     )
+# def create_code(message: telebot.types.Message):
+#     """Создаем новый код доступа в БД."""
+#     access = get_admin_access(message.chat.id)
+#     if access is None or access[1] != message.chat.id:
+#         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
+#     company = message.text.split('_')
+#     company_name = company[1]
+#     generate__new_code = generate_code(company_name.lower())
+#     check = search_code_in_db(generate__new_code)
+#     if check is not None and check[0] == generate__new_code:
+#         bot.send_message(
+#             message.chat.id,
+#             'Данный код уже существует, '
+#             'повторите команду.'
+#         )
+#     elif check is None:
+#         get_new_code(generate__new_code)
+#         bot.send_message(message.chat.id,
+#                          'Код сохранен и доступен для регистрации:')
+#         bot.send_message(message.chat.id, f'/code {generate__new_code}')
+#     else:
+#         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
-    return log_user_command(message)
+#     return log_user_command(message)
 
 
-@bot.message_handler(
-        commands=[
-            'createnewcode_ES',
-            'createnewcode_ST',
-            'createnewcode_NR',
-            'createnewcode_ITS',
-        ]
-    )
-def create_new_code(message: telebot.types.Message):
-    """Создаем новый код доступа в БД."""
-    access = get_moderator_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    company = message.text.split('_')
-    company_name = company[1]
-    generate__new_code = generate_code(company_name.lower())
-    check = search_code_in_db(generate__new_code)
-    if check is not None and check[0] == generate__new_code:
-        bot.send_message(
-            message.chat.id,
-            'Данный код уже существует, '
-            'повторите команду.'
-        )
-    elif check is None:
-        get_new_code(generate__new_code)
-        bot.send_message(message.chat.id,
-                         'Код сохранен и доступен для регистрации:')
-        bot.send_message(message.chat.id, f'/code {generate__new_code}')
-    else:
-        bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
+# @bot.message_handler(
+#         commands=[
+#             'createnewcode_ES',
+#             'createnewcode_ST',
+#             'createnewcode_NR',
+#             'createnewcode_ITS',
+#         ]
+#     )
+# def create_new_code(message: telebot.types.Message):
+#     """Создаем новый код доступа в БД."""
+#     access = get_moderator_access(message.chat.id)
+#     if access is None or access[1] != message.chat.id:
+#         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
+#     company = message.text.split('_')
+#     company_name = company[1]
+#     generate__new_code = generate_code(company_name.lower())
+#     check = search_code_in_db(generate__new_code)
+#     if check is not None and check[0] == generate__new_code:
+#         bot.send_message(
+#             message.chat.id,
+#             'Данный код уже существует, '
+#             'повторите команду.'
+#         )
+#     elif check is None:
+#         get_new_code(generate__new_code)
+#         bot.send_message(message.chat.id,
+#                          'Код сохранен и доступен для регистрации:')
+#         bot.send_message(message.chat.id, f'/code {generate__new_code}')
+#     else:
+#         bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
 
-    return log_user_command(message)
+#     return log_user_command(message)
 
 
 @bot.message_handler(commands=['start'])
-def check_user_permissions(message: telebot.types.Message):
-    """"Определяем права пользователя."""
-    access = get_user_access(message.chat.id)
-    if access is None:
-        bot.send_message(message.chat.id, NOT_REGISTERED)
-        bot.send_message(
-            message.chat.id,
-            'Запросите код у администратора проекта, '
-            'либо используйте имеющийся.'
-        )
-        bot.send_message(
-            message.chat.id,
-            'Чтобы зарегистрироваться введите актуальный код доступа'
-            ' через пробел после команды "/code"'
-        )
-        bot.send_message(
-            message.chat.id,
-            'пример кода:\n/code es1nngg2f^st3!nr4\n'
-            '(Внимание код одноразовый!)'
-        )
-    elif access[1] == message.chat.id:
-        start(message)
-    else:
-        bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
+def start(message: telebot.types.Message):
+    BaseBotMenu.check_user_permissions(message)
 
 
-@bot.message_handler(commands=['code'])
-def login_user(message):
-    """Определяем права пользователя."""
-    input_code = message.text
-    erorr_code_message = (
-        'Команда использована неверно, '
-        'введите код как показано на примере!\n'
-        'Пример: \n/code jifads9af8@!1'
-    )
-    if input_code == '/code':
-        bot.send_message(
-            message.chat.id,
-            erorr_code_message,
-        )
-        return log_user_command(message)
-    clear_code = input_code.split()
-    if len(clear_code) <= 1 or len(clear_code) > 2:
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message,
-        )
-    check = search_code_in_db(clear_code[1])
-    if check is not None and check[0] == clear_code[1]:
-        bot.send_message(message.chat.id, 'Код найден в базе!')
-        bot.send_message(message.chat.id,
-                         'Проверяю возможность создания нового пользователя.')
-        get_new_user(
-            clear_code[1],
-            message.from_user.username,
-            message.from_user.id,
-            message.from_user.first_name,
-            message.from_user.last_name,
-        )
-        return check_user_permissions(message)
-    bot.send_message(
-        message.chat.id,
-        'Код не найден в системе!\n'
-        'Запросите код у администратора проекта, '
-        'либо используйте имеющийся.',
-    )
-    return log_user_command(message)
+# @bot.message_handler(commands=['code'])
+# def login_user(message):
+#     """Определяем права пользователя."""
+#     input_code = message.text
+#     erorr_code_message = (
+#         'Команда использована неверно, '
+#         'введите код как показано на примере!\n'
+#         'Пример: \n/code jifads9af8@!1'
+#     )
+#     if input_code == '/code':
+#         bot.send_message(
+#             message.chat.id,
+#             erorr_code_message,
+#         )
+#         return log_user_command(message)
+#     clear_code = input_code.split()
+#     if len(clear_code) <= 1 or len(clear_code) > 2:
+#         return bot.send_message(
+#             message.chat.id,
+#             erorr_code_message,
+#         )
+#     check = search_code_in_db(clear_code[1])
+#     if check is not None and check[0] == clear_code[1]:
+#         bot.send_message(message.chat.id, 'Код найден в базе!')
+#         bot.send_message(message.chat.id,
+#                          'Проверяю возможность создания нового пользователя.')
+#         get_new_user(
+#             clear_code[1],
+#             message.from_user.username,
+#             message.from_user.id,
+#             message.from_user.first_name,
+#             message.from_user.last_name,
+#         )
+#         return check_user_permissions(message)
+#     bot.send_message(
+#         message.chat.id,
+#         'Код не найден в системе!\n'
+#         'Запросите код у администратора проекта, '
+#         'либо используйте имеющийся.',
+#     )
+#     return log_user_command(message)
 
 
-@bot.message_handler(commands=['updates', 'massmess'])
-def mass_info_message(message):
-    """
-    Рассылка информации всем пользователям.
-    - updates: для заготовленных обновлений
-    - massmess: для любых сообщений (до 500 символов)
-    """
-    access = get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    input_message = message.text.split()
-    if input_message[0] == '/updates':
-        message_for_users = UPDATE_MESSAGE
-    elif input_message[0] == '/massmess':
-        message_for_users = ' '.join(input_message[1:])
-        erorr_code_message = (
-            'Команда использована неверно, '
-            'введите запрос как показано на примере\!\n'  # noqa W605
-            'Пример: \n\/massmess your_message\n'  # noqa W605
-            f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'  # noqa W605
-        )
-        if (len(input_message) <= 1
-           or len(' '.join(input_message[1:]))) > MAX_MESSAGE_SYMBOLS:
-            bot.send_message(
-                message.chat.id,
-                erorr_code_message,
-                parse_mode='MarkdownV2',
-            )
-            return log_user_command(message)
-    users = search_all_user_id()
-    send_count = 0
-    eror_count = 0
-    for user in users:
-        try:
-            bot.send_message(
-                chat_id=user[0],
-                text=message_for_users,
-            )
-            send_count += 1
-        except Exception:
-            eror_count += 1
-            raise bot.send_message(
-                message.chat.id,
-                f'ошибка отправки пользователю с id № *{user[0]}*',
-                parse_mode='MarkdownV2',
-            )
-        finally:
-            continue
-    bot.send_message(
-        message.chat.id,
-        text=(
-            f'Сообщение успешно отправлено *{send_count}* пользователям\!\n'  # noqa W605
-            f'\nСообщение не доставлено *{eror_count}* пользователям\!'  # noqa W605
-        ),
-        parse_mode='MarkdownV2'
-    )
-    return log_user_command(message)
+# @bot.message_handler(commands=['updates', 'massmess'])
+# def mass_info_message(message):
+#     """
+#     Рассылка информации всем пользователям.
+#     - updates: для заготовленных обновлений
+#     - massmess: для любых сообщений (до 500 символов)
+#     """
+#     access = get_admin_access(message.chat.id)
+#     if access is None or access[1] != message.chat.id:
+#         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
+#     input_message = message.text.split()
+#     if input_message[0] == '/updates':
+#         message_for_users = UPDATE_MESSAGE
+#     elif input_message[0] == '/massmess':
+#         message_for_users = ' '.join(input_message[1:])
+#         erorr_code_message = (
+#             'Команда использована неверно, '
+#             'введите запрос как показано на примере\!\n'  # noqa W605
+#             'Пример: \n\/massmess your_message\n'  # noqa W605
+#             f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'  # noqa W605
+#         )
+#         if (len(input_message) <= 1
+#            or len(' '.join(input_message[1:]))) > MAX_MESSAGE_SYMBOLS:
+#             bot.send_message(
+#                 message.chat.id,
+#                 erorr_code_message,
+#                 parse_mode='MarkdownV2',
+#             )
+#             return log_user_command(message)
+#     users = search_all_user_id()
+#     send_count = 0
+#     eror_count = 0
+#     for user in users:
+#         try:
+#             bot.send_message(
+#                 chat_id=user[0],
+#                 text=message_for_users,
+#             )
+#             send_count += 1
+#         except Exception:
+#             eror_count += 1
+#             raise bot.send_message(
+#                 message.chat.id,
+#                 f'ошибка отправки пользователю с id № *{user[0]}*',
+#                 parse_mode='MarkdownV2',
+#             )
+#         finally:
+#             continue
+#     bot.send_message(
+#         message.chat.id,
+#         text=(
+#             f'Сообщение успешно отправлено *{send_count}* пользователям\!\n'  # noqa W605
+#             f'\nСообщение не доставлено *{eror_count}* пользователям\!'  # noqa W605
+#         ),
+#         parse_mode='MarkdownV2'
+#     )
+#     return log_user_command(message)
 
 
 @bot.message_handler(commands=['dev_test_command'])
 def start(message):
     """Приветствуем пользователя и включаем меню бота."""
-    check_user = get_user_access(message.chat.id)
+    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         return bot.send_message(message.chat.id, NOT_REGISTERED)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -485,15 +455,15 @@ def start(message):
     return log_user_command(message)
 
 
-@bot.message_handler(commands=[STOP_COMMAND])  # Усложнить команду
-def stop_command(message):
-    """Останавливаем работу бота командой."""
-    access = get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    bot.send_message(message.chat.id, 'OK, stop...')
-    log_user_command(message)
-    return bot.stop_polling()
+# @bot.message_handler(commands=[STOP_COMMAND])  # Усложнить команду
+# def stop_command(message):
+#     """Останавливаем работу бота командой."""
+#     access = get_admin_access(message.chat.id)
+#     if access is None or access[1] != message.chat.id:
+#         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
+#     bot.send_message(message.chat.id, 'OK, stop...')
+#     log_user_command(message)
+#     return bot.stop_polling()
 
 
 @bot.message_handler(content_types=['text'])
@@ -502,7 +472,7 @@ def get_text_messages(message):
     Главное меню чат-бота с глубокой вложенностью
     и возможностью возврата к предыдущему пункту меню.
     """
-    check_user = get_user_access(message.chat.id)
+    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         return bot.send_message(message.chat.id, NOT_REGISTERED)
     if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
@@ -4335,7 +4305,7 @@ def get_text_messages(message):
 @bot.message_handler(content_types=['photo'])
 def get_user_photo(message):
     """Ловим отправленные пользователем изобращения."""
-    check_user = get_user_access(message.chat.id)
+    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         log_photo(message)
         return bot.send_message(message.chat.id, NOT_REGISTERED)
@@ -4356,7 +4326,7 @@ def get_user_photo(message):
 @bot.message_handler(content_types=['sticker'])
 def get_user_stiсker(message):
     """Ловим отправленные пользователем стикеры."""
-    check_user = get_user_access(message.chat.id)
+    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         log_sticker(message)
         return bot.send_message(message.chat.id, NOT_REGISTERED)
