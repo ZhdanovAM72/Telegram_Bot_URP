@@ -3,23 +3,24 @@ import sqlite3
 from logger_setting.logger_bot import logger
 
 
-class DeleteMethods:
+class UpdateMethods:
 
     @classmethod
-    def delete_by_chat_id(cls, chat_id: int) -> None:
-        """Удаляем данные пользователя по user_id."""
+    def update_user_to_moderator(cls, code: str, user_id: int) -> None:
+        """Дополняем пользователя правами модератора."""
         try:
             con = sqlite3.connect('users_v2.sqlite')
             cur = con.cursor()
             sql_update_v1 = ("""
-                DELETE FROM bot_users
-                WHERE user_id = ?;
+                UPDATE bot_users
+                SET auth_code = ?
+                WHERE user_id = ?
             """)
-            cur.execute(sql_update_v1, (chat_id,))
+            data = (code, user_id)
+            cur.execute(sql_update_v1, data)
             con.commit()
-            cur.close()
-            logger.info('Команда удаления пользователя в БД, id: '
-                        f'{chat_id}')
+            logger.info('Записан новый модератор в БД: '
+                        f'{user_id}')
         except sqlite3.Error as error:
             logger.error(f'SQL error: {error}')
         finally:
@@ -28,20 +29,21 @@ class DeleteMethods:
                 logger.info('Закрыто соединение с БД: users_v2')
 
     @classmethod
-    def delete_by_code(cls, auth_code: str) -> None:
-        """Удаляем все данные привязанные с auth_code."""
+    def update_user_code(cls, old_code: str, new_code: int) -> None:
+        """Обновляем код в БД."""
         try:
             con = sqlite3.connect('users_v2.sqlite')
             cur = con.cursor()
             sql_update_v1 = ("""
-                DELETE FROM bot_users
-                WHERE auth_code = ?;
+                UPDATE bot_users
+                SET auth_code = ?
+                WHERE auth_code = ?
             """)
-            cur.execute(sql_update_v1, (auth_code,))
+            data = (new_code, old_code)
+            cur.execute(sql_update_v1, data)
             con.commit()
-            cur.close()
-            logger.info('Команда удаления дынных из БД по коду: '
-                        f'{auth_code}')
+            logger.info('Записан новый код в БД: '
+                        f'{new_code}')
         except sqlite3.Error as error:
             logger.error(f'SQL error: {error}')
         finally:
