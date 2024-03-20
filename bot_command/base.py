@@ -1,5 +1,5 @@
 from .start import StartBotCommand
 
 
-class BaseBotMenu(StartBotCommand):
+class BaseBotCommands(StartBotCommand):
     pass
