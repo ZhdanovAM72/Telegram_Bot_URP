@@ -1,7 +1,7 @@
 import telebot
 
 from bot.db import BaseBotSQLMethods
-from bot.constant import NOT_REGISTERED, NO_ADMIN_RIGHTS
+from bot.constant import NOT_REGISTERED, NO_ADMIN_RIGHTS, NO_MODERATOR_RIGHTS
 from bot import bot
 
 
@@ -40,5 +40,14 @@ class CheckUserPermission:
         access = BaseBotSQLMethods.get_admin_access(message.chat.id)
         if access is None or access[1] != message.chat.id:
             bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
+            return False
+        return True
+
+    @classmethod
+    def check_moderator(cls, message: telebot.types.Message) -> bool:
+        """Проверяем является ли пользователь модератором."""
+        access = BaseBotSQLMethods.get_moderator_access(message.chat.id)
+        if access is None:
+            bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
             return False
         return True

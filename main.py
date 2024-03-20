@@ -7,15 +7,12 @@ from bot.bot_command import BaseBotCommands
 from bot.content_processor import BaseContentProcessor
 from bot.db import BaseBotSQLMethods
 from bot.logger_setting.logger_bot import log_user_command
-from bot.utils.code_generator import CodeGenerator
 from bot.utils.excel_export import ExcelExport
 # from updates import UPDATE_MESSAGE
 from bot.constant import (
     ES, ITS, NR, NNGGF, ST,
     ABOUT_NTK,
     NO_ADMIN_RIGHTS,
-    MODERATOR_COMMANDS,
-    NO_MODERATOR_RIGHTS,
     NOT_REGISTERED,
 )
 from bot import bot, STOP_COMMAND
@@ -28,95 +25,21 @@ def admin(message: telebot.types.Message):
 
 
 @bot.message_handler(commands=['updatecode'])
-def updatecode(message: telebot.types.Message):
+def update_code(message: telebot.types.Message):
     """Обновляем код в БД."""
-    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    input_code = message.text
-    erorr_code_message = (
-        'Команда использована неверно, '
-        'введите запрос как показано на примере!\n'
-        'Пример: \n/updatecode 111111111'
-    )
-    if input_code == '/updatecode':
-        bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
-        return log_user_command(message)
-    old_code = input_code.split()
-    if len(old_code) <= 2 or len(old_code) > 3:
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
-    check = BaseBotSQLMethods.search_code_in_db(old_code[1])
-    if check is not None and check[0] == str(old_code[1]):
-        company_name = old_code[2]
-        new_code = CodeGenerator.generate_code(company_name.lower())
-        BaseBotSQLMethods.update_user_code(old_code[1], new_code)
-        return bot.send_message(message.chat.id, 'Запись БД обновлена!')
-    bot.send_message(
-        message.chat.id,
-        'Код не найден в системе!\n'
-        'Проверьте code в БД. '
-    )
-    return log_user_command(message)
+    BaseBotCommands.update_code(message)
 
 
 @bot.message_handler(commands=['createmoderator'])
 def create_moderator(message: telebot.types.Message):
     """Создаем модератора."""
-    bot.send_message(message.chat.id, 'Проверяем права.')
-    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, NO_ADMIN_RIGHTS)
-    input_code = message.text
-    erorr_code_message = (
-        'Команда использована неверно, '
-        'введите запрос как показано на примере!\n'
-        'Пример: \n/createmoderator 111111111'
-    )
-    if input_code == '/createmoderator':
-        bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
-        return log_user_command(message)
-    user_id = input_code.split()
-    if len(user_id) <= 1 or len(user_id) > 2:
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
-    check = BaseBotSQLMethods.search_user_id_in_db(user_id[1])
-    if check is not None and check[0] == int(user_id[1]):
-        bot.send_message(message.chat.id, 'Пользователь найден в базе!')
-        moderator_code = 'moderator-' + check[1]
-        BaseBotSQLMethods.update_user_to_moderator(moderator_code, user_id[1])
-        return bot.send_message(message.chat.id, 'Запись БД обновлена!')
-    bot.send_message(
-        message.chat.id,
-        'Пользователь не найден в системе!\n'
-        'Проверьте user_id в БД. '
-    )
-    return log_user_command(message)
+    BaseBotCommands.create_moderator(message)
 
 
 @bot.message_handler(commands=['moderator'])
-def check_moderator_permissions(message: telebot.types.Message):
+def moderator(message: telebot.types.Message):
     """"Проверяем права модератора."""
-    bot.send_message(message.chat.id, 'Проверяем права.')
-    access = BaseBotSQLMethods.get_moderator_access(message.chat.id)
-    if access is None:
-        bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
-    elif access[1] == message.chat.id:
-        bot.send_message(message.chat.id, 'Привет Moderator!')
-        bot.send_message(message.chat.id, text=MODERATOR_COMMANDS)
-    else:
-        bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
-    return log_user_command(message)
+    BaseBotCommands.moderator_commands(message)
 
 
 @bot.message_handler(commands=['deleteuser', 'deletemoderator'])
