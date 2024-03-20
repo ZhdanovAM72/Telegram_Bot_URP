@@ -23,7 +23,7 @@ class AdminBotCommands:
 
     @classmethod
     def update_code(cls, message: types.Message) -> None:
-        """Обновляем код в БД."""
+        """Обновляем код пользователя в БД."""
         if not CheckUserPermission.check_admin(message):
             log_user_command(message)
             return None
@@ -96,5 +96,60 @@ class AdminBotCommands:
             message.chat.id,
             'Пользователь не найден в системе!\n'
             'Проверьте user_id в БД. '
+        )
+        return log_user_command(message)
+
+    @classmethod
+    def delete_user_from_db(cls, message: types.Message) -> None:
+        """Удаляем запись из БД по user_id."""
+        if not CheckUserPermission.check_admin(message):
+            return log_user_command(message)
+        input_code = message.text
+        erorr_code_message = (
+            'Команда использована неверно, '
+            'введите запрос как показано на примере!\n'
+            'Пример: \n/deleteuser user_id\n/deletecode user_code'
+        )
+        delete_user_command = input_code.split()
+        if len(delete_user_command) <= 1 or len(delete_user_command) > 2:
+            bot.send_message(
+                message.chat.id,
+                erorr_code_message
+            )
+            return log_user_command(message)
+        if delete_user_command == '/deleteuser':
+            cls.__delete_user_by_id(message, delete_user_command[1])
+            return log_user_command(message)
+        elif delete_user_command == '/deletecode':
+            cls.__delete_user_by_code(message, delete_user_command[1])
+            return log_user_command(message)
+        return None
+
+    @staticmethod
+    def __delete_user_by_id(message: types.Message, user_id: str):
+        check = BaseBotSQLMethods.search_user_id_in_db(user_id[1])
+        if check is not None and check[0] == int(user_id[1]):
+            bot.send_message(message.chat.id, 'Код найден в базе!')
+            BaseBotSQLMethods.delete_by_chat_id(user_id[1])
+            bot.send_message(message.chat.id, 'Запись БД удалена!')
+            return log_user_command(message)
+        bot.send_message(
+            message.chat.id,
+            'Пользователь не найден в системе!\n'
+            'Проверьте user_id в БД. '
+        )
+        return log_user_command(message)
+
+    @staticmethod
+    def __delete_user_by_code(message: types.Message, user_code: str):
+        check = BaseBotSQLMethods.search_code_in_db(user_code[1])
+        if check is not None and check[0] == user_code[1]:
+            bot.send_message(message.chat.id, 'Код найден в базе!')
+            BaseBotSQLMethods.delete_by_code(user_code[1])
+            return bot.send_message(message.chat.id, 'Запись БД удалена!')
+        bot.send_message(
+            message.chat.id,
+            'Код не найден в системе!\n'
+            'Проверьте код в БД. '
         )
         return log_user_command(message)

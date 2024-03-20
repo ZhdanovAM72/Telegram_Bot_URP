@@ -42,73 +42,10 @@ def moderator(message: telebot.types.Message):
     BaseBotCommands.moderator_commands(message)
 
 
-@bot.message_handler(commands=['deleteuser', 'deletemoderator'])
-def delete_user_from_db(message: telebot.types.Message):
-    """Удаляем запись из БД по user_id."""
-    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    input_code = message.text
-    erorr_code_message = (
-        'Команда использована неверно, '
-        'введите запрос как показано на примере!\n'
-        'Пример: \n/deleteuser 111111111'
-    )
-    if input_code == '/deleteuser' or input_code == '/deletemoderator':
-        bot.send_message(message.chat.id, erorr_code_message)
-        return log_user_command(message)
-
-    delete_user_id = input_code.split()
-    if len(delete_user_id) <= 1 or len(delete_user_id) > 2:
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
-    check = BaseBotSQLMethods.search_user_id_in_db(delete_user_id[1])
-    if check is not None and check[0] == int(delete_user_id[1]):
-        bot.send_message(message.chat.id, 'Код найден в базе!')
-        BaseBotSQLMethods.delete_by_chat_id(delete_user_id[1])
-        return bot.send_message(message.chat.id, 'Запись БД удалена!')
-    bot.send_message(
-        message.chat.id,
-        'Пользователь не найден в системе!\n'
-        'Проверьте user_id в БД. '
-    )
-    return log_user_command(message)
-
-
-@bot.message_handler(commands=['deletecode'])
-def delete_code_from_db(message: telebot.types.Message):
-    """Удаляем запись из БД по коду доступа."""
-    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
-    if access is None or access[1] != message.chat.id:
-        return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    input_code = message.text
-    erorr_code_message = (
-        'Команда использована неверно, '
-        'введите запрос как показано на примере!\n'
-        'Пример: \n/deletecode jifads9af8@!1'
-    )
-    if input_code == '/deletecode':
-        bot.send_message(message.chat.id, erorr_code_message)
-        return log_user_command(message)
-    clear_code = input_code.split()
-    if len(clear_code) <= 1 or len(clear_code) > 2:
-        return bot.send_message(
-            message.chat.id,
-            erorr_code_message
-        )
-    check = BaseBotSQLMethods.search_code_in_db(clear_code[1])
-    if check is not None and check[0] == clear_code[1]:
-        bot.send_message(message.chat.id, 'Код найден в базе!')
-        BaseBotSQLMethods.delete_by_code(clear_code[1])
-        return bot.send_message(message.chat.id, 'Запись БД удалена!')
-    bot.send_message(
-        message.chat.id,
-        'Код не найден в системе!\n'
-        'Проверьте код в БД. '
-    )
-    return log_user_command(message)
+@bot.message_handler(commands=['deleteuser', 'deletecode'])
+def delete_user(message: telebot.types.Message):
+    """Удаление пользователей."""
+    BaseBotCommands.delete_user_from_db(message)
 
 
 @bot.message_handler(commands=['dbinfo'])
