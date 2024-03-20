@@ -117,20 +117,23 @@ class AdminBotCommands:
                 erorr_code_message
             )
             return log_user_command(message)
-        if delete_user_command == '/deleteuser':
+
+        if delete_user_command[0] == '/deleteuser':
             cls.__delete_user_by_id(message, delete_user_command[1])
-            return log_user_command(message)
-        elif delete_user_command == '/deletecode':
+            return None
+
+        elif delete_user_command[0] == '/deletecode':
             cls.__delete_user_by_code(message, delete_user_command[1])
-            return log_user_command(message)
+            return None
+
         return None
 
     @staticmethod
     def __delete_user_by_id(message: types.Message, user_id: str):
-        check = BaseBotSQLMethods.search_user_id_in_db(user_id[1])
-        if check is not None and check[0] == int(user_id[1]):
+        check = BaseBotSQLMethods.search_user_id_in_db(user_id)
+        if check is not None and check[0] == int(user_id):
             bot.send_message(message.chat.id, 'Код найден в базе!')
-            BaseBotSQLMethods.delete_by_chat_id(user_id[1])
+            BaseBotSQLMethods.delete_by_chat_id(user_id)
             bot.send_message(message.chat.id, 'Запись БД удалена!')
             return log_user_command(message)
         bot.send_message(
@@ -142,10 +145,10 @@ class AdminBotCommands:
 
     @staticmethod
     def __delete_user_by_code(message: types.Message, user_code: str):
-        check = BaseBotSQLMethods.search_code_in_db(user_code[1])
-        if check is not None and check[0] == user_code[1]:
+        check = BaseBotSQLMethods.search_code_in_db(user_code)
+        if check is not None and check[0] == user_code:
             bot.send_message(message.chat.id, 'Код найден в базе!')
-            BaseBotSQLMethods.delete_by_code(user_code[1])
+            BaseBotSQLMethods.delete_by_code(user_code)
             return bot.send_message(message.chat.id, 'Запись БД удалена!')
         bot.send_message(
             message.chat.id,
