@@ -1,1 +1,0 @@
-from bot_menu.base import BaseBotMenu  # noqa

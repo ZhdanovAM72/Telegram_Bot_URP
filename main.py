@@ -5,7 +5,7 @@ import telebot
 from dotenv import load_dotenv
 from telebot import types
 
-from bot_menu import BaseBotMenu
+from bot_command import BaseBotCommands
 from db import BaseBotSQLMethods
 from logger_setting.logger_bot import log_user_command, log_photo, log_sticker
 from utils.code_generator import CodeGenerator
@@ -313,7 +313,7 @@ def export_db(message: telebot.types.Message):
 
 @bot.message_handler(commands=['start'])
 def start(message: telebot.types.Message):
-    BaseBotMenu.check_user_permissions(message)
+    BaseBotCommands.check_user_permissions(message)
 
 
 # @bot.message_handler(commands=['code'])
@@ -416,43 +416,6 @@ def start(message: telebot.types.Message):
 #         parse_mode='MarkdownV2'
 #     )
 #     return log_user_command(message)
-
-
-@bot.message_handler(commands=['dev_test_command'])
-def start(message):
-    """Приветствуем пользователя и включаем меню бота."""
-    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
-    if check_user is None or check_user[1] != message.chat.id:
-        return bot.send_message(message.chat.id, NOT_REGISTERED)
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button_1 = types.KeyboardButton('Информация о боте')
-    button_2 = types.KeyboardButton('Главное меню')
-    markup.add(button_1, button_2)
-
-    if (message.from_user.first_name is not None and
-       message.from_user.last_name is not None):
-        user_info = (f'{message.from_user.first_name} '
-                     f'{message.from_user.last_name}')
-
-    if (message.from_user.first_name is not None and
-       message.from_user.last_name is None):
-        user_info = (f'{message.from_user.username}')
-
-    if (message.from_user.first_name is None and
-       message.from_user.username is None):
-        user_info = ('сотрудник')
-
-    if (message.from_user.username is None and
-       message.from_user.last_name is None):
-        user_info = (f'{message.from_user.first_name}')
-
-    start_message = (f'Здравствуйте, <b>{user_info}</b>!\n'
-                     'Я расскажу Вам о нефтесервисных активах! '
-                     'выберите интересующую Вас тему в меню.')
-    bot.send_message(message.chat.id,
-                     start_message, parse_mode='html',
-                     reply_markup=markup)
-    return log_user_command(message)
 
 
 # @bot.message_handler(commands=[STOP_COMMAND])  # Усложнить команду
