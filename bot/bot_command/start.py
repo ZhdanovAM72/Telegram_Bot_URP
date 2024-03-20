@@ -1,16 +1,18 @@
 import telebot
 from telebot import types
 
-from db import BaseBotSQLMethods
-from constant import NOT_REGISTERED
-from logger_setting.logger_bot import log_user_command
+from bot.db import BaseBotSQLMethods
+from bot.constant import NOT_REGISTERED
+from bot.logger_setting.logger_bot import log_user_command
+
+from bot import bot
 
 
 class StartBotCommand:
 
     @classmethod
     def check_user_permissions(cls, message: telebot.types.Message):
-        from main import bot
+        # from main import bot
         """"Определяем права пользователя."""
         access = BaseBotSQLMethods.get_user_access(message.chat.id)
         if access is None:
@@ -37,7 +39,7 @@ class StartBotCommand:
 
     @classmethod
     def start(cls, message: telebot.types.Message):
-        from main import bot
+        # from main import bot
         """Приветствуем пользователя и включаем меню бота."""
         check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
         if check_user is None or check_user[1] != message.chat.id:

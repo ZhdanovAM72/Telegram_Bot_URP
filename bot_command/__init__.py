@@ -1,1 +1,0 @@
-from bot_command.base import BaseBotCommands  # noqa

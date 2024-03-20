@@ -2,7 +2,7 @@ import sqlite3
 
 import pandas as pd
 
-from logger_setting.logger_bot import logger
+from bot.logger_setting.logger_bot import logger
 
 
 class ExcelExport:

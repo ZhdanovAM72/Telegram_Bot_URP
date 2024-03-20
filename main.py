@@ -1,17 +1,17 @@
 import datetime as dt
-import os
+# import os
 
 import telebot
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from telebot import types
 
-from bot_command import BaseBotCommands
-from db import BaseBotSQLMethods
-from logger_setting.logger_bot import log_user_command, log_photo, log_sticker
-from utils.code_generator import CodeGenerator
-from utils.excel_export import ExcelExport
+from bot.bot_command import BaseBotCommands
+from bot.db import BaseBotSQLMethods
+from bot.logger_setting.logger_bot import log_user_command, log_photo, log_sticker
+from bot.utils.code_generator import CodeGenerator
+from bot.utils.excel_export import ExcelExport
 # from updates import UPDATE_MESSAGE
-from constant import (
+from bot.constant import (
     ES, ITS, NR, NNGGF, ST,
     ABOUT_NTK,
     ADMIN_COMMANDS,
@@ -21,13 +21,14 @@ from constant import (
     # MAX_MESSAGE_SYMBOLS,
     NOT_REGISTERED,
 )
+from bot import bot
 
-load_dotenv()
+# load_dotenv()
 
-API_TOKEN = os.getenv('URP_BOT_TOKEN')
-STOP_COMMAND = os.getenv('STOP_COMMAND')
+# API_TOKEN = os.getenv('URP_BOT_TOKEN')
+# STOP_COMMAND = os.getenv('STOP_COMMAND')
 
-bot = telebot.TeleBot(API_TOKEN)
+# bot = telebot.TeleBot(API_TOKEN)
 
 
 @bot.message_handler(commands=['admin'])

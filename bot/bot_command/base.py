@@ -1,4 +1,4 @@
-from .start import StartBotCommand
+from bot.bot_command.start import StartBotCommand
 
 
 class BaseBotCommands(StartBotCommand):

@@ -1,7 +1,7 @@
 import datetime as dt
 import sqlite3
 
-from logger_setting.logger_bot import logger
+from bot.logger_setting.logger_bot import logger
 
 
 class CreateMethods:
