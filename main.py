@@ -13,29 +13,18 @@ from bot.utils.excel_export import ExcelExport
 from bot.constant import (
     ES, ITS, NR, NNGGF, ST,
     ABOUT_NTK,
-    ADMIN_COMMANDS,
     NO_ADMIN_RIGHTS,
     MODERATOR_COMMANDS,
     NO_MODERATOR_RIGHTS,
-    # MAX_MESSAGE_SYMBOLS,
     NOT_REGISTERED,
 )
 from bot import bot, STOP_COMMAND
 
 
 @bot.message_handler(commands=['admin'])
-def check_admin_permissions(message: telebot.types.Message):
+def admin(message: telebot.types.Message):
     """"Проверяем права администратора."""
-    bot.send_message(message.chat.id, 'Проверяем права.')
-    access = BaseBotSQLMethods.get_admin_access(message.chat.id)
-    if access is None:
-        bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    elif access[1] == message.chat.id:
-        bot.send_message(message.chat.id, 'Привет Admin!')
-        bot.send_message(message.chat.id, text=ADMIN_COMMANDS)
-    else:
-        bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-    return log_user_command(message)
+    BaseBotCommands.admin_commands(message)
 
 
 @bot.message_handler(commands=['updatecode'])
