@@ -171,6 +171,7 @@ pictures/
 db_correct.py
 new_data.tar*
 IMG_1475.MP4
+develop_files/
 
 # тестовые файлы
 test*.py
