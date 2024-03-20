@@ -1,13 +1,12 @@
 import datetime as dt
-# import os
 
 import telebot
-# from dotenv import load_dotenv
 from telebot import types
 
 from bot.bot_command import BaseBotCommands
+from bot.content_processor import BaseContentProcessor
 from bot.db import BaseBotSQLMethods
-from bot.logger_setting.logger_bot import log_user_command, log_photo, log_sticker
+from bot.logger_setting.logger_bot import log_user_command
 from bot.utils.code_generator import CodeGenerator
 from bot.utils.excel_export import ExcelExport
 # from updates import UPDATE_MESSAGE
@@ -22,13 +21,6 @@ from bot.constant import (
     NOT_REGISTERED,
 )
 from bot import bot, STOP_COMMAND
-
-# load_dotenv()
-
-# API_TOKEN = os.getenv('URP_BOT_TOKEN')
-# STOP_COMMAND = os.getenv('STOP_COMMAND')
-
-# bot = telebot.TeleBot(API_TOKEN)
 
 
 @bot.message_handler(commands=['admin'])
@@ -420,13 +412,13 @@ def start(message: telebot.types.Message):
 
 
 @bot.message_handler(commands=[STOP_COMMAND])
-def stop_command(message: telebot.types.Message):
+def stop(message: telebot.types.Message):
     """Останавливаем работу бота."""
     BaseBotCommands.stop_command(message)
 
 
 @bot.message_handler(content_types=['text'])
-def get_text_messages(message):
+def get_text_messages(message: telebot.types.Message):
     """
     Главное меню чат-бота с глубокой вложенностью
     и возможностью возврата к предыдущему пункту меню.
@@ -4262,44 +4254,15 @@ def get_text_messages(message):
 
 
 @bot.message_handler(content_types=['photo'])
-def get_user_photo(message):
+def user_photo(message: telebot.types.Message):
     """Ловим отправленные пользователем изобращения."""
-    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
-    if check_user is None or check_user[1] != message.chat.id:
-        log_photo(message)
-        return bot.send_message(message.chat.id, NOT_REGISTERED)
-
-    bot.send_message(
-        message.chat.id,
-        text=(
-            '''
-            У меня нет глаз,
-            я не понимаю что на этой картинке.\n'
-            Давайте продолжим работать в меню.
-            '''
-        ),
-    )
-    return log_photo(message)
+    BaseContentProcessor.get_user_photo(message)
 
 
 @bot.message_handler(content_types=['sticker'])
-def get_user_stiсker(message):
+def user_stiсker(message: telebot.types.Message):
     """Ловим отправленные пользователем стикеры."""
-    check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
-    if check_user is None or check_user[1] != message.chat.id:
-        log_sticker(message)
-        return bot.send_message(message.chat.id, NOT_REGISTERED)
-
-    bot.send_message(
-        message.chat.id,
-        text=(
-            '''
-            У меня нет глаз, я не вижу этот стикер.
-            Давайте продолжим работать в меню.
-            '''
-        ),
-    )
-    return log_sticker(message)
+    BaseContentProcessor.get_user_stiсker(message)
 
 
 if __name__ == '__main__':
