@@ -40,7 +40,7 @@ def log_user_command(message):
 def log_photo(message):
     """Логгирование изображений в чате."""
     log_message = (
-        f'изображение - {message.photo}'
+        f'изображение - {message.photo[0]} '
         f'пользователь: {message.from_user.username} - '
         f'id пользователя: {message.chat.id} - '
         f'имя: {message.from_user.first_name} - '
