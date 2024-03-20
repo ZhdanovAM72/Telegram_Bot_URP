@@ -21,7 +21,7 @@ from bot.constant import (
     # MAX_MESSAGE_SYMBOLS,
     NOT_REGISTERED,
 )
-from bot import bot
+from bot import bot, STOP_COMMAND
 
 # load_dotenv()
 
@@ -314,7 +314,7 @@ def export_db(message: telebot.types.Message):
 
 @bot.message_handler(commands=['start'])
 def start(message: telebot.types.Message):
-    BaseBotCommands.check_user_permissions(message)
+    BaseBotCommands.start(message)
 
 
 # @bot.message_handler(commands=['code'])
@@ -419,15 +419,10 @@ def start(message: telebot.types.Message):
 #     return log_user_command(message)
 
 
-# @bot.message_handler(commands=[STOP_COMMAND])  # Усложнить команду
-# def stop_command(message):
-#     """Останавливаем работу бота командой."""
-#     access = get_admin_access(message.chat.id)
-#     if access is None or access[1] != message.chat.id:
-#         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-#     bot.send_message(message.chat.id, 'OK, stop...')
-#     log_user_command(message)
-#     return bot.stop_polling()
+@bot.message_handler(commands=[STOP_COMMAND])
+def stop_command(message: telebot.types.Message):
+    """Останавливаем работу бота."""
+    BaseBotCommands.stop_command(message)
 
 
 @bot.message_handler(content_types=['text'])
