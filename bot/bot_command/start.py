@@ -2,8 +2,6 @@ import telebot
 from telebot import types
 
 from bot import bot
-from bot.db import BaseBotSQLMethods
-from bot.constant import NOT_REGISTERED
 from bot.logger_setting.logger_bot import log_user_command
 from bot.utils.check_permission import CheckUserPermission
 
@@ -15,9 +13,6 @@ class StartBotCommand:
         """Приветствуем пользователя и включаем меню бота."""
         if not CheckUserPermission.check_user(message):
             return None
-        check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
-        if check_user is None or check_user[1] != message.chat.id:
-            return bot.send_message(message.chat.id, NOT_REGISTERED)
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_1 = types.KeyboardButton('Информация о боте')
         button_2 = types.KeyboardButton('Главное меню')

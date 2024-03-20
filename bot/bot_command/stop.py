@@ -1,5 +1,3 @@
-import os
-
 import telebot
 
 from bot import bot
