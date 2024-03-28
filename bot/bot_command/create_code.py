@@ -21,6 +21,8 @@ class CreateCodeCommands:
         company = message.text.split('_')
         company_name = company[1]
         generate__new_code = CodeGenerator._generate_code(company_name.lower())
+        if not generate__new_code:
+            bot.send_message(message.chat.id, 'Данное ДО не найдено.')
         check = BaseBotSQLMethods.search_code_in_db(generate__new_code)
         if check is not None and check[0] == generate__new_code:
             bot.send_message(
