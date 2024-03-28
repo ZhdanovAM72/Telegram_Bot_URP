@@ -21,17 +21,15 @@ class StartBotCommand:
         if (message.from_user.first_name is not None and
            message.from_user.last_name is not None):
             user_info = (
-                f'{message.from_user.first_name} '
-                f'{message.from_user.last_name}'
+                f'{message.from_user.first_name} {message.from_user.last_name}'
             )
 
         elif (message.from_user.first_name is not None and
               message.from_user.last_name is None):
-            user_info = f'{message.from_user.username}'
+            user_info = message.from_user.first_name
 
-        elif (message.from_user.username is None and
-              message.from_user.last_name is None):
-            user_info = f'{message.from_user.first_name}'
+        elif message.from_user.username is not None:
+            user_info = message.from_user.username
 
         else:
             user_info = 'сотрудник'
