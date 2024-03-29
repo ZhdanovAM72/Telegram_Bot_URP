@@ -11,6 +11,7 @@ from bot.constant import (
     ABOUT_NTK,
     NOT_REGISTERED,
 )
+from bot.content_processor.text.base import BaseTextMenu
 from bot import bot, STOP_COMMAND
 
 
@@ -149,250 +150,36 @@ def get_text_messages(message: telebot.types.Message):
     check_user = BaseBotSQLMethods.get_user_access(message.chat.id)
     if check_user is None or check_user[1] != message.chat.id:
         return bot.send_message(message.chat.id, NOT_REGISTERED)
-    if message.text == 'Главное меню' or message.text == '🔙 Главное меню':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        button_1 = types.KeyboardButton('О компании')
-        button_2 = types.KeyboardButton('Адаптация')
-        button_3 = types.KeyboardButton('Карьерное развитие')
-        button_4 = types.KeyboardButton('Цикл управления талантами')
-        button_5 = types.KeyboardButton('Стажировка')
-        button_6 = types.KeyboardButton('ДМС и РВЛ')
-        button_7 = types.KeyboardButton('Молодежная политика')
-        button_8 = types.KeyboardButton('Бланки заявлений')
-        button_9 = types.KeyboardButton('Планирование закупок')
-        button_10 = types.KeyboardButton('Обратная связь')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-            button_7,
-            button_8,
-            button_9,
-            button_10,
-        )
-        bot.send_message(message.from_user.id,
-                         "Добро пожаловать в главное меню чат-бота",
-                         reply_markup=markup)
-        bot.send_message(message.from_user.id,
-                         'Выберите интересующий вас раздел')
 
-    elif (message.text == 'О компании'
-          or message.text == '🔙 вернуться в раздел О компании'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        btn_about_1 = types.KeyboardButton('🔙 Главное меню')
-        btn_about_2 = types.KeyboardButton('Выбрать ДО')
-        btn_about_3 = types.KeyboardButton('Корпоративные ценности')
-        btn_about_4 = types.KeyboardButton('Сервисы для сотрудников')
-        btn_about_5 = types.KeyboardButton('Новостная лента')
-        markup.add(
-            btn_about_2,
-            btn_about_3,
-            btn_about_4,
-            btn_about_5,
-            btn_about_1
-            )
-        bot.send_message(
-            message.from_user.id,
-            "⬇ О компании",
-            reply_markup=markup
-            )
+    menu_dict = {
+        'Главное меню': BaseTextMenu.main_menu,
+        '🔙 Главное меню': BaseTextMenu.main_menu,
 
-    elif (message.text == 'Выбрать ДО'
-          or message.text == '🔙 вернуться в раздел Выбрать ДО'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_do_1 = types.KeyboardButton('🔙 вернуться в раздел О компании')
-        btn_do_2 = types.KeyboardButton('Нефтесервисные решения')
-        btn_do_3 = types.KeyboardButton('Газпромнефть Энергосистемы')
-        btn_do_4 = types.KeyboardButton('Инженерно-технологический сервис')
-        btn_do_5 = types.KeyboardButton('Газпромнефть Сервисные технологии')
-        markup.add(btn_do_2, btn_do_3, btn_do_4, btn_do_5, btn_do_1)
-        bot.send_message(
-            message.from_user.id,
-            "⬇ Выбрать ДО",
-            reply_markup=markup
-            )
+        'О компании': BaseTextMenu.about_company,
+        '🔙 вернуться в раздел О компании': BaseTextMenu.about_company,
+        'Выбрать ДО': BaseTextMenu.choose_do,
+        '🔙 вернуться в раздел Выбрать ДО': BaseTextMenu.choose_do,
 
-    # Газпромнефть Сервисные технологии
-    elif (message.text == 'Газпромнефть Сервисные технологии'
-          or message.text == ('🔙 вернуться в раздел '
-                              'Газпромнефть Сервисные технологии')):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
-        button_2 = types.KeyboardButton('Структура СТ')
-        button_3 = types.KeyboardButton('История СТ')
-        markup.add(button_2, button_3, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "⬇ Газпромнефть Сервисные технологии",
-            reply_markup=markup
-        )
+        'Газпромнефть Сервисные технологии': BaseTextMenu.do_st,
+        '🔙 вернуться в раздел Газпромнефть Сервисные технологии': BaseTextMenu.do_st,
+        'Структура СТ': BaseTextMenu.structure_st,
+        'История СТ': BaseTextMenu.history_st,
 
-    # Газпромнефть Сервисные технологии
-    elif message.text == 'История СТ':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Газпромнефть Сервисные технологии'
-        )
-        document = 'prod_data/о_компании/выбрать_ДО/СТ/история/about_us.pdf'
-        markup.add(button)
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='История ООО "Газпромнефть Сервисные технологии"',
-                parse_mode="html"
-            )
+        'Нефтесервисные решения': BaseTextMenu.do_nr,
+        '🔙 вернуться в раздел Нефтесервисные решения': BaseTextMenu.do_nr,
+        'История НР': BaseTextMenu.history_nr,
 
-    # Газпромнефть Сервисные технологии
-    elif message.text == 'Структура СТ':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Газпромнефть Сервисные технологии'
-        )
-        markup.add(button)
-        document = ('prod_data/о_компании/выбрать_ДО/СТ/структура/'
-                    'structure.pdf')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Структура ООО "Газпромнефть Сервисные технологии"',
-                parse_mode="html",
-            )
+        'Инженерно-технологический сервис': BaseTextMenu.do_its,
+        '🔙 вернуться в раздел Инженерно-технологический сервис': BaseTextMenu.do_its,
+        'Структура ИТС': BaseTextMenu.structure_its,
+        'НМД ИТС': BaseTextMenu.nmd_its,
+        'Контакты ИТС': BaseTextMenu.contacts_its,
+        'История ИТС': BaseTextMenu.history_its,
 
-    # Нефтесервисные решения
-    elif (message.text == 'Нефтесервисные решения'
-          or message.text == '🔙 вернуться в раздел Нефтесервисные решения'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
-        button_2 = types.KeyboardButton('История НР')
-        markup.add(button_2, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "⬇ Нефтесервисные решения",
-            reply_markup=markup
-        )
+    }
 
-    # ННГГФ (ИТС) Контакты
-    elif message.text == 'История НР':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Нефтесервисные решения'
-        )
-        document = 'prod_data/о_компании/выбрать_ДО/НР/История/about_us.pptx'
-        markup.add(button)
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='История ООО "Нефтесервисные решения"',
-                parse_mode="html"
-            )
-
-    # ННГГФ (ИТС)
-    elif (message.text == 'Инженерно-технологический сервис'
-          or message.text == ('🔙 вернуться в раздел '
-                              'Инженерно-технологический сервис')):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('🔙 вернуться в раздел Выбрать ДО')
-        button_2 = types.KeyboardButton('Структура ИТС')
-        button_3 = types.KeyboardButton('НМД ИТС')
-        button_4 = types.KeyboardButton('Контакты ИТС')
-        button_5 = types.KeyboardButton('История ИТС')
-        markup.add(button_2, button_3, button_4, button_5, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "⬇ Инженерно-технологический сервис",
-            reply_markup=markup
-        )
-
-    # ННГГФ (ИТС) Контакты
-    elif message.text == 'Контакты ИТС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Инженерно-технологический сервис'
-        )
-        document = 'prod_data/о_компании/выбрать_ДО/ННГГФ/Контакты/info.docx'
-        markup.add(button)
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Контакты ООО "Инженерно-технологический сервис"',
-                parse_mode="html"
-            )
-
-    # ННГГФ (ИТС) История
-    elif message.text == 'История ИТС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Инженерно-технологический сервис'
-        )
-        markup.add(button)
-        document = ('prod_data/о_компании/выбрать_ДО/ННГГФ/История/'
-                    'about_us.pdf')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='История ООО "Инженерно-технологический сервис"',
-                parse_mode="html"
-            )
-
-    # ННГГФ (ИТС) Структура
-    elif message.text == 'Структура ИТС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Инженерно-технологический сервис'
-        )
-        markup.add(button)
-        document = ('prod_data/о_компании/выбрать_ДО/ННГГФ/Структура/'
-                    'structure.pdf')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Структура ООО "Инженерно-технологический сервис"',
-                parse_mode="html"
-            )
-
-    # ННГГФ (ИТС) НМД ИТС
-    elif message.text == 'НМД ИТС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Инженерно-технологический сервис'
-        )
-        markup.add(button)
-        parrent_path = 'prod_data/о_компании/выбрать_ДО/ННГГФ/НМД/'
-        file_1 = f'{parrent_path}8.pdf'
-        # file_2 = f'{parrent_path}ib.pdf'
-        file_3 = f'{parrent_path}ptvr.pdf'
-        file_4 = f'{parrent_path}vahta.pdf'
-        filename_1 = ('Пропускной и внутреобъектовый режимы '
-                      f'{ITS}')
-        filename_2 = 'Памятка по ИБ'
-        filename_3 = ('Правила внутреннего трудового распорядка '
-                      f'{ITS}')
-        filename_4 = ('Положение о вахтовом методе работы '
-                      f'{ITS}')
-        files_dict = {
-            filename_1: file_1,
-            # filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, document in files_dict.items():
-            with open(document, 'rb') as file:
-                bot.send_document(
-                    message.chat.id,
-                    file,
-                    caption=caption,
-                    parse_mode="html",
-                    reply_markup=markup,
-                )
+    if message.text in menu_dict.keys():
+        menu_dict.get(message.text)(message)
 
     # ГПН ЭС
     elif (message.text == 'Газпромнефть Энергосистемы'
