@@ -17,7 +17,7 @@ class Documents:
                 bot.send_document(
                     chat_id,
                     file,
-                    caption[i],
+                    caption=caption[i],
                     parse_mode="html",
                     reply_markup=markup,
                 )
