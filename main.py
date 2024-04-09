@@ -213,149 +213,17 @@ def get_text_messages(message: telebot.types.Message):
         'ДМС': BaseTextMenu.dms,
         'РВЛ': BaseTextMenu.rvl,
 
+        'Карьерное развитие': BaseTextMenu.career_development,
+        '🔙 вернуться в раздел Карьерное развитие': BaseTextMenu.career_development,
+        'Мой трек': BaseTextMenu.my_track,
+        'Мой профиль': BaseTextMenu.my_profile,
+        'Индивидуальный план развития': BaseTextMenu.individual_development_plan,
+        'Карьерное консультирование': BaseTextMenu.career_counseling,
+
     }
 
     if message.text in menu_dict.keys():
         menu_dict.get(message.text)(message)
-
-    # КАРЬЕРНОЕ РАЗВИТИЕ
-    elif (message.text == 'Карьерное развитие'
-          or message.text == '🔙 вернуться в раздел Карьерное развитие'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        button_1 = types.KeyboardButton('🔙 Главное меню')
-        button_2 = types.KeyboardButton('Мой трек')
-        button_3 = types.KeyboardButton('Мой профиль')
-        button_4 = types.KeyboardButton('Индивидуальный план развития')
-        button_5 = types.KeyboardButton('Карьерное консультирование')
-        markup.add(button_2, button_3, button_4, button_5, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "Карьерное развитие",
-            reply_markup=markup,
-        )
-
-    # КАРЬЕРНОЕ РАЗВИТИЕ
-    elif message.text == 'Мой трек':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Карьерное развитие'
-        )
-        markup.add(button)
-        document = 'prod_data/карьерное_развитие/my_track/my.pdf'
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                document=file,
-                caption='Мой трек и карьерные опции',
-                parse_mode="html",
-            )
-
-    # КАРЬЕРНОЕ РАЗВИТИЕ
-    elif message.text == 'Мой профиль':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Карьерное развитие'
-        )
-        markup.add(button)
-        parrent_path = 'prod_data/карьерное_развитие/profile_on_portal/'
-        document_1 = f'{parrent_path}info.pdf'
-        document_2 = f'{parrent_path}profile.pdf'
-        bot.send_message(
-            message.chat.id,
-            'Профиль на карьерном портале -это Ваша визитная карточка, '
-            'в которой отображаются ваши уникальные навыки и квалификация,'
-            ' она подчеркивает преимущества, которые вы можете '
-            'предложить работодателю.\n'
-            '\nЗдесь собирается вся информация о Вас как о специалисте:\n'
-            '- информация об образовании,\n'
-            '- профессиональной квалификации,\n'
-            '- соответствующем опыте работы,\n'
-            '- навыках и заметных достижениях\n'
-            '\nРегулярно обновляйте профиль, чтобы руководители и HR '
-            'смогли видеть самую актуальную информацию о Вас.',
-            reply_markup=markup,
-        )
-        with open(document_1, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                document=file,
-                caption='Памятка по заполнению профиля',
-                parse_mode="html",
-            )
-        with open(document_2, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                document=file,
-                caption='Профиль сотрудника',
-                parse_mode="html",
-            )
-
-    # КАРЬЕРНОЕ РАЗВИТИЕ
-    elif message.text == 'Индивидуальный план развития':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Карьерное развитие'
-        )
-        markup.add(button)
-        parrent_path = 'prod_data/карьерное_развитие/individual_plan/'
-        file_1 = f'{parrent_path}instruction.pdf'
-        file_2 = f'{parrent_path}IPR.pdf'
-        file_3 = f'{parrent_path}menu.pdf'
-        file_4 = f'{parrent_path}plan.pdf'
-        file_5 = f'{parrent_path}done.pdf'
-        filename_1 = 'Актуализация ИПР - Инструкция для сотрудников'
-        filename_2 = ('Формирование плана развития - '
-                      'Памятка для сотрудников 2023')
-        filename_3 = 'Меню развивающих действий'
-        filename_4 = 'Индивидуальный план развития - памятка для сотрудника'
-        filename_5 = 'Факт выполнения целей в ИПР'
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-            filename_5: file_5,
-        }
-        for caption, document in files_dict.items():
-            with open(document, 'rb') as file:
-                bot.send_document(
-                    message.chat.id,
-                    document=file,
-                    caption=caption,
-                    parse_mode="html",
-                    reply_markup=markup,
-                )
-
-    # КАРЬЕРНОЕ РАЗВИТИЕ
-    elif message.text == 'Карьерное консультирование':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Карьерное развитие'
-        )
-        markup.add(button)
-        bot.send_message(
-            message.chat.id,
-            'Предмет карьерного консультирования — профессиональное и'
-            'карьерное развитие сотрудника на протяжении '
-            'всей его трудовой деятельности.\n'
-            '\nЭто совместная деятельность карьерного консультанта '
-            'и сотрудника по определению ценностей и профессиональных '
-            'интересов, анализу ближайших и долгосрочных целей, '
-            'ресурсов и возможностей сотрудника для достижения позитивных '
-            'изменений в профессиональной деятельности.\n'
-            '\nВы можете записаться на карьерную консультацию на'
-            ' Карьерном портале при условии, что Ваш профиль '
-            'заполнен не менее чем на 80%.',
-        )
-        document = 'prod_data/карьерное_развитие/carier_couch/file.png'
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Карьерное консультирование',
-                parse_mode="html",
-            )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif (message.text == 'Цикл управления талантами'
