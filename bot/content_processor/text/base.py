@@ -5,10 +5,11 @@ from bot.content_processor.text.employees_services import EmployeesServices
 from bot.content_processor.text.adaptation import Adaptation
 from bot.content_processor.text.dms import DmsAndRvl
 from bot.content_processor.text.career_development import CareerDevelopment
+from bot.content_processor.text.talent_management_cycle import TalentManagementCycle
 
 
 class BaseTextMenu(
     MainMenu, AboutCompany, NewsFeed, EmployeesServices,
-    Adaptation, DmsAndRvl, CareerDevelopment
+    Adaptation, DmsAndRvl, CareerDevelopment, TalentManagementCycle
 ):
     pass
