@@ -220,27 +220,19 @@ def get_text_messages(message: telebot.types.Message):
         'Индивидуальный план развития': BaseTextMenu.individual_development_plan,
         'Карьерное консультирование': BaseTextMenu.career_counseling,
 
+        'Цикл управления талантами': BaseTextMenu.talent_management_cycle,
+        '🔙 вернуться в раздел Цикл управления талантами': BaseTextMenu.talent_management_cycle,
+        'Обучение': BaseTextMenu.education,
+        'Регулярная оценка': ...,
+        'Диалоги об эффективности': ...,
+        'Комитеты по талантам': ...,
+        'Диалоги о развитии': ...,
+        'Планирование обучения': BaseTextMenu.planning_education
+
     }
 
     if message.text in menu_dict.keys():
         menu_dict.get(message.text)(message)
-
-    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif (message.text == 'Цикл управления талантами'
-          or message.text == '🔙 вернуться в раздел Цикл управления талантами'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        button_1 = types.KeyboardButton('🔙 Главное меню')
-        button_2 = types.KeyboardButton('Обучение')
-        button_3 = types.KeyboardButton('Регулярная оценка')
-        button_4 = types.KeyboardButton('Диалоги об эффективности')
-        button_5 = types.KeyboardButton('Комитеты по талантам')
-        button_6 = types.KeyboardButton('Диалоги о развитии')
-        markup.add(button_3, button_4, button_5, button_6, button_2, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "Цикл управления талантами",
-            reply_markup=markup,
-        )
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     elif (message.text == 'Регулярная оценка'
@@ -439,47 +431,6 @@ def get_text_messages(message: telebot.types.Message):
                 file_2,
                 caption='Бланк плана стажировки сотрудника',
                 parse_mode='html',
-            )
-
-    # ОБУЧЕНИЕ
-    elif (message.text == 'Обучение' or message.text == '🔙 вернуться в '
-          'раздел Обучение'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        button_1 = types.KeyboardButton(
-            '🔙 вернуться в раздел Цикл управления талантами'
-        )
-        button_2 = types.KeyboardButton('Цикл планирования обучения')
-        button_3 = types.KeyboardButton('Каталог программ')
-        button_4 = types.KeyboardButton('Полезная литература')
-        button_5 = types.KeyboardButton('Планирование обучения')
-        markup.add(button_3, button_2, button_4, button_5, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "Обучение",
-            reply_markup=markup,
-        )
-
-    # ОБУЧЕНИЕ
-    elif message.text == 'Планирование обучения':
-        parrent_path = 'prod_data/Обучение/ГПН_ЭС/plan/'
-        with (
-            open(f'{parrent_path}employee.pdf', 'rb') as file_1,
-            open(f'{parrent_path}supervisor.pdf', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption='Планирование обучения - Сотрудник',
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption='Планирование обучения - Руководитель',
-                        parse_mode="html",
-                    )
-                ]
             )
 
     # ОБУЧЕНИЕ
