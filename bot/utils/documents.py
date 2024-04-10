@@ -8,8 +8,8 @@ class Documents:
     # Функция для отправки документов по одному
     def send_document_with_markup(
             chat_id: int,
-            document: list[str],
-            caption: list[str] = None,
+            document: list[str] | tuple[str],
+            caption: list[str] | tuple[str] = None,
             markup: types.ReplyKeyboardMarkup = None,
     ) -> types.Message:
         for i in range(len(document)):
@@ -26,7 +26,7 @@ class Documents:
     # Функция для отправки документов группой
     def send_media_group_without_markup(
             chat_id: int,
-            documents: list[dict],
+            documents: list[dict] | tuple[dict],
     ) -> types.Message:
         input_media_documents = [
             types.InputMediaDocument(
