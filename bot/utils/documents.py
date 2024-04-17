@@ -30,8 +30,8 @@ class Documents:
     ) -> types.Message:
         input_media_documents = [
             types.InputMediaDocument(
-                file['file'],
-                caption=file['caption'],
+                file.get('file'),
+                caption=file.get('caption'),
                 parse_mode="html",
             ) for file in documents
         ]
