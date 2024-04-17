@@ -223,172 +223,17 @@ def get_text_messages(message: telebot.types.Message):
         'Цикл управления талантами': BaseTextMenu.talent_management_cycle,
         '🔙 вернуться в раздел Цикл управления талантами': BaseTextMenu.talent_management_cycle,
         'Обучение': BaseTextMenu.education,
-        'Регулярная оценка': ...,
-        'Диалоги об эффективности': ...,
-        'Комитеты по талантам': ...,
-        'Диалоги о развитии': ...,
-        'Планирование обучения': BaseTextMenu.planning_education
+        'Регулярная оценка': BaseTextMenu.regular_assessment,
+        'Диалоги об эффективности': BaseTextMenu.dialogues_about_efficiency,
+        'Комитеты по талантам': BaseTextMenu.talent_committees,
+        'Диалоги о развитии': BaseTextMenu.development_dialogues,
+        'Планирование обучения': BaseTextMenu.planning_education,
+        'Комиссия по оценке вклада': BaseTextMenu.contribution_evaluation_commission,
 
     }
 
     if message.text in menu_dict.keys():
         menu_dict.get(message.text)(message)
-
-    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif (message.text == 'Регулярная оценка'
-          or message.text == '🔙 вернуться в раздел Регулярная оценка'):
-        markup = types.InlineKeyboardMarkup()
-        markup.add(
-            types.InlineKeyboardButton(
-                "смотреть видео",
-                url="https://youtu.be/yxILbJcIFA8",
-            )
-        )
-
-        parrent_path = 'prod_data/Цикл_управления_талантами/Регулярная_оценка/'
-        file_1 = f'{parrent_path}Процедуры.pdf'
-        file_2 = f'{parrent_path}для_сотрудников.pdf'
-        file_3 = f'{parrent_path}reg_360.pdf'
-        filename_1 = 'Процедуры ежегодной оценки в ГПН'
-        filename_2 = 'Регулярная оценка для сотрудников'
-        filename_3 = 'Брошюра регулярной оценки 360'
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-        }
-        bot.send_message(
-            message.chat.id,
-            'Комплексная оценка 360 градусов',
-            reply_markup=markup,
-        )
-        for caption, document in files_dict.items():
-            with open(document, 'rb') as file:
-                bot.send_document(
-                    message.chat.id,
-                    file,
-                    caption=caption,
-                    parse_mode="html",
-                )
-
-    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif message.text == 'Комиссия по оценке вклада':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('🔙 вернуться в раздел Регулярная оценка')
-        markup.add(btn)
-
-        parrent_path = 'prod_data/Цикл_управления_талантами/Регулярная_оценка'
-        document = f'{parrent_path}/Комиссия.pdf'
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Комиссия по оценке вклада для сотрудников',
-                parse_mode="html",
-                reply_markup=markup,
-            )
-
-    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif message.text == 'Диалоги об эффективности':
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("смотреть видео",
-                   url="https://youtu.be/O2JyX9iL8Hs"))
-
-        parrent_path = ('prod_data/Цикл_управления_талантами/'
-                        'Диалоги_об_эффективности/')
-        file_1 = f'{parrent_path}Инструкция.pdf'
-        file_2 = f'{parrent_path}ДоЭФ.PNG'
-        filename_1 = 'Инструкция по чтению отчета регулярной оценки 2023'
-        filename_2 = 'Помятка для сотрудника'
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-
-        bot.send_message(
-            message.chat.id,
-            'Диалог об эффективности',
-            reply_markup=markup,
-        )
-
-        for caption, document in files_dict.items():
-            with open(document, 'rb') as file:
-                bot.send_document(
-                    message.chat.id,
-                    file,
-                    caption=caption,
-                    parse_mode="html",
-                )
-
-    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif message.text == 'Комитеты по талантам':
-        parrent_path = 'prod_data/Цикл_управления_талантами/comitet/'
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("смотреть видео",
-                   url="https://youtu.be/yxILbJcIFA8"))
-        bot.send_message(
-            message.chat.id,
-            'Комитеты по талантам',
-            reply_markup=markup,
-        )
-        with (
-            open(f'{parrent_path}nmd.pdf', 'rb') as file_1,
-            open(f'{parrent_path}PR_criteria.pdf', 'rb') as file_2,
-            open(f'{parrent_path}rules.pdf', 'rb') as file_3,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption='Комитет по талантам - процедура проведения',
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption='Критерии включения в кадровый резерв',
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_3,
-                        caption='Правила нахождения в кадровом резерве',
-                        parse_mode="html",
-                    ),
-                ]
-            )
-
-    # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
-    elif message.text == 'Диалоги о развитии':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton(
-            '🔙 вернуться в раздел Цикл управления талантами'
-        )
-        parrent_path = ('prod_data/Цикл_управления_талантами/'
-                        'Диалоги_о_развитии/')
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("смотреть видео",
-                   url="https://youtu.be/HZB4eES30XI"))
-        bot.send_message(message.chat.id, 'Диалог о развитии',
-                         reply_markup=markup)
-        with (
-            open(f'{parrent_path}Методология.pdf', 'rb') as file_1,
-            open(f'{parrent_path}difference.pdf', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption='Диалог о развитии - Методология',
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=('Разница между диалогом о развитии'
-                                 ' и диалогом об эффективности'),
-                    ),
-                ]
-            )
 
     # СТАЖИРОВКА
     elif (message.text == 'Стажировка' or message.text == '🔙 вернуться в '
