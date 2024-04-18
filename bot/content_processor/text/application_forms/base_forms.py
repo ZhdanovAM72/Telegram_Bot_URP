@@ -2,7 +2,11 @@ from bot.content_processor.text.application_forms.main_forms import ApplicationF
 from bot.content_processor.text.application_forms.advance_report import AdvanceReport
 from bot.content_processor.text.application_forms.time_tracking import TimeTracking
 from bot.content_processor.text.application_forms.work_schedule import WorkSchedule
+from bot.content_processor.text.application_forms.day_off_working import DayOffWorking
+from bot.content_processor.text.application_forms.delay_in_transit import DelayTransit
 
 
-class ApplicationFormsBase(ApplicationForms, AdvanceReport, WorkSchedule, TimeTracking):
+class ApplicationFormsBase(
+    ApplicationForms, AdvanceReport, WorkSchedule, TimeTracking, DayOffWorking, DelayTransit
+):
     pass
