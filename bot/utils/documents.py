@@ -12,8 +12,11 @@ class Documents:
             caption: list[str] | tuple[str] = None,
             markup: types.ReplyKeyboardMarkup = None,
     ) -> types.Message:
+        """
+        Отправка документов по одному.
+        """
         for i in range(len(document)):
-            with open(document[i], 'rb') as file:
+            with open(document[i], "rb") as file:
                 bot.send_document(
                     chat_id,
                     file,
@@ -28,10 +31,23 @@ class Documents:
             chat_id: int,
             documents: list[dict] | tuple[dict],
     ) -> types.Message:
+        """
+        Отправка документов в группе.
+
+        chat_id: int - ID чата.
+        documents: list[dict] | tuple[dict] - список документов.
+
+        пример: documents = [
+            {
+                "file": open(document, "rb"),
+                "caption": "Подпись",
+            }
+        ]
+        """
         input_media_documents = [
             types.InputMediaDocument(
-                file.get('file'),
-                caption=file.get('caption'),
+                file.get("file"),
+                caption=file.get("caption"),
                 parse_mode="html",
             ) for file in documents
         ]
