@@ -292,237 +292,26 @@ def get_text_messages(message: telebot.types.Message):
         f'Изменение графика {NNGGF}': BaseTextMenu.change_schedule_nnggf,
 
         'Исполнение гос.обязанностей': ...,
-        'Простой, задержка в пути': ...,
-        'Работа в выходной день': ...,
+
+        # Простой, задержка в пути
+        'Простой, задержка в пути': BaseTextMenu.delay_it_transit_main,
+        f'Простой, задержка в пути {ES}': BaseTextMenu.delay_it_transit_es,
+        f'Простой, задержка в пути {ST}': BaseTextMenu.delay_it_transit_st,
+        f'Простой, задержка в пути {ITS}': BaseTextMenu.delay_it_transit_its,
+        f'Простой, задержка в пути {NNGGF}': BaseTextMenu.delay_it_transit_nnggf,
+
+        # РАБОТА В ВЫХОДНОЙ ДЕНЬ
+        'Работа в выходной день': BaseTextMenu.day_off_working_main,
+        f'Работа в выходной день {ES}': BaseTextMenu.day_off_working_es,
+        f'Работа в выходной день {NR}': BaseTextMenu.day_off_working_nr,
+        f'Работа в выходной день {ST}': BaseTextMenu.day_off_working_st,
+        f'Работа в выходной день {ITS}': BaseTextMenu.day_off_working_its,
+        f'Работа в выходной день {NNGGF}': BaseTextMenu.day_off_working_nnggf,
 
     }
 
     if message.text in menu_dict.keys():
         menu_dict.get(message.text)(message)
-
-    elif message.text == 'Работа в выходной день':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton(f'Работа в выходной день {ES}')
-        button_2 = types.KeyboardButton(f'Работа в выходной день {NR}')
-        button_3 = types.KeyboardButton(f'Работа в выходной день {ST}')
-        button_4 = types.KeyboardButton(f'Работа в выходной день {ITS}')
-        button_5 = types.KeyboardButton(f'Работа в выходной день {NNGGF}')
-        button_6 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Учет рабочего времени')
-        markup.add(button_1, button_2, button_3, button_4, button_5, button_6)
-        bot.send_message(
-            message.chat.id,
-            'Работа в выходной день',
-            reply_markup=markup,
-        )
-
-    elif message.text == f'Работа в выходной день {ES}':
-        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ES/'
-        document = f'{parrent_path}main.docx'
-        filename = (
-            'Ш-14.03.05-15 Решение о привлечении к работе '
-            'в выходные нерабоч. праздничные дни или к сверхур.работе'
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=filename,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Работа в выходной день {ITS}':
-        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ITS/'
-        document = f'{parrent_path}main.docx'
-        filename = (
-            'Ш-14.03.05-15 Решение о привлечении к работе '
-            'в выходные нерабоч. праздничные дни или к сверхур.работе'
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=filename,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Работа в выходной день {NNGGF}':
-        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/NNGGF/'
-        document = f'{parrent_path}main.docx'
-        filename = (
-            'Ш-14.03.05-15 Решение о привлечении к работе '
-            'в выходные нерабоч. праздничные дни или к сверхур.работе'
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=filename,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Работа в выходной день {NR}':
-        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/NR/'
-        document = f'{parrent_path}main.docx'
-        filename = ('Служебная записка на привлечение к работе '
-                    'в выходные дни')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=filename,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Работа в выходной день {ST}':
-        parrent_path = 'prod_data/blanks/time_tracking/working_day_off/ST/'
-        document = f'{parrent_path}main.docx'
-        filename = (
-            'Ш-14.03.05-15 Решение о привлечении к работе '
-            'в выходные нерабоч. праздничные дни или к сверхур.работе'
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=filename,
-                parse_mode="html",
-            )
-
-    elif message.text == 'Простой, задержка в пути':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton(f'Простой, задержка в пути {ES}')
-        # button_2 = types.KeyboardButton(f'Простой, задержка в пути {NR}')
-        button_3 = types.KeyboardButton(f'Простой, задержка в пути {ST}')
-        button_4 = types.KeyboardButton(f'Простой, задержка в пути {ITS}')
-        button_5 = types.KeyboardButton(f'Простой, задержка в пути {NNGGF}')
-        button_6 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Учет рабочего времени')
-        markup.add(
-            button_1,
-            # button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-        )
-        bot.send_message(
-            message.chat.id,
-            'Простой, задержка в пути',
-            reply_markup=markup,
-        )
-
-    elif message.text == f'Простой, задержка в пути {ES}':
-        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ES/'
-        filename_1 = (
-            'Ш-14.03.05-16 Служебная записка о простое /'
-            'незапланированном простое, содержащая список работников'
-        )
-        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
-                      'необходимо оформить задержку в пути')
-        with (
-            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
-            open(f'{parrent_path}list.docx', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode='html',
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode='html',
-                    ),
-                ]
-            )
-
-    elif message.text == f'Простой, задержка в пути {ITS}':
-        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ITS/'
-        filename_1 = (
-            'Ш-14.03.05-16 Служебная записка о простое /'
-            'незапланированном простое, содержащая список работников'
-        )
-        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
-                      'необходимо оформить задержку в пути')
-        with (
-            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
-            open(f'{parrent_path}list.docx', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode='html',
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode='html',
-                    ),
-                ]
-            )
-
-    elif message.text == f'Простой, задержка в пути {NNGGF}':
-        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/NNGGF/'
-        filename_1 = (
-            'Ш-14.03.05-16 Служебная записка о простое /'
-            'незапланированном простое, содержащая список работников'
-        )
-        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
-                      'необходимо оформить задержку в пути')
-        with (
-            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
-            open(f'{parrent_path}list.docx', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode='html',
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode='html',
-                    ),
-                ]
-            )
-
-    elif message.text == f'Простой, задержка в пути {ST}':
-        parrent_path = 'prod_data/blanks/time_tracking/delay_in_transit/ST/'
-        filename_1 = (
-            'Ш-14.03.05-16 Служебная записка о простое /'
-            'незапланированном простое, содержащая список работников'
-        )
-        filename_2 = ('Ш-14.03.05-17 Список работников, которым '
-                      'необходимо оформить задержку в пути')
-        with (
-            open(f'{parrent_path}SZ.docx', 'rb') as file_1,
-            open(f'{parrent_path}list.docx', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode='html',
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode='html',
-                    ),
-                ]
-            )
 
     elif message.text == 'Исполнение гос.обязанностей':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
