@@ -8,7 +8,6 @@ from bot.logger_setting.logger_bot import log_user_command
 # from updates import UPDATE_MESSAGE
 from bot.constant import (
     ES, ITS, NR, NNGGF, ST,
-    ABOUT_NTK,
     NOT_REGISTERED,
 )
 from bot.content_processor.text.base import BaseTextMenu
@@ -155,21 +154,25 @@ def get_text_messages(message: telebot.types.Message):
         'Главное меню': BaseTextMenu.main_menu,
         '🔙 Главное меню': BaseTextMenu.main_menu,
 
+        # О КОМПАНИИ
         'О компании': BaseTextMenu.about_company,
         '🔙 вернуться в раздел О компании': BaseTextMenu.about_company,
         'Корпоративные ценности': BaseTextMenu.corporate_values,
         'Выбрать ДО': BaseTextMenu.choose_do,
         '🔙 вернуться в раздел Выбрать ДО': BaseTextMenu.choose_do,
 
+        # СТ
         'Газпромнефть Сервисные технологии': BaseTextMenu.do_st,
         '🔙 вернуться в раздел Газпромнефть Сервисные технологии': BaseTextMenu.do_st,
         'Структура СТ': BaseTextMenu.structure_st,
         'История СТ': BaseTextMenu.history_st,
 
+        # НР
         'Нефтесервисные решения': BaseTextMenu.do_nr,
         '🔙 вернуться в раздел Нефтесервисные решения': BaseTextMenu.do_nr,
         'История НР': BaseTextMenu.history_nr,
 
+        # ИТС
         'Инженерно-технологический сервис': BaseTextMenu.do_its,
         '🔙 вернуться в раздел Инженерно-технологический сервис': BaseTextMenu.do_its,
         'Структура ИТС': BaseTextMenu.structure_its,
@@ -177,22 +180,26 @@ def get_text_messages(message: telebot.types.Message):
         'Контакты ИТС': BaseTextMenu.contacts_its,
         'История ИТС': BaseTextMenu.history_its,
 
+        # ЭНЕРГОСИСТЕМЫ
         'Газпромнефть Энергосистемы': BaseTextMenu.do_es,
         '🔙 вернуться в раздел Газпромнефть Энергосистемы': BaseTextMenu.do_es,
         'История Энергосистем': BaseTextMenu.history_es,
         'Структура Энергосистем': BaseTextMenu.structure_es,
         'Контакты Энергосистем': BaseTextMenu.contacts_es,
 
+        # НОВОСТНАЯ ЛЕНТА
         'Новостная лента': BaseTextMenu.news_feed,
         'Корпоративный портал': BaseTextMenu.corporate_portal,
         'Мобильная лента': BaseTextMenu.mobile_feed,
         'Телеграм-каналы': BaseTextMenu.telegram_channels,
 
+        # СЕРВИСЫ ДЛЯ СОТРУДНИКОВ
         'Сервисы для сотрудников': BaseTextMenu.services_for_employees,
         '🔙 вернуться в раздел Сервисы': BaseTextMenu.services_for_employees,
         'Сервисы самообслуживания': BaseTextMenu.self_services,
         'Контакт центр': BaseTextMenu.contact_center,
 
+        # АДАПТАЦИЯ
         'Адаптация': BaseTextMenu.adaptation,
         '🔙 вернуться в раздел Адаптация': BaseTextMenu.adaptation,
         'Корпоративная безопасность': BaseTextMenu.corporate_security,
@@ -208,11 +215,13 @@ def get_text_messages(message: telebot.types.Message):
         'Буклеты для сотрудников': BaseTextMenu.booklets_for_employees,
         'Книги для сотрудников': BaseTextMenu.books_for_employees,
 
+        # ДМС и РВЛ
         'ДМС и РВЛ': BaseTextMenu.dms_and_rvl,
         '🔙 вернуться в раздел ДМС и РВЛ': BaseTextMenu.dms_and_rvl,
         'ДМС': BaseTextMenu.dms,
         'РВЛ': BaseTextMenu.rvl,
 
+        # КАРЬЕРНОЕ РАЗВИТИЕ
         'Карьерное развитие': BaseTextMenu.career_development,
         '🔙 вернуться в раздел Карьерное развитие': BaseTextMenu.career_development,
         'Мой трек': BaseTextMenu.my_track,
@@ -220,321 +229,76 @@ def get_text_messages(message: telebot.types.Message):
         'Индивидуальный план развития': BaseTextMenu.individual_development_plan,
         'Карьерное консультирование': BaseTextMenu.career_counseling,
 
+        # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
         'Цикл управления талантами': BaseTextMenu.talent_management_cycle,
         '🔙 вернуться в раздел Цикл управления талантами': BaseTextMenu.talent_management_cycle,
-        'Обучение': BaseTextMenu.education,
         'Регулярная оценка': BaseTextMenu.regular_assessment,
         'Диалоги об эффективности': BaseTextMenu.dialogues_about_efficiency,
         'Комитеты по талантам': BaseTextMenu.talent_committees,
         'Диалоги о развитии': BaseTextMenu.development_dialogues,
-        'Планирование обучения': BaseTextMenu.planning_education,
         'Комиссия по оценке вклада': BaseTextMenu.contribution_evaluation_commission,
+
+        # ОБУЧЕНИЕ
+        'Обучение': BaseTextMenu.education,
+        'Планирование обучения': BaseTextMenu.planning_education,
+        'Полезная литература': BaseTextMenu.useful_literature,
+        'Цикл планирования обучения': BaseTextMenu.training_planning_cycle,
+        'Каталог программ': BaseTextMenu.program_catalog,
+
+        # СТАЖИРОВКА
+        'Стажировка': BaseTextMenu.internship,
+
+        # МОЛОДЕЖНАЯ ПОЛИТИКА
+        'Молодежная политика': BaseTextMenu.youth_policy,
+        '🔙 вернуться в раздел Молодежная политика': BaseTextMenu.youth_policy,
+        'Организация практики': BaseTextMenu.organization_of_practice,
+        'Молодежный совет': BaseTextMenu.youth_council,
+        '🔙 вернуться в раздел Молодежный совет': BaseTextMenu.youth_council,
+        'Направления деятельности МС': BaseTextMenu.youth_council_activity,
+        'Положение, мотивация МС': BaseTextMenu.youth_council_documents,
+        'Структура МС': BaseTextMenu.youth_council_structure,
+        'Развитие молодых специалистов': BaseTextMenu.youth_council_development,
+        'Проект "Моя история успеха"': BaseTextMenu.my_success_story,
+        'НТК МС': BaseTextMenu.scientific_technical_conference,
+        'СЛЕТ МС': BaseTextMenu.youth_council_meeting,
+
+        # БЛАНКИ ЗАЯВЛЕНИЙ
+        'Бланки заявлений': BaseTextMenu.application_forms_main,
+        '🔙 вернуться в раздел Бланки заявлений': BaseTextMenu.application_forms_main,
+
+        # АВАНСОВЫЙ ОТЧЕТ
+        'Авансовый отчет': BaseTextMenu.advance_report,
+        f'Бланки {ES}': BaseTextMenu.forms_es,
+        f'Бланки {NR}': BaseTextMenu.forms_nr,
+        f'Бланки {ST}': BaseTextMenu.forms_st,
+        f'Бланки {ITS}': BaseTextMenu.forms_its,
+        f'Бланки {NNGGF}': BaseTextMenu.forms_nnggf,
+
+        # 'Банковские реквизиты': ...,
+        # 'Изменение трудового договора': ...,
+        # 'Оформление отпусков': ...,
+        # 'Прекращение трудового договора': ...,
+        # 'Рождение ребенка': ...,
+
+        # УЧЕТ РАБОЧЕГО ВРЕМЕНИ
+        'Учет рабочего времени': BaseTextMenu.time_tracking,
+        '🔙 вернуться в раздел Учет рабочего времени': BaseTextMenu.time_tracking,
+        # ИЗМЕНЕНИЕ ГРАФИКА РАБОТЫ
+        'Изменение графика работы': BaseTextMenu.work_schedule_main,
+        f'Изменение графика {ES}': BaseTextMenu.change_schedule_es,
+        f'Изменение графика {NR}': BaseTextMenu.change_schedule_nr,
+        f'Изменение графика {ST}': BaseTextMenu.change_schedule_st,
+        f'Изменение графика {ITS}': BaseTextMenu.change_schedule_its,
+        f'Изменение графика {NNGGF}': BaseTextMenu.change_schedule_nnggf,
+
+        'Исполнение гос.обязанностей': ...,
+        'Простой, задержка в пути': ...,
+        'Работа в выходной день': ...,
 
     }
 
     if message.text in menu_dict.keys():
         menu_dict.get(message.text)(message)
-
-    # СТАЖИРОВКА
-    elif (message.text == 'Стажировка' or message.text == '🔙 вернуться в '
-          'раздел Стажировка'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 Главное меню')
-        markup.add(button)
-        parrent_path = 'prod_data/Стажировка/'
-        document_1 = f'{parrent_path}Стажировки_БРД.pdf'
-        document_2 = f'{parrent_path}Бланк_плана_стажировки_сотрудника.xlsx'
-        message_text = (
-            'СТАЖИРОВКА \n Позволяет работнику погрузиться '
-            'в другую деятельность и получить новый опыт в короткие'
-            ' сроки. \n Перед началом стажировки совместно с '
-            'руководителем необходимо сформировать план на время '
-            'стажировки и согласовать его с наставником '
-            'принимающей стороны.\n Обязательства принимающей стороны:'
-            '- Подготовка рабочего места для стажера.\n'
-            '- Выполнение плана работы на время стажировки.\n'
-            '- Консультирование и сопровождение стажера. \n'
-            '- Экспертная помощь наставника.'
-        )
-        bot.send_message(
-            message.chat.id,
-            message_text,
-            reply_markup=markup,
-        )
-        with (
-            open(document_1, 'rb') as file_1,
-            open(document_2, 'rb') as file_2,
-        ):
-            bot.send_document(
-                message.chat.id,
-                file_1,
-                caption='Стажировки БРД',
-                parse_mode='html',
-            )
-            bot.send_document(
-                message.chat.id,
-                file_2,
-                caption='Бланк плана стажировки сотрудника',
-                parse_mode='html',
-            )
-
-    # ОБУЧЕНИЕ
-    elif message.text == 'Полезная литература':
-        document = ('prod_data/Обучение/ГПН_ЭС/Почитать/'
-                    'электронные_библиотеки.pdf')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Электронные библиотеки',
-                parse_mode="html",
-            )
-
-    # ОБУЧЕНИЕ
-    elif message.text == 'Цикл планирования обучения':
-        document = ('prod_data/Обучение/ГПН_ЭС/'
-                    'Целевые_образовательные_программы/educate.pdf')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Цикл планирования обучения',
-                parse_mode="html",
-            )
-
-    # ОБУЧЕНИЕ
-    elif message.text == 'Каталог программ':
-        document = ('prod_data/Обучение/ГПН_ЭС/Каталог_программ/'
-                    'Рекомендованные_образовательные_программы.pdf')
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Рекомендованные образовательные программы',
-                parse_mode="html",
-            )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif (message.text == 'Молодежная политика'
-          or message.text == '🔙 вернуться в раздел Молодежная политика'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('🔙 Главное меню')
-        button_2 = types.KeyboardButton('Молодежный совет')
-        button_3 = types.KeyboardButton('Организация практики')
-        button_4 = types.KeyboardButton('Развитие молодых специалистов')
-        markup.add(button_2, button_3, button_4, button_1)
-        bot.send_message(
-            message.from_user.id,
-            "Молодежная политика",
-            reply_markup=markup,
-        )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif (message.text == 'Организация практики'
-          or message.text == '🔙 вернуться в '
-                             'раздел Организация практики'):
-        document = 'prod_data/Молодежная_политика/org_practics/practis.pdf'
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Прохождение практики в Компании',
-                parse_mode="html",
-            )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif (message.text == 'Молодежный совет'
-          or message.text == '🔙 вернуться в '
-                             'раздел Молодежный совет'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        btn_1 = types.KeyboardButton(
-            '🔙 вернуться в раздел Молодежная политика'
-        )
-        btn_2 = types.KeyboardButton('Направления деятельности МС')
-        btn_3 = types.KeyboardButton('Положение, мотивация МС')
-        btn_4 = types.KeyboardButton('Структура МС')
-        markup.add(btn_2, btn_3, btn_4, btn_1)
-        bot.send_message(
-            message.from_user.id,
-            "Молодежный совет",
-            reply_markup=markup,
-        )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'Направления деятельности МС':
-        document = (
-            'prod_data/Молодежная_политика/MS/'
-            'Направления_деятельности/napravlenya.pdf'
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Направления деятельности МС',
-                parse_mode="html",
-            )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'Положение, мотивация МС':
-        parrent_path = 'prod_data/Молодежная_политика/MS/Положение_мотивация/'
-        file_1 = f'{parrent_path}workorgMS.pdf'
-        file_2 = f'{parrent_path}trackMS.pdf'
-        file_3 = f'{parrent_path}AnketaMS.docx'
-        filename_1 = 'Организация работы Совета молодежи'
-        filename_2 = 'Трек вовлеченности МС'
-        filename_3 = 'Анкета кандидата'
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-        }
-        for caption, document in files_dict.items():
-            with open(document, 'rb') as file:
-                bot.send_document(
-                    message.chat.id,
-                    file,
-                    caption=caption,
-                    parse_mode="html",
-                )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'Структура МС':
-        document = open(
-            'prod_data/Молодежная_политика/MS/Структура/structuraMS.pdf',
-            'rb',
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Структура МС',
-                parse_mode="html",
-            )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif (message.text == 'Развитие молодых специалистов'
-          or message.text == ('🔙 вернуться в раздел '
-                              'Развитие молодых специалистов')):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('НТК МС')
-        button_2 = types.KeyboardButton('СЛЕТ МС')
-        button_3 = types.KeyboardButton('Проект "Моя история успеха"')
-        button_4 = types.KeyboardButton(
-            '🔙 вернуться в раздел Молодежная политика'
-        )
-        markup.add(button_1, button_2, button_3, button_4)
-        bot.send_message(
-            message.from_user.id,
-            "Молодежный совет",
-            reply_markup=markup,
-        )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'Проект "Моя история успеха"':
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("перейти в канал",
-                   url="https://t.me/podcast_my_success"))
-        bot.send_message(
-            message.chat.id,
-            'Телеграм канал проекта "Моя история успеха"',
-            reply_markup=markup,
-        )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'НТК МС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 вернуться в '
-                                      'раздел Развитие молодых специалистов')
-        markup.add(button)
-
-        parrent_path = ('prod_data/Молодежная_политика'
-                        '/Развитие_молодых_специалистов/НТК/')
-
-        file_1 = f'{parrent_path}Заявка_Шаблон.docx'
-        file_2 = f'{parrent_path}Шаблон_одностраничника.pptx'
-        file_3 = f'{parrent_path}Шаблон_презентации.pptx'
-        file_4 = f'{parrent_path}dk.pdf'
-        filename_1 = 'Заявка - Шаблон'
-        filename_2 = 'Шаблон одностраничника'
-        filename_3 = 'Шаблон презентации'
-        filename_4 = 'Дорожная карта'
-
-        bot.send_message(message.from_user.id, ABOUT_NTK, reply_markup=markup)
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-            filename_3: file_3,
-            filename_4: file_4,
-        }
-        for caption, document in files_dict.items():
-            with open(document, 'rb') as file:
-                bot.send_document(
-                    message.chat.id,
-                    file,
-                    caption=caption,
-                    parse_mode="html",
-                    reply_markup=markup,
-                )
-
-    # МОЛОДЕЖНАЯ ПОЛИТИКА
-    elif message.text == 'СЛЕТ МС':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button = types.KeyboardButton('🔙 вернуться в '
-                                      'раздел Развитие молодых специалистов')
-        markup.add(button)
-
-        document = (
-            'prod_data/Молодежная_политика/'
-            'Развитие_молодых_специалистов/Слет_МС/Слет_МС.pdf'
-        )
-        with open(document, 'rb') as file:
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption='Слет МС',
-                parse_mode="html",
-                reply_markup=markup,
-            )
-
-    # БЛАНКИ ЗАЯВЛЕНИЙ
-    elif (message.text == 'Бланки заявлений'
-          or message.text == '🔙 вернуться в раздел Бланки заявлений'):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-        button_1 = types.KeyboardButton('Авансовый отчет')
-        button_2 = types.KeyboardButton('Банковские реквизиты')
-        button_3 = types.KeyboardButton('Изменение трудового договора')
-        button_4 = types.KeyboardButton('Оформление отпусков')
-        button_5 = types.KeyboardButton('Прекращение трудового договора')
-        button_6 = types.KeyboardButton('Рождение ребенка')
-        button_7 = types.KeyboardButton('Учет рабочего времени')
-        button_8 = types.KeyboardButton('🔙 Главное меню')
-        markup.add(button_1, button_2, button_3, button_4,
-                   button_5, button_6, button_7, button_8)
-        bot.send_message(
-            message.from_user.id,
-            'Бланки заявлений',
-            reply_markup=markup,
-        )
-
-    elif (
-        message.text == 'Учет рабочего времени'
-        or message.text == '🔙 вернуться в раздел '
-        'Учет рабочего времени'
-    ):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('Изменение графика работы')
-        button_2 = types.KeyboardButton('Исполнение гос.обязанностей')
-        button_3 = types.KeyboardButton('Простой, задержка в пути')
-        button_4 = types.KeyboardButton('Работа в выходной день')
-        button_5 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Бланки заявлений')
-        markup.add(button_1, button_2, button_3, button_4, button_5)
-        bot.send_message(
-            message.chat.id,
-            'Учет рабочего времени',
-            reply_markup=markup,
-        )
 
     elif message.text == 'Работа в выходной день':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
@@ -791,11 +555,11 @@ def get_text_messages(message: telebot.types.Message):
                     'государственных или общественных обязанностей')
         with open(f'{parrent_path}main.docx', 'rb') as file:
             bot.send_document(
-                    message.chat.id,
-                    document=file,
-                    caption=filename,
-                    parse_mode="html",
-                )
+                message.chat.id,
+                document=file,
+                caption=filename,
+                parse_mode="html",
+            )
 
     elif message.text == f'Исполнение гос.обязанностей {ITS}':
         parrent_path = 'prod_data/blanks/time_tracking/government_duties/ITS/'
@@ -828,219 +592,10 @@ def get_text_messages(message: telebot.types.Message):
                      'государственных или общественных обязанностей')
         with open(f'{parrent_path}main.docx', 'rb') as file:
             bot.send_document(
-                    message.chat.id,
-                    document=file,
-                    caption=file_name,
-                    parse_mode="html",
-                )
-
-    elif message.text == 'Изменение графика работы':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton(f'Изменение графика {ES}')
-        button_2 = types.KeyboardButton(f'Изменение графика {NR}')
-        button_3 = types.KeyboardButton(f'Изменение графика {ST}')
-        button_4 = types.KeyboardButton(f'Изменение графика {ITS}')
-        button_5 = types.KeyboardButton(f'Изменение графика {NNGGF}')
-        button_6 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Учет рабочего времени')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-        )
-        bot.send_message(
-            message.chat.id,
-            'Изменение графика работы',
-            reply_markup=markup,
-        )
-
-    elif message.text == f'Изменение графика {ES}':
-        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ES/'
-        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
-                      'графика работы персонала')
-        filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
-                      'из отпуска по уходу за ребенком')
-        filename_3 = ('Ш-14.03.05-13 Служебная записка об изменении '
-                      'графика работы персонала')
-        filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
-                      'формирования нового графика работы персонала')
-        with (
-            open(f'{parrent_path}main.docx', 'rb') as file_1,
-            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
-            open(f'{parrent_path}change.docx', 'rb') as file_3,
-            open(f'{parrent_path}new.docx', 'rb') as file_4,
-        ):
-            bot.send_media_group(
                 message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_3,
-                        caption=filename_3,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_4,
-                        caption=filename_4,
-                        parse_mode="html",
-                    ),
-                ]
-            )
-
-    elif message.text == f'Изменение графика {ITS}':
-        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ITS/'
-        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
-                      'графика работы персонала')
-        filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
-                      'из отпуска по уходу за ребенком')
-        filename_3 = ('Ш-14.03.05-13 Служебная записка об изменении '
-                      'графика работы персонала')
-        filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
-                      'формирования нового графика работы персонала')
-        with (
-            open(f'{parrent_path}main.docx', 'rb') as file_1,
-            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
-            open(f'{parrent_path}change.docx', 'rb') as file_3,
-            open(f'{parrent_path}new.docx', 'rb') as file_4,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_3,
-                        caption=filename_3,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_4,
-                        caption=filename_4,
-                        parse_mode="html",
-                    ),
-                ]
-            )
-
-    elif message.text == f'Изменение графика {NNGGF}':
-        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NNGGF/'
-        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
-                      'графика работы персонала')
-        filename_2 = ('Ш-14.03.05-13 Служебная записка об изменении '
-                      'графика работы персонала')
-        filename_3 = ('Ш-14.03.05-14 Служебная записка о необходимости '
-                      'формирования нового графика работы персонала')
-        with (
-            open(f'{parrent_path}main.docx', 'rb') as file_1,
-            open(f'{parrent_path}change.docx', 'rb') as file_2,
-            open(f'{parrent_path}new.docx', 'rb') as file_3,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_3,
-                        caption=filename_3,
-                        parse_mode="html",
-                    ),
-                ]
-            )
-
-    elif message.text == f'Изменение графика {NR}':
-        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/NR/'
-        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
-                      'графика работы персонала')
-        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
-                      'режима рабочего времени')
-        with (
-            open(f'{parrent_path}main.docx', 'rb') as file_1,
-            open(f'{parrent_path}change_grafik.docx', 'rb') as file_2,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode="html",
-                    ),
-                ]
-            )
-
-    elif message.text == f'Изменение графика {ST}':
-        parrent_path = 'prod_data/blanks/time_tracking/change_shedule/ST/'
-        filename_1 = ('Ш-14.03.05-02 Заявление об изменении '
-                      'графика работы персонала')
-        filename_2 = ('Ш-14.03.05-04 Заявление о досрочном выходе '
-                      'из отпуска по уходу за ребенком')
-        filename_3 = ('Ш-14.03.05-13 Служебная записка об изменении '
-                      'графика работы персонала')
-        filename_4 = ('Ш-14.03.05-14 Служебная записка о необходимости '
-                      'формирования нового графика работы персонала')
-        with (
-            open(f'{parrent_path}main.docx', 'rb') as file_1,
-            open(f'{parrent_path}baby_cancel.docx', 'rb') as file_2,
-            open(f'{parrent_path}change.docx', 'rb') as file_3,
-            open(f'{parrent_path}new.docx', 'rb') as file_4,
-        ):
-            bot.send_media_group(
-                message.chat.id,
-                [
-                    telebot.types.InputMediaDocument(
-                        file_1,
-                        caption=filename_1,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_2,
-                        caption=filename_2,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_3,
-                        caption=filename_3,
-                        parse_mode="html",
-                    ),
-                    telebot.types.InputMediaDocument(
-                        file_4,
-                        caption=filename_4,
-                        parse_mode="html",
-                    ),
-                ]
+                document=file,
+                caption=file_name,
+                parse_mode="html",
             )
 
     elif message.text == 'Рождение ребенка':
@@ -2479,97 +2034,7 @@ def get_text_messages(message: telebot.types.Message):
                 parse_mode="html",
         )
 
-    elif message.text == 'Авансовый отчет':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton(f'Бланки {ES}')
-        button_2 = types.KeyboardButton(f'Бланки {NR}')
-        button_3 = types.KeyboardButton(f'Бланки {ST}')
-        button_4 = types.KeyboardButton(f'Бланки {ITS}')
-        button_5 = types.KeyboardButton(f'Бланки {NNGGF}')
-        button_6 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Бланки заявлений')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-        )
-        bot.send_message(
-            message.chat.id,
-            'Авансовый отчет',
-            reply_markup=markup,
-        )
-
-    elif message.text == f'Бланки {ES}':
-        parrent_path = 'prod_data/blanks/avansov/ES/'
-        file_1 = open(f'{parrent_path}blank.doc', 'rb')
-        file_2 = open(f'{parrent_path}info.docx', 'rb')
-        filename_1 = 'Авансовый отчет - бланк'
-        filename_2 = 'Инструкция по заполнению АО'
-
-        bot.send_message(
-            message.from_user.id,
-            f'Авансовый бланки {ES}',
-        )
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Бланки {NR}':
-        parrent_path = 'prod_data/blanks/avansov/NR/'
-        file_1 = open(f'{parrent_path}SOP.pdf', 'rb')
-        filename_1 = 'СОП по оформлению отчета по командировке с 01.10.23'
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-        )
-
-    elif message.text == f'Бланки {ITS}':
-        parrent_path = 'prod_data/blanks/avansov/ITS/'
-        file_1 = open(f'{parrent_path}blank_1.xls', 'rb')
-        filename_1 = 'Бланк авансового отчета'
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-        )
-
-    elif message.text == f'Бланки {NNGGF}':
-        parrent_path = 'prod_data/blanks/avansov/ITS/'
-        file_1 = open(f'{parrent_path}blank_2.xls', 'rb')
-        filename_1 = 'Бланк авансового отчета'
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-        )
-
-    elif message.text == f'Бланки {ST}':
-        parrent_path = 'prod_data/blanks/avansov/ST/'
-        file_1 = open(f'{parrent_path}blank.doc', 'rb')
-        filename_1 = 'Бланк авансового отчета'
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-        )
-
+    # ОБРАТНАЯ СВЯЗЬ
     elif message.text == 'Обратная связь':
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Заполнить форму",
