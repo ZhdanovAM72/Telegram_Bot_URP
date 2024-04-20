@@ -11,11 +11,12 @@ from bot.content_processor.text.application_forms.vacation_registration import V
 from bot.content_processor.text.application_forms.blood_donation import BloodDonation
 from bot.content_processor.text.application_forms.transfer_vacation import TransferExtensionVacation
 from bot.content_processor.text.application_forms.vacation_without_pay import VacationWithoutPay
+from bot.content_processor.text.application_forms.cancellation_vacation import CancellationRecallVacation
 
 
 class ApplicationFormsBase(
     ApplicationForms, AdvanceReport, WorkSchedule, TimeTracking, DayOffWorking, DelayTransit,
     GovernmentDuties, BirthChild, TerminationEmploymentContract, VacationRegistration, BloodDonation,
-    TransferExtensionVacation, VacationWithoutPay,
+    TransferExtensionVacation, VacationWithoutPay, CancellationRecallVacation,
 ):
     pass
