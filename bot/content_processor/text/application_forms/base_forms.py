@@ -9,10 +9,13 @@ from bot.content_processor.text.application_forms.birth_child import BirthChild
 from bot.content_processor.text.application_forms.termination_contract import TerminationEmploymentContract
 from bot.content_processor.text.application_forms.vacation_registration import VacationRegistration
 from bot.content_processor.text.application_forms.blood_donation import BloodDonation
+from bot.content_processor.text.application_forms.transfer_vacation import TransferExtensionVacation
+from bot.content_processor.text.application_forms.vacation_without_pay import VacationWithoutPay
 
 
 class ApplicationFormsBase(
     ApplicationForms, AdvanceReport, WorkSchedule, TimeTracking, DayOffWorking, DelayTransit,
     GovernmentDuties, BirthChild, TerminationEmploymentContract, VacationRegistration, BloodDonation,
+    TransferExtensionVacation, VacationWithoutPay,
 ):
     pass
