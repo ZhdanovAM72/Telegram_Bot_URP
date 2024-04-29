@@ -7,7 +7,7 @@ LOG_FILE = 'bot_log.txt'  # Имя файла логов
 def init_logger() -> logging.Logger:
     """Определяем настройки логгера."""
     logging.basicConfig(
-        format=('%(asctime)s - %(levelname)s - %(name)s - '
+        format=('%(asctime)s - %(levelname)s - %(pathname)s - '
                 'строка: %(lineno)d - %(message)s'),
         level=logging.INFO,
         handlers=[
@@ -37,6 +37,18 @@ def log_user_command(message):
     logger.info(log_message)
 
 
+def log_user_command_updated(message):
+    """Логгирование команд пользователей."""
+    log_message = (
+        f'команда: "{message.text}" - '
+        f'пользователь: {message.from_user.username} - '
+        f'id пользователя: {message.chat.id} - '
+        f'имя: {message.from_user.first_name} - '
+        f'фамилия: {message.from_user.last_name}'
+    )
+    return log_message
+
+
 def log_photo(message):
     """Логгирование изображений в чате."""
     log_message = (
@@ -46,7 +58,7 @@ def log_photo(message):
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
-    logger.info(log_message)
+    return log_message
 
 
 def log_sticker(message):
@@ -58,4 +70,4 @@ def log_sticker(message):
         f'имя: {message.from_user.first_name} - '
         f'фамилия: {message.from_user.last_name}'
     )
-    logger.info(log_message)
+    return log_message

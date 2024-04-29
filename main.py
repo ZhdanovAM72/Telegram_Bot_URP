@@ -4,7 +4,7 @@ from telebot import types
 from bot.bot_command import BaseBotCommands
 from bot.content_processor import BaseContentProcessor
 from bot.db import BaseBotSQLMethods
-from bot.logger_setting.logger_bot import log_user_command
+from bot.logger_setting.logger_bot import log_user_command, log_user_command_updated, logger
 # from updates import UPDATE_MESSAGE
 from bot.constant import (
     ES, ITS, NR, NNGGF, ST,
@@ -951,6 +951,7 @@ def get_text_messages(message: telebot.types.Message):
             parse_mode='html',
             reply_markup=markup,
         )
+    logger.info(log_user_command_updated(message))
     return log_user_command(message)
 
 

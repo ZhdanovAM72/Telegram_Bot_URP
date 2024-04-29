@@ -1,7 +1,7 @@
 from telebot import types
 
 from bot import bot
-from bot.logger_setting.logger_bot import log_sticker
+from bot.logger_setting.logger_bot import logger, log_sticker
 from bot.utils.check_permission import CheckUserPermission
 
 TEXT = "У меня нет глаз, я не вижу этот стикер. Давайте продолжим работать в меню."
@@ -13,6 +13,6 @@ class StiсkerProcessor:
     def get_user_stiсker(message: types.Message) -> None | types.Message:
         """Ловим отправленные пользователем стикеры."""
         if not CheckUserPermission.check_user(message):
-            return log_sticker(message)
-        log_sticker(message)
+            return logger.info(log_sticker(message))
+        logger.info(log_sticker(message))
         return bot.send_message(message.chat.id, text=TEXT)
