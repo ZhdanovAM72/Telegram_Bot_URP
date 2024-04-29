@@ -109,7 +109,6 @@ class CancellationRecallVacation:
         return Documents.send_media_group_without_markup(message.chat.id, documents)
 
     @staticmethod
-    @contextmanager
     def cancellation_recall_vacation_nr(message: types.Message) -> types.Message:
         documents = (
             f"{PARRENT_PATH}NR/SZ_otziv.docx",
