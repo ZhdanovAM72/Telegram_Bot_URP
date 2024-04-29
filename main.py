@@ -275,7 +275,18 @@ def get_text_messages(message: telebot.types.Message):
         f'Бланки {NNGGF}': BaseTextMenu.forms_nnggf,
 
         # 'Банковские реквизиты': ...,
-        # 'Изменение трудового договора': ...,
+        'Изменение трудового договора': BaseTextMenu.change_employment_contract,
+        "🔙 вернуться в раздел Изменение трудового договора": BaseTextMenu.change_employment_contract,
+        # "Дополнительная работа"
+        # "Переводы"
+
+        # РЕЖИМ РАБОЧЕГО ВРЕМЕНИ
+        "Режим рабочего времени": BaseTextMenu.working_hours_main,
+        f'Режим рабочего времени {ES}': BaseTextMenu.working_hours_es,
+        f'Режим рабочего времени {NR}': BaseTextMenu.working_hours_nr,
+        f'Режим рабочего времени {ST}': BaseTextMenu.working_hours_st,
+        f'Режим рабочего времени {ITS}': BaseTextMenu.working_hours_its,
+        f'Режим рабочего времени {NNGGF}': BaseTextMenu.working_hours_nnggf,
 
         # ОФОРМЛЕНИЕ ОТПУСКОВ
         'Оформление отпусков': BaseTextMenu.vacation_registration_main,
@@ -374,148 +385,6 @@ def get_text_messages(message: telebot.types.Message):
 
     if message.text in menu_dict.keys():
         menu_dict.get(message.text)(message)
-
-    elif (
-        message.text == 'Изменение трудового договора'
-        or message.text == '🔙 вернуться в раздел '
-        'Изменение трудового договора'
-    ):
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton('Дополнительная работа')
-        button_2 = types.KeyboardButton('Переводы')
-        button_3 = types.KeyboardButton('Режим рабочего времени')
-        button_4 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Бланки заявлений')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-        )
-        bot.send_message(
-            message.chat.id,
-            'Изменение трудового договора',
-            reply_markup=markup,
-        )
-
-    elif message.text == 'Режим рабочего времени':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-        button_1 = types.KeyboardButton(f'Режим рабочего времени {ES}')
-        button_2 = types.KeyboardButton(f'Режим рабочего времени {NR}')
-        button_3 = types.KeyboardButton(f'Режим рабочего времени {ST}')
-        button_4 = types.KeyboardButton(f'Режим рабочего времени {ITS}')
-        button_5 = types.KeyboardButton(f'Режим рабочего времени {NNGGF}')
-        button_6 = types.KeyboardButton('🔙 вернуться в '
-                                        'раздел Изменение трудового договора')
-        markup.add(
-            button_1,
-            button_2,
-            button_3,
-            button_4,
-            button_5,
-            button_6,
-        )
-        bot.send_message(
-            message.chat.id,
-            'Режим рабочего времени',
-            reply_markup=markup,
-        )
-
-    elif message.text == f'Режим рабочего времени {ES}':
-        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ES/'
-        file_1 = open(f'{parrent_path}work_down.doc', 'rb')
-        file_2 = open(f'{parrent_path}change_work_hours.docx', 'rb')
-        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
-                      'норм выработки_норм обслуживания')
-        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
-                      'режима рабочего времени')
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Режим рабочего времени {ITS}':
-        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ITS/'
-        file_1 = open(f'{parrent_path}ITS_work_down.doc', 'rb')
-        file_2 = open(f'{parrent_path}ITS_change_work_hours.docx', 'rb')
-        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
-                      'норм выработки_норм обслуживания_ООО ИТС')
-        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
-                      'режима рабочего времени_ООО ИТС')
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Режим рабочего времени {NNGGF}':
-        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ITS/'
-        file_1 = open(f'{parrent_path}NNGGF_work_down.doc', 'rb')
-        file_2 = open(f'{parrent_path}NNGGF_change_work_hours.docx', 'rb')
-        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
-                      'норм выработки_норм обслуживания_ГПН-ННГГФ')
-        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
-                      'режима рабочего времени_ГПН-ННГГФ')
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
-            )
-
-    elif message.text == f'Режим рабочего времени {NR}':
-        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/NR/'
-        file_1 = open(f'{parrent_path}change_work_hours.docx', 'rb')
-        filename_1 = ('Ш-14.03.02-03 Заявление об изменении '
-                      'режима рабочего времени')
-        bot.send_document(
-                message.chat.id,
-                document=file_1,
-                caption=filename_1,
-                parse_mode="html",
-        )
-
-    elif message.text == f'Режим рабочего времени {ST}':
-        parrent_path = 'prod_data/blanks/TK_RF_changes/working_hours/ST/'
-        file_1 = open(f'{parrent_path}work_down.doc', 'rb')
-        file_2 = open(f'{parrent_path}change_work_hours.docx', 'rb')
-        filename_1 = ('Ш-14.03.02-02 Заявление о снижении '
-                      'норм выработки_норм обслуживания')
-        filename_2 = ('Ш-14.03.02-03 Заявление об изменении '
-                      'режима рабочего времени')
-
-        files_dict = {
-            filename_1: file_1,
-            filename_2: file_2,
-        }
-        for caption, file in files_dict.items():
-            bot.send_document(
-                message.chat.id,
-                file,
-                caption=caption,
-                parse_mode="html",
-            )
 
     elif message.text == 'Переводы':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
