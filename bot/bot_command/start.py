@@ -8,8 +8,8 @@ from bot.utils.check_permission import CheckUserPermission
 
 class StartBotCommand:
 
-    @classmethod
-    def start(cls, message: telebot.types.Message):
+    @staticmethod
+    def start(message: telebot.types.Message):
         """Приветствуем пользователя и включаем меню бота."""
         if not CheckUserPermission.check_user(message):
             return None
