@@ -5,8 +5,7 @@ from bot.bot_command import BaseBotCommands
 from bot.content_processor import BaseContentProcessor
 from bot.db import BaseBotSQLMethods
 from bot.logger_setting.logger_bot import log_user_command, log_user_command_updated, logger
-# from updates import UPDATE_MESSAGE
-from bot.constant import (
+from bot.constants import (
     ES, ITS, NR, NNGGF, ST,
     NOT_REGISTERED,
 )
@@ -38,7 +37,12 @@ def moderator(message: telebot.types.Message):
     BaseBotCommands.moderator_commands(message)
 
 
-@bot.message_handler(commands=['deleteuser', 'deletecode'])
+@bot.message_handler(
+    commands=[
+        'deleteuser',
+        'deletecode',
+    ]
+)
 def delete_user(message: telebot.types.Message):
     """Удаление пользователей."""
     BaseBotCommands.delete_user_from_db(message)
@@ -55,7 +59,7 @@ def export_db(message: telebot.types.Message):
         'createcode_ES',
         'createcode_ST',
         'createcode_NR',
-        'createcode_ITS'
+        'createcode_ITS',
     ]
 )
 def create_code(message: telebot.types.Message):
@@ -75,63 +79,19 @@ def register_user(message):
     BaseBotCommands.register(message)
 
 
-# @bot.message_handler(commands=['updates', 'massmess'])
-# def mass_info_message(message):
-#     """
-#     Рассылка информации всем пользователям.
-#     - updates: для заготовленных обновлений
-#     - massmess: для любых сообщений (до 500 символов)
-#     """
-#     access = get_admin_access(message.chat.id)
-#     if access is None or access[1] != message.chat.id:
-#         return bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
-#     input_message = message.text.split()
-#     if input_message[0] == '/updates':
-#         message_for_users = UPDATE_MESSAGE
-#     elif input_message[0] == '/massmess':
-#         message_for_users = ' '.join(input_message[1:])
-#         erorr_code_message = (
-#             'Команда использована неверно, '
-#             'введите запрос как показано на примере\!\n'  # noqa W605
-#             'Пример: \n\/massmess your_message\n'  # noqa W605
-#             f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'  # noqa W605
-#         )
-#         if (len(input_message) <= 1
-#            or len(' '.join(input_message[1:]))) > MAX_MESSAGE_SYMBOLS:
-#             bot.send_message(
-#                 message.chat.id,
-#                 erorr_code_message,
-#                 parse_mode='MarkdownV2',
-#             )
-#             return log_user_command(message)
-#     users = search_all_user_id()
-#     send_count = 0
-#     eror_count = 0
-#     for user in users:
-#         try:
-#             bot.send_message(
-#                 chat_id=user[0],
-#                 text=message_for_users,
-#             )
-#             send_count += 1
-#         except Exception:
-#             eror_count += 1
-#             raise bot.send_message(
-#                 message.chat.id,
-#                 f'ошибка отправки пользователю с id № *{user[0]}*',
-#                 parse_mode='MarkdownV2',
-#             )
-#         finally:
-#             continue
-#     bot.send_message(
-#         message.chat.id,
-#         text=(
-#             f'Сообщение успешно отправлено *{send_count}* пользователям\!\n'  # noqa W605
-#             f'\nСообщение не доставлено *{eror_count}* пользователям\!'  # noqa W605
-#         ),
-#         parse_mode='MarkdownV2'
-#     )
-#     return log_user_command(message)
+@bot.message_handler(
+    commands=[
+        'updates',
+        'massmess',
+    ]
+)
+def mass_info_message(message: types.Message) -> types.Message | None:
+    """
+    Рассылка информации всем пользователям.
+    - updates: для заготовленных обновлений
+    - massmess: для любых сообщений (до 500 символов)
+    """
+    BaseBotCommands.mass_info_message(message)
 
 
 @bot.message_handler(commands=[STOP_COMMAND])
