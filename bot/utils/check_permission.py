@@ -1,7 +1,7 @@
 import telebot
 
 from bot.db import BaseBotSQLMethods
-from bot.constant import NOT_REGISTERED, NO_ADMIN_RIGHTS, NO_MODERATOR_RIGHTS
+from bot.constants import NOT_REGISTERED, NO_ADMIN_RIGHTS, NO_MODERATOR_RIGHTS
 from bot import bot
 
 

@@ -1,7 +1,7 @@
 from telebot import types
 
 from bot import bot
-from bot.constant import ADMIN_COMMANDS
+from bot.constants import ADMIN_COMMANDS
 from bot.db import BaseBotSQLMethods
 from bot.utils.code_generator import CodeGenerator
 from bot.logger_setting.logger_bot import log_user_command

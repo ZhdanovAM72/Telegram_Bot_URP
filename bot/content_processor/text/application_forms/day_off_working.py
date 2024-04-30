@@ -2,7 +2,7 @@ from telebot import types
 from bot.utils.buttons import Buttons
 from bot.utils.documents import Documents
 from bot import bot
-from bot.constant import ES, ITS, NR, NNGGF, ST
+from bot.constants import ES, ITS, NR, NNGGF, ST
 
 PARRENT_PATH = "prod_data/blanks/time_tracking/working_day_off/"
 DAY_OFF_WORKING = "Работа в выходной день"

@@ -2,7 +2,7 @@ from telebot import types
 from bot.utils.buttons import Buttons
 from bot.utils.documents import Documents
 from bot import bot
-from bot.constant import ES, ITS, NNGGF, ST
+from bot.constants import ES, ITS, NNGGF, ST
 
 PARRENT_PATH = "prod_data/blanks/time_tracking/government_duties/"
 GOVERNMENT_DUTIES = "Исполнение гос.обязанностей"

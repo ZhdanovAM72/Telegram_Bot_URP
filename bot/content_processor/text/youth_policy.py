@@ -2,7 +2,7 @@ from telebot import types
 from bot.utils.buttons import Buttons
 from bot.utils.documents import Documents
 from bot import bot
-from bot.constant import ABOUT_NTK
+from bot.constants import ABOUT_NTK
 
 
 class YouthPolicy:
