@@ -12,8 +12,8 @@ class CreateCodeCommands:
     @classmethod
     def create_code(cls, message: types.Message) -> None:
         """Создание кода доступа."""
-        if (CheckUserPermission.check_admin(message) or
-           CheckUserPermission.check_moderator(message)):
+        if (CheckUserPermission.check_admin(message)
+           or CheckUserPermission.check_moderator(message)):
             log_user_command(message)
         else:
             return None
