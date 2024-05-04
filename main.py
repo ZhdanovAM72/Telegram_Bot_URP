@@ -11,25 +11,25 @@ from bot import bot, STOP_COMMAND
 
 
 @bot.message_handler(commands=['admin'])
-def admin(message: telebot.types.Message):
+def admin(message: telebot.types.Message) -> types.Message | None:
     """"Проверяем права администратора."""
     return BaseBotCommands.admin_commands(message)
 
 
 @bot.message_handler(commands=['updatecode'])
-def update_code(message: telebot.types.Message):
+def update_code(message: telebot.types.Message) -> types.Message | None:
     """Обновляем код в БД."""
     return BaseBotCommands.update_code(message)
 
 
 @bot.message_handler(commands=['createmoderator'])
-def create_moderator(message: telebot.types.Message):
+def create_moderator(message: telebot.types.Message) -> types.Message | None:
     """Создаем модератора."""
     return BaseBotCommands.create_moderator(message)
 
 
 @bot.message_handler(commands=['moderator'])
-def moderator(message: telebot.types.Message):
+def moderator(message: telebot.types.Message) -> types.Message | None:
     """"Проверяем права модератора."""
     return BaseBotCommands.moderator_commands(message)
 
@@ -40,13 +40,13 @@ def moderator(message: telebot.types.Message):
         'deletecode',
     ]
 )
-def delete_user(message: telebot.types.Message):
+def delete_user(message: telebot.types.Message) -> types.Message | None:
     """Удаление пользователей."""
     return BaseBotCommands.delete_user_from_db(message)
 
 
 @bot.message_handler(commands=['dbinfo'])
-def export_db(message: telebot.types.Message):
+def export_db(message: telebot.types.Message) -> types.Message | None:
     """Экспортируем БД."""
     return BaseBotCommands.export_info(message)
 
@@ -59,19 +59,19 @@ def export_db(message: telebot.types.Message):
         'createcode_ITS',
     ]
 )
-def create_code(message: telebot.types.Message):
+def create_code(message: telebot.types.Message) -> types.Message | None:
     """Создаем новый код доступа в БД."""
     return BaseBotCommands.create_code(message)
 
 
 @bot.message_handler(commands=['start'])
-def start(message: telebot.types.Message):
+def start(message: telebot.types.Message) -> types.Message | None:
     """Начало работы в ботом."""
     return BaseBotCommands.start(message)
 
 
 @bot.message_handler(commands=['code'])
-def register_user(message):
+def register_user(message) -> types.Message | None:
     """Определяем права пользователя."""
     return BaseBotCommands.register(message)
 
@@ -92,13 +92,13 @@ def mass_info_message(message: types.Message) -> types.Message | None:
 
 
 @bot.message_handler(commands=[STOP_COMMAND])
-def stop(message: telebot.types.Message):
+def stop(message: telebot.types.Message) -> None:
     """Останавливаем работу бота."""
     return BaseBotCommands.stop_command(message)
 
 
 @bot.message_handler(content_types=['text'])
-def get_text_messages(message: telebot.types.Message):
+def get_text_messages(message: telebot.types.Message) -> types.Message | None:
     """
     Главное меню чат-бота с глубокой вложенностью
     и возможностью возврата к предыдущему пункту меню.
@@ -120,13 +120,13 @@ def get_text_messages(message: telebot.types.Message):
 
 
 @bot.message_handler(content_types=['photo'])
-def user_photo(message: telebot.types.Message):
+def user_photo(message: telebot.types.Message) -> types.Message | None:
     """Ловим отправленные пользователем изобращения."""
     return BaseContentProcessor.get_user_photo(message)
 
 
 @bot.message_handler(content_types=['sticker'])
-def user_stiсker(message: telebot.types.Message):
+def user_stiсker(message: telebot.types.Message) -> types.Message | None:
     """Ловим отправленные пользователем стикеры."""
     return BaseContentProcessor.get_user_stiсker(message)
 
