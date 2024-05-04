@@ -21,21 +21,23 @@ class CreateCodeCommands:
         company = message.text.split('_')
         company_name = company[1]
         generate__new_code = CodeGenerator._generate_code(company_name.lower())
+
         if not generate__new_code:
             bot.send_message(message.chat.id, 'Данное ДО не найдено.')
+
         check = BaseBotSQLMethods.search_code_in_db(generate__new_code)
+
         if check is not None and check[0] == generate__new_code:
-            bot.send_message(
+            return bot.send_message(
                 message.chat.id,
                 'Данный код уже существует, '
                 'повторите команду.'
             )
         elif check is None:
             BaseBotSQLMethods.create_new_code(generate__new_code)
-            bot.send_message(message.chat.id,
-                             'Код сохранен и доступен для регистрации:')
-            bot.send_message(message.chat.id, f'/code {generate__new_code}')
+            return (
+                bot.send_message(message.chat.id, 'Код сохранен и доступен для регистрации:'),
+                bot.send_message(message.chat.id, f'/code {generate__new_code}')
+            )
         else:
-            bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
-
-        return log_user_command(message)
+            return bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
