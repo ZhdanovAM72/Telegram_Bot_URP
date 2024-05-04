@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 from telebot import types
 from bot.utils.buttons import Buttons
 from bot.utils.documents import Documents
@@ -6,6 +8,7 @@ from bot import bot
 
 class DmsAndRvl:
 
+    @staticmethod
     def dms_and_rvl(message: types.Message) -> types.Message:
         buttons = [
             'ДМС',
@@ -22,29 +25,27 @@ class DmsAndRvl:
         caption = ['Кураторы программы в ДО и подразделениях']
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
+    @staticmethod
+    @contextmanager
     def dms(message: types.Message) -> types.Message:
         parrent_path = 'prod_data/ДМС/ГПН_ЭС/ДМС/'
-        with (
-            open(f'{parrent_path}памятка_ДМС_2023.pdf', 'rb') as file_1,
-            open(f'{parrent_path}med_list.pdf', 'rb') as file_2,
-            open(f'{parrent_path}dms.pdf', 'rb') as file_3,
-        ):
-            documents = [
-                {
-                    'file': file_1,
-                    'caption': 'Памятка по лечению',
-                },
-                {
-                    'file': file_2,
-                    'caption': 'Перечень поликлиник',
-                },
-                {
-                    'file': file_3,
-                    'caption': 'Программа ДМС',
-                },
-            ]
-            Documents.send_media_group_without_markup(message.chat.id, documents)
+        documents = (
+            {
+                'file': open(f'{parrent_path}памятка_ДМС_2023.pdf', 'rb'),
+                'caption': 'Памятка по лечению',
+            },
+            {
+                'file': open(f'{parrent_path}med_list.pdf', 'rb'),
+                'caption': 'Перечень поликлиник',
+            },
+            {
+                'file': open(f'{parrent_path}dms.pdf', 'rb'),
+                'caption': 'Программа ДМС',
+            },
+        )
+        Documents.send_media_group_without_markup(message.chat.id, documents)
 
+    @staticmethod
     def rvl(message: types.Message) -> types.Message:
         parrent_path = 'prod_data/ДМС/ГПН_ЭС/РВЛ/'
         document = [
