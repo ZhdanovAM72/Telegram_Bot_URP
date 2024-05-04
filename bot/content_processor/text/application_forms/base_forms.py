@@ -15,12 +15,15 @@ from bot.content_processor.text.application_forms.cancellation_vacation import C
 from bot.content_processor.text.application_forms.other_types_vacation import OtherTypesVacation
 from bot.content_processor.text.application_forms.change_employment_contract import ChangeEmploymentContract
 from bot.content_processor.text.application_forms.working_hours import WorkingHours
+from bot.content_processor.text.application_forms.transfers import Transfers
+from bot.content_processor.text.application_forms.extra_work import ExtraWork
+from bot.content_processor.text.application_forms.bank_details import BankDetails
 
 
 class ApplicationFormsBase(
     ApplicationForms, AdvanceReport, WorkSchedule, TimeTracking, DayOffWorking, DelayTransit,
     GovernmentDuties, BirthChild, TerminationEmploymentContract, VacationRegistration, BloodDonation,
     TransferExtensionVacation, VacationWithoutPay, CancellationRecallVacation, OtherTypesVacation,
-    ChangeEmploymentContract, WorkingHours
+    ChangeEmploymentContract, WorkingHours, Transfers, ExtraWork, BankDetails,
 ):
     pass
