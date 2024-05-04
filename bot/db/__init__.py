@@ -1,0 +1,1 @@
+from bot.db.base import BaseBotBbMethods as BaseBotSQLMethods # noqa

@@ -1,0 +1,1 @@
+from bot.content_processor.base import BaseContentProcessor  # noqa
