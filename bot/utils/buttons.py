@@ -6,7 +6,7 @@ class Buttons:
     # Функция для создания кнопок
     @staticmethod
     def create_keyboard_buttons(
-            buttons: list[str], row_width: int = 3
+            buttons: list[str] | tuple[str], row_width: int = 3
     ) -> types.ReplyKeyboardMarkup:
         markup = types.ReplyKeyboardMarkup(
             resize_keyboard=True, row_width=row_width
@@ -19,7 +19,7 @@ class Buttons:
 
     @staticmethod
     def create_inline_keyboard(
-            buttons: list[str], row_width: int = 3
+            buttons: list[list[str]] | tuple[tuple[str]], row_width: int = 3
     ) -> types.InlineKeyboardMarkup:
         markup = types.InlineKeyboardMarkup(row_width=row_width)
         array = []
