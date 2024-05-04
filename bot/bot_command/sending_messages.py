@@ -7,6 +7,13 @@ from bot.db import BaseBotSQLMethods
 from bot.updates import UPDATE_MESSAGE
 from bot.constants import MAX_MESSAGE_SYMBOLS
 
+ERORR_CODE_MESSAGE = (
+    'Команда использована неверно, '  # noqa W605
+    'введите запрос как показано на примере\!\n'  # noqa W605
+    '\nПример\: \n\/massmess *your\_message* \n'  # noqa W605
+    f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'  # noqa W605
+)
+
 
 class SendingMessagesBotCommands:
 
@@ -18,38 +25,28 @@ class SendingMessagesBotCommands:
         - massmess: для любых сообщений (до 500 символов)
         """
         if not CheckUserPermission.check_admin(message):
-            logger.info(log_user_command_updated(message))
+            logger.warning(log_user_command_updated(message))
             return None
+
         input_message = message.text.split()
         if input_message[0] == '/updates':
             message_for_users = UPDATE_MESSAGE
         elif input_message[0] == '/massmess':
             message_for_users = ' '.join(input_message[1:])
-            erorr_code_message = (
-                'Команда использована неверно, '  # noqa W605
-                'введите запрос как показано на примере\!\n'  # noqa W605
-                '\nПример\: \n\/massmess *your\_message* \n'  # noqa W605
-                f'\nМаксимально *{MAX_MESSAGE_SYMBOLS}* символов\!'  # noqa W605
-            )
+
             if (len(input_message) <= 1
                or len(' '.join(input_message[1:])) > MAX_MESSAGE_SYMBOLS):
-                logger.info(log_user_command_updated(message))
+                logger.warning(log_user_command_updated(message))
                 return bot.send_message(
                     message.chat.id,
-                    erorr_code_message,
+                    ERORR_CODE_MESSAGE,
                     parse_mode='MarkdownV2',
                 )
-        else:
-            logger.info(log_user_command_updated(message))
-            return bot.send_message(
-                message.chat.id,
-                erorr_code_message,
-                parse_mode='MarkdownV2',
-            )
 
         users = BaseBotSQLMethods.search_all_user_id()
         send_count = 0
         eror_count = 0
+
         for user in users:
             try:
                 bot.send_message(
@@ -66,6 +63,7 @@ class SendingMessagesBotCommands:
                 )
             finally:
                 continue
+
         logger.info(log_user_command_updated(message))
         return bot.send_message(
             message.chat.id,

@@ -10,9 +10,9 @@ TEXT = "У меня нет глаз, я не понимаю что на этой
 class ImageProcessor:
 
     @classmethod
-    def get_user_photo(cls, message: types.Message) -> None:
+    def get_user_photo(cls, message: types.Message) -> types.Message | None:
         """Отвечаем на изобращение."""
-        if not CheckUserPermission.check_user(message):
-            return logger.info(log_photo(message))
         logger.info(log_photo(message))
+        if not CheckUserPermission.check_user(message):
+            return None
         return bot.send_message(message.chat.id, text=TEXT)

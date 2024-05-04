@@ -12,7 +12,7 @@ class StiсkerProcessor:
     @staticmethod
     def get_user_stiсker(message: types.Message) -> None | types.Message:
         """Ловим отправленные пользователем стикеры."""
-        if not CheckUserPermission.check_user(message):
-            return logger.info(log_sticker(message))
         logger.info(log_sticker(message))
+        if not CheckUserPermission.check_user(message):
+            return None
         return bot.send_message(message.chat.id, text=TEXT)
