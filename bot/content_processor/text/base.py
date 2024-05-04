@@ -9,12 +9,15 @@ from bot.content_processor.text.talent_management_cycle import TalentManagementC
 from bot.content_processor.text.internship import Internship
 from bot.content_processor.text.education import Education
 from bot.content_processor.text.youth_policy import YouthPolicy
+from bot.content_processor.text.feedback import Feedback
+from bot.content_processor.text.bot_information import BotInformation
 from bot.content_processor.text.application_forms.base_forms import ApplicationFormsBase
+from bot.content_processor.text.purchases.base import PurchasesMenuBase
 
 
 class BaseTextMenu(
     MainMenu, AboutCompany, NewsFeed, EmployeesServices, Education, YouthPolicy,
     Adaptation, DmsAndRvl, CareerDevelopment, TalentManagementCycle, Internship,
-    ApplicationFormsBase,
+    ApplicationFormsBase, Feedback, PurchasesMenuBase, BotInformation,
 ):
     pass
