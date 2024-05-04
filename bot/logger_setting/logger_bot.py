@@ -7,7 +7,7 @@ LOG_FILE = 'bot_log.txt'  # Имя файла логов
 def init_logger() -> logging.Logger:
     """Определяем настройки логгера."""
     logging.basicConfig(
-        format=('%(asctime)s - %(levelname)s - %(pathname)s - '
+        format=('%(asctime)s - %(levelname)s - %(module)s - '
                 'строка: %(lineno)d - %(message)s'),
         level=logging.INFO,
         handlers=[
