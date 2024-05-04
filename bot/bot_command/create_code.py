@@ -10,7 +10,7 @@ from bot.logger_setting.logger_bot import log_user_command
 class CreateCodeCommands:
 
     @classmethod
-    def create_code(cls, message: types.Message) -> None:
+    def create_code(cls, message: types.Message) -> types.Message | None:
         """Создание кода доступа."""
         if (CheckUserPermission.check_admin(message)
            or CheckUserPermission.check_moderator(message)):

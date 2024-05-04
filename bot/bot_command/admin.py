@@ -11,7 +11,7 @@ from bot.utils.check_permission import CheckUserPermission
 class AdminBotCommands:
 
     @classmethod
-    def admin_commands(cls, message: types.Message) -> None:
+    def admin_commands(cls, message: types.Message) -> tuple[types.Message, types.Message] | None:
         """"Направляем список доступных команд администратору."""
         bot.send_message(message.chat.id, 'Проверяем права.')
         if not CheckUserPermission.check_admin(message):
@@ -22,7 +22,7 @@ class AdminBotCommands:
                 bot.send_message(message.chat.id, text=ADMIN_COMMANDS))
 
     @classmethod
-    def update_code(cls, message: types.Message) -> None:
+    def update_code(cls, message: types.Message) -> types.Message | None:
         """Обновляем код пользователя в БД."""
         if not CheckUserPermission.check_admin(message):
             log_user_command(message)
@@ -59,7 +59,7 @@ class AdminBotCommands:
         return log_user_command(message)
 
     @classmethod
-    def create_moderator(message: types.Message) -> None:
+    def create_moderator(message: types.Message) -> types.Message | None:
         """Создаем модератора."""
         bot.send_message(message.chat.id, 'Проверяем права.')
         if not CheckUserPermission.check_admin(message):
@@ -92,18 +92,20 @@ class AdminBotCommands:
             )
             log_user_command(message)
             return bot.send_message(message.chat.id, 'Запись БД обновлена!')
-        bot.send_message(
+
+        log_user_command(message)
+        return bot.send_message(
             message.chat.id,
             'Пользователь не найден в системе!\n'
             'Проверьте user_id в БД. '
         )
-        return log_user_command(message)
 
     @classmethod
-    def delete_user_from_db(cls, message: types.Message) -> None:
+    def delete_user_from_db(cls, message: types.Message) -> types.Message | None:
         """Удаляем запись из БД по user_id."""
         if not CheckUserPermission.check_admin(message):
-            return log_user_command(message)
+            log_user_command(message)
+            return None
         input_code = message.text
         erorr_code_message = (
             'Команда использована неверно, '
@@ -112,11 +114,11 @@ class AdminBotCommands:
         )
         delete_user_command = input_code.split()
         if len(delete_user_command) <= 1 or len(delete_user_command) > 2:
-            bot.send_message(
+            log_user_command(message)
+            return bot.send_message(
                 message.chat.id,
                 erorr_code_message
             )
-            return log_user_command(message)
 
         if delete_user_command[0] == '/deleteuser':
             cls.__delete_user_by_id(message, delete_user_command[1])
