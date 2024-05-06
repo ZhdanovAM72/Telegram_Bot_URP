@@ -17,6 +17,7 @@ class MainMenu:
             'Бланки заявлений',
             'Планирование закупок',
             'Обратная связь',
+            # "Часто задаваемые вопросы",
         ]
         markup = Buttons.create_keyboard_buttons(buttons, row_width=2)
         bot.send_message(

@@ -9,11 +9,12 @@ class AboutCompany:
 
     def about_company(message: types.Message) -> types.Message:
         buttons = [
-            'Выбрать ДО',
-            'Корпоративные ценности',
-            'Сервисы для сотрудников',
-            'Новостная лента',
-            '🔙 Главное меню',
+            "Выбрать ДО",
+            "Корпоративные ценности",
+            "Сервисы для сотрудников",
+            "Новостная лента",
+            "Корпоративная этика",
+            "🔙 Главное меню",
         ]
         markup = Buttons.create_keyboard_buttons(buttons, row_width=2)
         bot.send_message(
@@ -73,8 +74,13 @@ class AboutCompany:
         )
 
     def history_nr(message: types.Message) -> types.Message:
-        document = ['prod_data/о_компании/выбрать_ДО/НР/История/about_us.pptx']
+        document = ['prod_data/о_компании/выбрать_ДО/НР/История/about_us.pdf']
         caption = [f'История {NR}']
+        Documents.send_document_with_markup(message.chat.id, document, caption)
+
+    def structure_nr(message: types.Message) -> types.Message:
+        document = ('prod_data/о_компании/выбрать_ДО/НР/structure.pdf',)
+        caption = (f'Структура {NR}',)
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def do_its(message: types.Message) -> types.Message:
@@ -93,7 +99,7 @@ class AboutCompany:
         )
 
     def contacts_its(message: types.Message) -> types.Message:
-        document = ['prod_data/о_компании/выбрать_ДО/ННГГФ/Контакты/info.docx']
+        document = ['prod_data/о_компании/выбрать_ДО/ННГГФ/Контакты/info.pdf']
         caption = [f'Контакты {ITS}']
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
@@ -136,7 +142,7 @@ class AboutCompany:
         )
 
     def history_es(message: types.Message) -> types.Message:
-        document = ['prod_data/о_компании/выбрать_ДО/ГПН_ЭС/история/о_нас.pptx']
+        document = ['prod_data/о_компании/выбрать_ДО/ГПН_ЭС/история/about_us.pdf']
         caption = [f'История {ES}']
         Documents.send_document_with_markup(message.chat.id, document, caption)
 

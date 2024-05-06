@@ -24,7 +24,11 @@ class CareerDevelopment:
     def my_track(message: types.Message) -> types.Message:
         document = ['prod_data/карьерное_развитие/my_track/my.pdf']
         caption = ['Мой трек и карьерные опции']
-        Documents.send_document_with_markup(message.chat.id, document, caption)
+        buttons = (
+            ('Видеоролик "Карьерные опции"', "https://youtu.be/n2sg1DtA1fc"),
+        )
+        markup = Buttons.create_inline_keyboard(buttons)
+        Documents.send_document_with_markup(message.chat.id, document, caption, markup)
 
     def my_profile(message: types.Message) -> types.Message:
         parrent_path = 'prod_data/карьерное_развитие/profile_on_portal/'
@@ -56,14 +60,12 @@ class CareerDevelopment:
         parrent_path = 'prod_data/карьерное_развитие/individual_plan/'
         document = [
             f'{parrent_path}instruction.pdf',
-            f'{parrent_path}IPR.pdf',
             f'{parrent_path}menu.pdf',
             f'{parrent_path}plan.pdf',
             f'{parrent_path}done.pdf',
         ]
         caption = [
             'Актуализация ИПР - Инструкция для сотрудников',
-            'Формирование плана развития - Памятка для сотрудников 2023',
             'Меню развивающих действий',
             'Индивидуальный план развития - памятка для сотрудника',
             'Факт выполнения целей в ИПР',

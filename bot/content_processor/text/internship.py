@@ -26,7 +26,7 @@ class Internship:
             f'{parrent_path}Бланк_плана_стажировки_сотрудника.xlsx',
         )
         captions = (
-            'Стажировки БРД',
+            'Стажировки описание процесса',
             'Бланк плана стажировки сотрудника',
         )
         Documents.send_document_with_markup(message.chat.id, documents, captions)

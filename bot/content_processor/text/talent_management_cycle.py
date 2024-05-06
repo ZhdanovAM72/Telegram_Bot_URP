@@ -25,12 +25,12 @@ class TalentManagementCycle:
     def regular_assessment(message: types.Message) -> types.Message:
         parrent_path = 'prod_data/Цикл_управления_талантами/Регулярная_оценка/'
         documents = (
-            f'{parrent_path}Процедуры.pdf',
+            f'{parrent_path}instruction.pdf',
             f'{parrent_path}для_сотрудников.pdf',
             f'{parrent_path}reg_360.pdf',
         )
         captions = (
-            'Процедуры ежегодной оценки в ГПН',
+            'Инструкция по чтению отчета регулярной оценки',
             'Регулярная оценка для сотрудников',
             'Брошюра регулярной оценки 360',
         )
@@ -54,11 +54,11 @@ class TalentManagementCycle:
     def dialogues_about_efficiency(message: types.Message) -> types.Message:
         parrent_path = 'prod_data/Цикл_управления_талантами/Диалоги_об_эффективности/'
         documents = (
-            f'{parrent_path}Инструкция.pdf',
+            f'{parrent_path}dialog.pdf',
             f'{parrent_path}ДоЭФ.PNG',
         )
         captions = (
-            'Инструкция по чтению отчета регулярной оценки 2023',
+            'Диалог об эффективности - Памятка для сотрудника',
             'Помятка для сотрудника',
         )
         buttons = [

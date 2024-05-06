@@ -101,8 +101,8 @@ class Adaptation:
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def workwear(message: types.Message) -> types.Message:
-        document = ('prod_data/Адаптация/vnesh_vid/vneshsiz.pdf')
-        caption = ('Внешний вид. Спецодежда и СИЗ')
+        document = ('prod_data/Адаптация/vnesh_vid/vneshsiz.pdf',)
+        caption = ('Внешний вид. Спецодежда и СИЗ',)
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def staff_motivation(message: types.Message) -> types.Message:
@@ -121,29 +121,29 @@ class Adaptation:
         )
 
     def motivation_es(message: types.Message) -> types.Message:
-        document = ('prod_data/Адаптация/мотивация_персонала/ES_motivate.pdf')
-        caption = (f'Мотивация сотрудников {ES}')
+        document = ('prod_data/Адаптация/мотивация_персонала/ES_motivate.pdf',)
+        caption = (f'Мотивация сотрудников {ES}',)
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def motivation_nr(message: types.Message) -> types.Message:
-        document = ('prod_data/Адаптация/мотивация_персонала/NR_motivate.pdf')
-        caption = (f'Мотивация сотрудников {NR}')
+        document = ('prod_data/Адаптация/мотивация_персонала/NR_motivate.pdf',)
+        caption = (f'Мотивация сотрудников {NR}',)
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def motivation_its(message: types.Message) -> types.Message:
-        document = ('prod_data/Адаптация/мотивация_персонала/ITS_motivate.pdf')
-        caption = (f'Мотивация сотрудников {ITS}')
+        document = ('prod_data/Адаптация/мотивация_персонала/ITS_motivate.pdf',)
+        caption = (f'Мотивация сотрудников {ITS}',)
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def motivation_st(message: types.Message) -> types.Message:
-        document = ('prod_data/Адаптация/мотивация_персонала/ST_motivate.pdf')
-        caption = (f'Мотивация сотрудников {ST}')
+        document = ('prod_data/Адаптация/мотивация_персонала/ST_motivate.pdf',)
+        caption = (f'Мотивация сотрудников {ST}',)
         Documents.send_document_with_markup(message.chat.id, document, caption)
 
     def booklets_for_employees(message: types.Message) -> types.Message:
         parrent_path = 'prod_data/Адаптация/буклеты_для_сотрудников/'
         document = (
-            f'{parrent_path}ES_2023.pdf',
+            f'{parrent_path}ES_2024.pdf',
             f'{parrent_path}NR_2023.pdf',
             f'{parrent_path}ST_2023.pdf',
         )

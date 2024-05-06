@@ -11,6 +11,8 @@ from bot.content_processor.text.education import Education
 from bot.content_processor.text.youth_policy import YouthPolicy
 from bot.content_processor.text.feedback import Feedback
 from bot.content_processor.text.bot_information import BotInformation
+from bot.content_processor.text.corporate_ethics import CorporateEthics
+from bot.content_processor.text.faq import FAQService
 from bot.content_processor.text.application_forms.base_forms import ApplicationFormsBase
 from bot.content_processor.text.purchases.base import PurchasesMenuBase
 
@@ -18,6 +20,7 @@ from bot.content_processor.text.purchases.base import PurchasesMenuBase
 class BaseTextMenu(
     MainMenu, AboutCompany, NewsFeed, EmployeesServices, Education, YouthPolicy,
     Adaptation, DmsAndRvl, CareerDevelopment, TalentManagementCycle, Internship,
-    ApplicationFormsBase, Feedback, PurchasesMenuBase, BotInformation,
+    ApplicationFormsBase, Feedback, PurchasesMenuBase, BotInformation, CorporateEthics,
+    FAQService,
 ):
     pass
