@@ -5,7 +5,6 @@ from bot import bot
 class Documents:
 
     @staticmethod
-    # Функция для отправки документов по одному
     def send_document_with_markup(
             chat_id: int,
             document: list[str] | tuple[str],
@@ -15,6 +14,8 @@ class Documents:
         """
         Отправка документов по одному.
         """
+        if document in ["", None]:
+            return
         for i in range(len(document)):
             with open(document[i], "rb") as file:
                 bot.send_document(
@@ -26,7 +27,6 @@ class Documents:
                 )
 
     @staticmethod
-    # Функция для отправки документов группой
     def send_media_group_without_markup(
             chat_id: int,
             documents: list[dict] | tuple[dict],
