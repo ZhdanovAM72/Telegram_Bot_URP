@@ -6,10 +6,18 @@ BASE_MENU_DICT = {
     'Главное меню': BaseTextMenu.main_menu,
     '🔙 Главное меню': BaseTextMenu.main_menu,
 
+    # "Часто задаваемые вопросы": BaseTextMenu.faq_service_main,
+
     # О КОМПАНИИ
     'О компании': BaseTextMenu.about_company,
     '🔙 вернуться в раздел О компании': BaseTextMenu.about_company,
     'Корпоративные ценности': BaseTextMenu.corporate_values,
+    "Корпоративная этика": BaseTextMenu.corporate_ethics_main,
+    f"Корпоративная этика {ES}": BaseTextMenu.corporate_ethics_es,
+    f"Корпоративная этика {ITS}": BaseTextMenu.corporate_ethics_its,
+    f"Корпоративная этика {NR}": BaseTextMenu.corporate_ethics_nr,
+    f"Корпоративная этика {ST}": BaseTextMenu.corporate_ethics_st,
+
     'Выбрать ДО': BaseTextMenu.choose_do,
     '🔙 вернуться в раздел Выбрать ДО': BaseTextMenu.choose_do,
 
@@ -23,6 +31,7 @@ BASE_MENU_DICT = {
     'Нефтесервисные решения': BaseTextMenu.do_nr,
     '🔙 вернуться в раздел Нефтесервисные решения': BaseTextMenu.do_nr,
     'История НР': BaseTextMenu.history_nr,
+    'Структура НР': BaseTextMenu.structure_nr,
 
     # ИТС
     'Инженерно-технологический сервис': BaseTextMenu.do_its,
