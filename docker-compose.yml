@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_urp
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - services
+
+  bot:
+    build: .
+    container_name: telegram_bot
+    restart: always
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    networks:
+      - services
+
+volumes:
+  postgres_data:
+
+networks:
+  services:
