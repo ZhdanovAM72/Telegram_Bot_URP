@@ -1,7 +1,7 @@
 import os
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings
-from sqlalchemy import create_engine, URL
+from sqlalchemy import URL
 
 
 class PostgresSettings(BaseSettings):
@@ -26,5 +26,3 @@ class PostgresSettings(BaseSettings):
 
 
 settings = PostgresSettings()
-
-# engine = create_engine(settings.postgres_connection_url)
