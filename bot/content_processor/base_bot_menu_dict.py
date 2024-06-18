@@ -6,7 +6,7 @@ BASE_MENU_DICT = {
     'Главное меню': BaseTextMenu.main_menu,
     '🔙 Главное меню': BaseTextMenu.main_menu,
 
-    # "Часто задаваемые вопросы": BaseTextMenu.faq_service_main,
+    "Часто задаваемые вопросы": BaseTextMenu.faq_service_main,
 
     # О КОМПАНИИ
     'О компании': BaseTextMenu.about_company,
