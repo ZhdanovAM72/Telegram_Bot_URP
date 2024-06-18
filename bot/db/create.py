@@ -39,7 +39,7 @@ class CreateMethods:
             user_id: int,
             first_name: str,
             last_name: str,
-         ) -> None:
+    ) -> None:
         """Записываем данные пользователя по валидному коду."""
         try:
             con = sqlite3.connect('users_v2.sqlite')
