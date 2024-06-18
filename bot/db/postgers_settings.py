@@ -8,7 +8,7 @@ class PostgresSettings(BaseSettings):
     """Конфигурация PostgresQL."""
 
     POSTGRES_HOST: str = os.getenv('POSTGRES_HOST')
-    POSTGRES_PORT: int = os.getenv('POSTGRES_PORT')
+    POSTGRES_PORT: int = int(os.getenv('POSTGRES_PORT'))
     POSTGRES_USER: str = os.getenv('POSTGRES_USER')
     POSTGRES_PASSWORD: SecretStr = SecretStr(os.getenv('POSTGRES_PASSWORD'))
     POSTGRES_DB: str = os.getenv('POSTGRES_DB')
@@ -27,4 +27,4 @@ class PostgresSettings(BaseSettings):
 
 settings = PostgresSettings()
 
-engine = create_engine(settings.postgres_connection_url)
+# engine = create_engine(settings.postgres_connection_url)
