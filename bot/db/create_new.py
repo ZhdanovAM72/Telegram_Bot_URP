@@ -1,5 +1,4 @@
 import datetime as dt
-import sqlite3
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
