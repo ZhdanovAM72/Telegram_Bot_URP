@@ -3,7 +3,6 @@ from telebot import types
 from bot import bot
 from bot.constants import ADMIN_COMMANDS
 from bot.db import BaseBotSQLMethods
-from bot.utils.code_generator import CodeGenerator
 from bot.logger_setting.logger_bot import log_user_command, logger, log_user_command_updated
 from bot.utils.check_permission import CheckUserPermission
 
@@ -22,56 +21,19 @@ class AdminBotCommands:
                 bot.send_message(message.chat.id, text=ADMIN_COMMANDS))
 
     @classmethod
-    def update_code(cls, message: types.Message) -> types.Message | None:
-        """Обновляем код пользователя в БД."""
-        if not CheckUserPermission.check_admin(message):
-            log_user_command(message)
-            return None
-        input_code = message.text
-        erorr_code_message = (
-            'Команда использована неверно, '
-            'введите запрос как показано на примере!\n'
-            'Пример: \n/updatecode old_code es'
-        )
-        if input_code == '/updatecode':
-            bot.send_message(
-                message.chat.id,
-                erorr_code_message
-            )
-            return log_user_command(message)
-        old_code = input_code.split()
-        if len(old_code) <= 2 or len(old_code) > 3:
-            return bot.send_message(
-                message.chat.id,
-                erorr_code_message
-            )
-        check = BaseBotSQLMethods.search_code_in_db(old_code[1])
-        if check is not None and check[0] == str(old_code[1]):
-            company_name = old_code[2]
-            new_code = CodeGenerator.generate_code(company_name.lower())
-            BaseBotSQLMethods.update_user_code(old_code[1], new_code)
-            return bot.send_message(message.chat.id, 'Запись БД обновлена!')
-        bot.send_message(
-            message.chat.id,
-            'Код не найден в системе!\n'
-            'Проверьте code в БД. '
-        )
-        return log_user_command(message)
-
-    @classmethod
-    def create_moderator(message: types.Message) -> types.Message | None:
-        """Создаем модератора."""
+    def create_admin(cls, message: types.Message) -> types.Message | None:
         bot.send_message(message.chat.id, 'Проверяем права.')
-        if not CheckUserPermission.check_admin(message):
-            log_user_command(message)
-            return None
+        if CheckUserPermission.check_admin(message):
+            log_user_command_updated(message)
+        else:
+            return
         input_code = message.text
         erorr_code_message = (
             'Команда использована неверно, '
             'введите запрос как показано на примере!\n'
             'Пример: \n/createmoderator user_code'
         )
-        if input_code == '/createmoderator':
+        if input_code == '/create_admin':
             bot.send_message(
                 message.chat.id,
                 erorr_code_message
@@ -83,13 +45,10 @@ class AdminBotCommands:
                 message.chat.id,
                 erorr_code_message
             )
-        check = BaseBotSQLMethods.search_user_id_in_db(user_id[1])
-        if check is not None and check[0] == int(user_id[1]):
+        check = BaseBotSQLMethods.search_email_user(user_id[1].lower().strip())
+        if check:
             bot.send_message(message.chat.id, 'Пользователь найден в базе!')
-            moderator_code = 'moderator-' + check[1]
-            BaseBotSQLMethods.update_user_to_moderator(
-                moderator_code, user_id[1]
-            )
+            BaseBotSQLMethods.update_user_to_admin(check, message)
             log_user_command(message)
             return bot.send_message(message.chat.id, 'Запись БД обновлена!')
 
@@ -101,16 +60,58 @@ class AdminBotCommands:
         )
 
     @classmethod
-    def delete_user_from_db(cls, message: types.Message) -> types.Message | None:
-        """Удаляем запись из БД по user_id."""
-        if not CheckUserPermission.check_admin(message):
-            log_user_command(message)
-            return None
+    def create_moderator(cls, message: types.Message) -> types.Message | None:
+        bot.send_message(message.chat.id, 'Проверяем права.')
+        if (CheckUserPermission.check_admin(message)
+           or CheckUserPermission.check_moderator(message)):
+            log_user_command_updated(message)
+        else:
+            return
         input_code = message.text
         erorr_code_message = (
             'Команда использована неверно, '
             'введите запрос как показано на примере!\n'
-            'Пример: \n/deleteuser user_id\n/deletecode user_code'
+            'Пример: \n/createmoderator user_code'
+        )
+        if input_code == '/create_moderator':
+            bot.send_message(
+                message.chat.id,
+                erorr_code_message
+            )
+            return log_user_command(message)
+        user_id = input_code.split()
+        if len(user_id) <= 1 or len(user_id) > 2:
+            return bot.send_message(
+                message.chat.id,
+                erorr_code_message
+            )
+        check = BaseBotSQLMethods.search_email_user(user_id[1].lower().strip())
+        if check:
+            bot.send_message(message.chat.id, 'Пользователь найден в базе!')
+            BaseBotSQLMethods.update_user_to_moderator(check, message)
+            log_user_command(message)
+            return bot.send_message(message.chat.id, 'Запись БД обновлена!')
+
+        log_user_command(message)
+        return bot.send_message(
+            message.chat.id,
+            'Пользователь не найден в системе!\n'
+            'Проверьте user_id в БД. '
+        )
+
+    @classmethod
+    def delete_user_by_email(cls, message: types.Message) -> types.Message | None:
+        """Удаляем запись из БД по Email."""
+        if (CheckUserPermission.check_admin(message)
+           or CheckUserPermission.check_moderator(message)):
+            log_user_command_updated(message)
+        else:
+            return
+        input_code = message.text
+        erorr_code_message = (
+            'Команда использована неверно, '
+            'введите запрос как показано на примере!\n'
+            'Пример: \n/delete_email email'
         )
         delete_user_command = input_code.split()
         if len(delete_user_command) <= 1 or len(delete_user_command) > 2:
@@ -119,42 +120,76 @@ class AdminBotCommands:
                 message.chat.id,
                 erorr_code_message
             )
-
-        if delete_user_command[0] == '/deleteuser':
-            cls.__delete_user_by_id(message, delete_user_command[1])
-            return None
-
-        elif delete_user_command[0] == '/deletecode':
-            cls.__delete_user_by_code(message, delete_user_command[1])
-            return None
-
-        return None
-
-    @staticmethod
-    def __delete_user_by_id(message: types.Message, user_id: str):
-        check = BaseBotSQLMethods.search_user_id_in_db(user_id)
-        if check is not None and check[0] == int(user_id):
-            bot.send_message(message.chat.id, 'Код найден в базе!')
-            BaseBotSQLMethods.delete_by_chat_id(user_id)
-            bot.send_message(message.chat.id, 'Запись БД удалена!')
-            return log_user_command(message)
-        bot.send_message(
-            message.chat.id,
-            'Пользователь не найден в системе!\n'
-            'Проверьте user_id в БД. '
-        )
-        return log_user_command(message)
-
-    @staticmethod
-    def __delete_user_by_code(message: types.Message, user_code: str):
-        check = BaseBotSQLMethods.search_code_in_db(user_code)
-        if check is not None and check[0] == user_code:
-            bot.send_message(message.chat.id, 'Код найден в базе!')
-            BaseBotSQLMethods.delete_by_code(user_code)
+        logger.debug(delete_user_command[1])
+        deleted_email = BaseBotSQLMethods.delete_email(delete_user_command[1].lower().strip())
+        logger.debug(deleted_email)
+        if deleted_email:
             return bot.send_message(message.chat.id, 'Запись БД удалена!')
-        bot.send_message(
+        return bot.send_message(
             message.chat.id,
-            'Код не найден в системе!\n'
-            'Проверьте код в БД. '
+            'Email не найден в системе, либо права пользователя ограничили удаление!\n'
+            'Проверьте Email и права пользователя в БД, команда: /dbinfo'
         )
-        return log_user_command(message)
+
+    @classmethod
+    def delete_moderator(cls, message: types.Message) -> types.Message | None:
+        """Удаляем права модератора из БД по Email."""
+        if (CheckUserPermission.check_admin(message)
+           or CheckUserPermission.check_moderator(message)):
+            log_user_command_updated(message)
+        else:
+            return
+        input_code = message.text
+        erorr_code_message = (
+            'Команда использована неверно, '
+            'введите запрос как показано на примере!\n'
+            'Пример: \n/delete_moderator email'
+        )
+        delete_user_command = input_code.split()
+        if len(delete_user_command) <= 1 or len(delete_user_command) > 2:
+            log_user_command(message)
+            return bot.send_message(
+                message.chat.id,
+                erorr_code_message
+            )
+        logger.debug(delete_user_command[1])
+        deleted_email = BaseBotSQLMethods.delete_moderator_by_email(delete_user_command[1].lower().strip(), message)
+        logger.debug(deleted_email)
+        if deleted_email:
+            return bot.send_message(message.chat.id, 'Запись БД обновлена!')
+        return bot.send_message(
+            message.chat.id,
+            'Email не найден в системе!\n'
+            'Проверьте Email в БД. '
+        )
+
+    @classmethod
+    def delete_admin(cls, message: types.Message) -> types.Message | None:
+        """Удаляем права администратора из БД по Email."""
+        if CheckUserPermission.check_admin(message):
+            log_user_command_updated(message)
+        else:
+            return
+        input_code = message.text
+        erorr_code_message = (
+            'Команда использована неверно, '
+            'введите запрос как показано на примере!\n'
+            'Пример: \n/delete_admin email'
+        )
+        delete_user_command = input_code.split()
+        if len(delete_user_command) <= 1 or len(delete_user_command) > 2:
+            log_user_command(message)
+            return bot.send_message(
+                message.chat.id,
+                erorr_code_message
+            )
+        logger.debug(delete_user_command[1])
+        deleted_email = BaseBotSQLMethods.delete_admin_by_email(delete_user_command[1].lower().strip(), message)
+        logger.debug(deleted_email)
+        if deleted_email:
+            return bot.send_message(message.chat.id, 'Запись БД обновлена!')
+        return bot.send_message(
+            message.chat.id,
+            'Email не найден в системе!\n'
+            'Проверьте Email в БД. '
+        )
