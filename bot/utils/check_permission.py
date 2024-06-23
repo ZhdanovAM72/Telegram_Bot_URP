@@ -11,7 +11,7 @@ class CheckUserPermission:
     def check_user(cls, message: telebot.types.Message) -> bool:
         """"Проверяем права пользователя."""
         access = BaseBotSQLMethods.get_user_access(message.chat.id)
-        if access is None:
+        if not access:
             bot.send_message(message.chat.id, NOT_REGISTERED)
             bot.send_message(
                 message.chat.id,
@@ -28,7 +28,7 @@ class CheckUserPermission:
                 'пример кода:\n/code es1nngg2f^st3!nr4\n'
                 '(Внимание код одноразовый!)'
             )
-        elif access[1] == message.chat.id:
+        elif access:
             return True
         else:
             bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
@@ -38,7 +38,7 @@ class CheckUserPermission:
     def check_admin(cls, message: telebot.types.Message) -> bool:
         """Проверяем является ли пользователь администратором."""
         access = BaseBotSQLMethods.get_admin_access(message.chat.id)
-        if access is None or access[1] != message.chat.id:
+        if not access:
             bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
             return False
         return True
@@ -47,7 +47,7 @@ class CheckUserPermission:
     def check_moderator(cls, message: telebot.types.Message) -> bool:
         """Проверяем является ли пользователь модератором."""
         access = BaseBotSQLMethods.get_moderator_access(message.chat.id)
-        if access is None:
+        if not access:
             bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
             return False
         return True
