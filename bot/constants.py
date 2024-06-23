@@ -11,30 +11,28 @@ NOT_REGISTERED = 'Вы не зарегистрированны в системе
 ADMIN_COMMANDS = (
     '''
     Для Вас доступны следующие команды:
-    \n1. Выгрузка, базы данных и лог-файлов.\n/dbinfo
-    \n2. Создание уникального ключа доступа для регистрации новых сотрудников.
-    \nДля сотрудника Энергосистем:\n/createcode_ES
-    \nДля сотрудника Сервисных Технологий:\n/createcode_ST
-    \nДля сотрудника Нефтесервисных Решений:\n/createcode_NR
-    \nДля сотрудника Инженерно-технологического сервиса:\n/createcode_ITS
-    \n3. Удаление пользователя по user_id.\n/deleteuser user_id
-    \n4. Удаление пользователя по user_id.\n/deletecode unique_code
-    \n5. Назначение модератора.\n/createmoderator
-    \n6. Удаление модератора.\n/deletemoderator user_id
-    \n7. Обновление кода в БД.\n/updatecode old_code company_name("es")
-    \n8. Сообщение об обновлении чат-бота:\n/updates
-    \n9. Массовое сообщение пользователям чат-бота:\n/massmess your_message_here
+    \n1. Выгрузка, базы данных.\n/dbinfo
+    \n2. Выгрузка лог-файлов.\n/logs_info
+    \n3. Создание учетных записей для регистрации новых сотрудников.
+    \n/create_user_data, ivanov.ii, Иванов Иван Иванович
+    \n4. Удаление пользователя по email.\n/delete_email user_email
+    \n5. Назначение администратора.\n/create_admin user_email
+    \n6. Удаление прав администратора.\n/delete_admin user_email
+    \n7. Назначение модератора.\n/create_moderator user_email
+    \n8. Удаление прав модератора.\n/delete_moderator user_email
+    \n9. Заготовленное сообщение об обновлении чат-бота:\n/updates
+    \n10. Массовое сообщение пользователям чат-бота:\n/massmess your_message_here
     '''
 )
 MODERATOR_COMMANDS = (
     '''
-    Для Вас доступны следующие команды:\n
-    \n1. Создание уникального ключа доступа для регистрации новых
-     сотрудников.\n
-    \nДля сотрудника Энергосистем:\n/createnewcode_ES\n
-    \nДля сотрудника Сервисных Технологий:\n/createnewcode_ST\n
-    \nДля сотрудника Нефтесервисных Решений:\n/createnewcode_NR\n
-    \nДля сотрудника Инженерно-технологического сервиса:\n/createnewcode_ITS\n
+    Для Вас доступны следующие команды:
+    \n1. Выгрузка, базы данных и лог-файлов.\n/dbinfo
+    \n2. Создание учетных записей для регистрации новых сотрудников.
+    \n/create_user_data, ivanov.ii, Иванов Иван Иванович
+    \n3. Удаление пользователя по email.\n/delete_email user_email
+    \n4. Назначение модератора.\n/create_moderator user_email
+    \n5. Удаление прав модератора.\n/delete_moderator user_email
     '''
 )
 
