@@ -9,49 +9,34 @@ from bot.logger_setting.logger_bot import log_user_command_updated, logger
 class RegisterUserCommand:
 
     @classmethod
-    def register(cls, message: types.Message) -> None:
-        """Определяем права пользователя."""
-        input_code = message.text
-        erorr_code_message = (
-            'Команда использована неверно, '
-            'введите код как показано на примере!\n'
-            'Пример: \n/code jifads9af8@!1'
-        )
-        if input_code == '/code':
-            logger.warning(log_user_command_updated(message))
-            return bot.send_message(
-                message.chat.id,
-                erorr_code_message,
-            )
+    def register(cls, call: types.CallbackQuery) -> types.Message:
+        bot.send_message(call.message.chat.id, 'Введите логин (логин от учетной записи до символа "@"):')
+        return bot.register_next_step_handler(call.message, cls.login_input)
 
-        clear_code = input_code.split()
-        if len(clear_code) <= 1 or len(clear_code) > 2:
-            logger.warning(log_user_command_updated(message))
-            return bot.send_message(
-                message.chat.id,
-                erorr_code_message,
-            )
+    @classmethod
+    def login_input(cls, message: types.Message) -> None:
+        login = message.text.lower()
+        if not BaseBotSQLMethods.search_email_in_db(login):
+            return bot.send_message(message.chat.id, 'Ошибка поиска логина, загеристрируйтесь повторно!')
+        bot.send_message(message.chat.id, 'Введите свой табельный номер:')
+        return bot.register_next_step_handler(message, lambda msg: cls.password_input(msg, login))
 
-        check = BaseBotSQLMethods.search_code_in_db(clear_code[1])
-        if check[1] is not None:
-            logger.warning(log_user_command_updated(message))
-            return bot.send_message(message.chat.id, 'Данный код занят!')
-        elif check is not None and check[0] == clear_code[1]:
-            logger.info(log_user_command_updated(message))
-            bot.send_message(message.chat.id, 'Код найден в базе!')
-            BaseBotSQLMethods.create_new_user(
-                clear_code[1],
-                message.from_user.username,
-                message.from_user.id,
-                message.from_user.first_name,
-                message.from_user.last_name,
-            )
-            return StartBotCommand.start(message)
-
-        logger.warning(log_user_command_updated(message))
-        return bot.send_message(
-            message.chat.id,
-            'Код не найден в системе!\n'
-            'Запросите код у администратора проекта, '
-            'либо используйте имеющийся.',
-        )
+    @classmethod
+    def password_input(cls, message: types.Message, login: str) -> None:
+        try:
+            password = int(message.text)
+        except ValueError:
+            bot.send_message(message.chat.id, 'Вы не зарегистрированы! Ошибочный табельный номер!')
+            raise 'Error tab_number'
+        else:
+            if password > 999_999 or password < 1:
+                return bot.send_message(message.chat.id, 'Вы не зарегистрированы! Ошибочный табельный номер!')
+            if not BaseBotSQLMethods.search_tab_number_in_db(password):
+                return bot.send_message(message.chat.id, 'Вы не зарегистрированы! Данный табельный номер занят!')
+            if not BaseBotSQLMethods.search_telegram_id_in_db(message.chat.id):
+                return bot.send_message(message.chat.id, 'Вы не зарегистрированы! Данный id занят!')
+            BaseBotSQLMethods.user_sign_up(email=login, tab_number=password, message=message)
+            full_name = BaseBotSQLMethods.search_full_name_in_db(message.chat.id)
+            if full_name:
+                return bot.send_message(message.chat.id, f'{full_name} - Вы зарегистрированы!')
+        return bot.send_message(message.chat.id, 'Ошибка поиска данных...')
