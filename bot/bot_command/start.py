@@ -1,10 +1,9 @@
-import telebot
 from telebot import types
 
 from bot import bot
-from bot.logger_setting.logger_bot import logger, log_user_command_updated
-from bot.utils.check_permission import CheckUserPermission
 from bot.utils.buttons import Buttons
+from bot.db import BaseBotSQLMethods
+
 
 START_MESSAGE = (
     'Здравствуйте, <b>{0}</b>!\n'
@@ -15,39 +14,10 @@ START_MESSAGE = (
 
 class StartBotCommand:
 
-    @staticmethod
-    def start(message: telebot.types.Message) -> types.Message | None:
-        """Приветствуем пользователя и включаем меню бота."""
-        if not CheckUserPermission.check_user(message):
-            logger.warning(log_user_command_updated(message))
-            return None
-
-        if (message.from_user.first_name is not None
-           and message.from_user.last_name is not None):
-            user_info = (
-                f'{message.from_user.first_name} {message.from_user.last_name}'
-            )
-
-        elif (message.from_user.first_name is not None
-              and message.from_user.last_name is None):
-            user_info = message.from_user.first_name
-
-        elif message.from_user.username is not None:
-            user_info = message.from_user.username
-
-        else:
-            user_info = 'сотрудник'
-
-        buttons = (
-            'Информация о боте',
-            'Главное меню',
-        )
-        markup = Buttons.create_keyboard_buttons(buttons)
-
-        logger.info(log_user_command_updated(message))
-        return bot.send_message(
-            message.chat.id,
-            START_MESSAGE.format(user_info),
-            parse_mode='html',
-            reply_markup=markup,
-        )
+    @classmethod
+    def start_command(cls, message: types.Message) -> None:
+        user_db = BaseBotSQLMethods.search_telegram_id_user(message.chat.id)
+        if user_db == message.chat.id:
+            return bot.send_message(message.chat.id, 'Вы уже зарегистрированы!')
+        markup = Buttons.create_inline_keyboard(buttons=(('Зарегистрироваться', 'start_register'),), callback=True)
+        return bot.send_message(message.chat.id, 'Здравствуйте! Пожалуйста, зарегистрируйтесь.', reply_markup=markup)
