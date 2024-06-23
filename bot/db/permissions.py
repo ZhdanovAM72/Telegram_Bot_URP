@@ -1,61 +1,53 @@
-import sqlite3
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from bot.logger_setting.logger_bot import logger
+from bot.db.database import Database, PostgresSettings
+from bot.db.entities.users import User
 
 
 class CheckPermissionsMethods:
+    settings = PostgresSettings()
+    db = Database(settings)
 
     @classmethod
-    def get_admin_access(cls, user_id: int) -> tuple:
+    def get_admin_access(cls, user_id: int, session: Session = None) -> tuple:
         """"Проверяем данные администратора в БД."""
-        with sqlite3.connect('users_v2.sqlite') as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                SELECT auth_code, user_id
-                FROM bot_users
-                WHERE user_id=? AND auth_code LIKE 'admin%'
-                """,
-                (user_id,)
-            )
-            admin_check = cursor.fetchone()
-            cursor.close()
-            logger.info(
-                f'проверка прав администратора - '
-                f'id пользователя: {user_id} - '
-            )
-            return admin_check
+        try:
+            with cls.db.get_session(session) as session:
+                user_query = session.execute(select(User).where(User.telegram_id == user_id))
+                user = user_query.scalars().first()
+                if user.is_admin:
+                    return True
+                logger.info(f"Проверка прав администратора неуспешна! Пользователь: {user_id}")
+                return False
+        except Exception as e:
+            logger.error(f"Ошибка при создании пользователя с данными: {user_id} - {e}")
 
     @classmethod
-    def get_moderator_access(cls, user_id: int) -> tuple:
+    def get_moderator_access(cls, user_id: int, session: Session = None) -> tuple:
         """"Проверяем данные модератора в БД."""
-        with sqlite3.connect('users_v2.sqlite') as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                SELECT auth_code, user_id
-                FROM bot_users
-                WHERE user_id=? AND auth_code LIKE 'moderator%'
-                """,
-                (user_id,)
-            )
-            moderator_check = cursor.fetchone()
-            cursor.close()
-            logger.info(
-                f'проверка прав модератора - '
-                f'id пользователя: {user_id} - '
-            )
-            return moderator_check
+        try:
+            with cls.db.get_session(session) as session:
+                user_query = session.execute(select(User).where(User.telegram_id == user_id))
+                user = user_query.scalars().first()
+                if user.is_moderator:
+                    return True
+                logger.info(f"Проверка прав модератора неуспешна! Пользователь: {user_id}")
+                return False
+        except Exception as e:
+            logger.error(f"Ошибка при создании пользователя с данными: {user_id} - {e}")
 
     @classmethod
-    def get_user_access(cls, user_id):
+    def get_user_access(cls, user_id: int, session: Session = None) -> tuple:
         """Проверяем пользователя в БД."""
-        with sqlite3.connect('users_v2.sqlite') as conn:
-            cursor = conn.cursor()
-            user_check_in_db = (
-                'SELECT id, user_id FROM bot_users WHERE user_id=?'
-            )
-            cursor.execute(user_check_in_db, (user_id,))
-            user_check = cursor.fetchone()
-            cursor.close()
-            return user_check
+        try:
+            with cls.db.get_session(session) as session:
+                user_query = session.execute(select(User).where(User.telegram_id == user_id))
+                user = user_query.scalars().first()
+                if user.telegram_id:
+                    return True
+                logger.info(f"Проверка прав пользователя неуспешна! Пользователь: {user_id}")
+                return False
+        except Exception as e:
+            logger.error(f"Ошибка при создании пользователя с данными: {user_id} - {e}")
