@@ -152,8 +152,7 @@ settings.py
 
 # Bot files
 bot_data/
-bot_log
-bot_log.txt
+bot_log*
 
 # db files
 *.sqlite
