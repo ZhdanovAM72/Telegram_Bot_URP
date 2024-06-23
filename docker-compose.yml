@@ -30,8 +30,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    # depends_on:
-    #   - postgres
     networks:
       - services
 
