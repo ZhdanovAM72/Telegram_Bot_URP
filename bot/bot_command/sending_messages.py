@@ -43,14 +43,20 @@ class SendingMessagesBotCommands:
                     parse_mode='MarkdownV2',
                 )
 
-        users = BaseBotSQLMethods.search_all_user_id()
+        users = BaseBotSQLMethods.search_all_users()
+        if users is None:
+            return bot.send_message(
+                message.chat.id,
+                ERORR_CODE_MESSAGE,
+                parse_mode='MarkdownV2',
+            )
         send_count = 0
         eror_count = 0
 
         for user in users:
             try:
                 bot.send_message(
-                    chat_id=user[0],
+                    chat_id=user.telegram_id,
                     text=message_for_users,
                 )
                 send_count += 1
@@ -58,7 +64,7 @@ class SendingMessagesBotCommands:
                 eror_count += 1
                 raise bot.send_message(
                     message.chat.id,
-                    f'ошибка отправки пользователю с id № *{user[0]}*',
+                    f'ошибка отправки пользователю с id № *{user.full_name}*',
                     parse_mode='MarkdownV2',
                 )
             finally:
