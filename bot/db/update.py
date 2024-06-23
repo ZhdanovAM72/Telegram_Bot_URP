@@ -1,52 +1,44 @@
-import sqlite3
+import datetime as dt
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from telebot.types import Message
 
 from bot.logger_setting.logger_bot import logger
+from bot.db.database import Database, PostgresSettings
+from bot.db.entities.users import User
 
 
 class UpdateMethods:
+    settings = PostgresSettings()
+    db = Database(settings)
 
     @classmethod
-    def update_user_to_moderator(cls, code: str, user_id: int) -> None:
-        """Дополняем пользователя правами модератора."""
+    def update_user_to_moderator(cls, telegram_id: int, message: Message, session: Session = None):
         try:
-            con = sqlite3.connect('users_v2.sqlite')
-            cur = con.cursor()
-            sql_update_v1 = ("""
-                UPDATE bot_users
-                SET auth_code = ?
-                WHERE user_id = ?
-            """)
-            data = (code, user_id)
-            cur.execute(sql_update_v1, data)
-            con.commit()
-            logger.info('Записан новый модератор в БД: '
-                        f'{user_id}')
-        except sqlite3.Error as error:
-            logger.error(f'SQL error: {error}')
-        finally:
-            if con:
-                con.close()
-                logger.info('Закрыто соединение с БД: users_v2')
+            with cls.db.get_session(session) as session:
+                user_query = session.execute(select(User).where(User.telegram_id == telegram_id))
+                user = user_query.scalars().first()
+                if not user:
+                    return False
+                user.is_moderator = True
+                user.updated_at = dt.datetime.fromtimestamp(message.date)
+                logger.info(f"Added new moderator: {user.telegram_id}")
+                return user.telegram_id
+        except Exception as e:
+            logger.error(f"Ошибка назначения модератора id №: {telegram_id} - {e}")
 
     @classmethod
-    def update_user_code(cls, old_code: str, new_code: int) -> None:
-        """Обновляем код в БД."""
+    def update_user_to_admin(cls, telegram_id: int, message: Message, session: Session = None):
         try:
-            con = sqlite3.connect('users_v2.sqlite')
-            cur = con.cursor()
-            sql_update_v1 = ("""
-                UPDATE bot_users
-                SET auth_code = ?
-                WHERE auth_code = ?
-            """)
-            data = (new_code, old_code)
-            cur.execute(sql_update_v1, data)
-            con.commit()
-            logger.info('Записан новый код в БД: '
-                        f'{new_code}')
-        except sqlite3.Error as error:
-            logger.error(f'SQL error: {error}')
-        finally:
-            if con:
-                con.close()
-                logger.info('Закрыто соединение с БД: users_v2')
+            with cls.db.get_session(session) as session:
+                user_query = session.execute(select(User).where(User.telegram_id == telegram_id))
+                user = user_query.scalars().first()
+                if not user:
+                    return False
+                user.is_admin = True
+                user.updated_at = dt.datetime.fromtimestamp(message.date)
+                logger.info(f"Added new administrator: {user.telegram_id}")
+                return user.telegram_id
+        except Exception as e:
+            logger.error(f"Ошибка назначения модератора id №: {telegram_id} - {e}")
