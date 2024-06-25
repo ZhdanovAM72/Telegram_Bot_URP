@@ -44,7 +44,7 @@ class BotInfoCommands:
         bot.send_message(message.chat.id, 'Попытка экспорта данных.')
         date_info = dt.datetime.utcfromtimestamp(message.date)
 
-        log_documents = [file for file in os.listdir('.') if file.startswith("bot_log.txt")]
+        log_documents = [file for file in os.listdir('.') if file.startswith("bot_log")]
         log_caption = [f'Логи на {date_info.date()}' for _ in log_documents]
         logger.info(log_user_command_updated(message))
         return Documents.send_document_with_markup(message.chat.id, log_documents, log_caption)

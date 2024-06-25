@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
-LOG_FILE = 'bot_log.txt'  # Имя файла логов
+LOG_FILE = 'bot_log'  # Имя файла логов
 
 
 def init_logger() -> logging.Logger:
@@ -71,3 +71,4 @@ def log_sticker(message):
         f'фамилия: {message.from_user.last_name}'
     )
     return log_message
+
