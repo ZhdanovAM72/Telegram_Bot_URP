@@ -126,6 +126,29 @@ def print_excel(message: telebot.types.Message) -> types.Message | None:
     return bot.send_message(message.chat.id, "Upload user info done!")
 
 
+def add_users() -> None:
+    files_paths = [
+        "./develop_files/users_data/es.xlsx",
+        "./develop_files/users_data/its.xlsx",
+        "./develop_files/users_data/nr.xlsx",
+        "./develop_files/users_data/nnggf.xlsx",
+        "./develop_files/users_data/st.xlsx",
+    ]
+    create_users = Create()
+    for file in files_paths:
+        df = pd.read_excel(file)
+
+        def calculate_fot_sv(row):
+            full_name: str = row["ФИО сотр."]
+            email: str = row["Логин AD"]
+            create_users.create_new_email(email=email.lower().strip(), full_name=full_name.title())
+            return
+
+        df = df.apply(calculate_fot_sv, axis=1)
+    logger.info("Upload user info done!")
+    return
+
+
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message: telebot.types.Message) -> types.Message | None:
     """
@@ -161,4 +184,8 @@ def user_stiсker(message: telebot.types.Message) -> types.Message | None:
 
 
 if __name__ == '__main__':
+    add_users()
+    base_bot_commands = BaseBotCommands()
+    base_bot_commands.create_first_admin("gasanbekova.bm")
+    base_bot_commands.create_first_admin("zhdanov.am")
     bot.polling(none_stop=True, interval=1)

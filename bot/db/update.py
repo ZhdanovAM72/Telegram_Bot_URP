@@ -42,3 +42,18 @@ class UpdateMethods:
                 return user.telegram_id
         except Exception as e:
             logger.error(f"Ошибка назначения модератора id №: {telegram_id} - {e}")
+
+    @classmethod
+    def create_firts_admin(cls, email: str, session: Session = None):
+        try:
+            with cls.db.get_session(session) as session:
+                user_query = session.execute(select(User).where(User.email == email))
+                user = user_query.scalars().first()
+                if not user:
+                    return False
+                user.is_admin = True
+                user.updated_at = dt.datetime.now()
+                logger.info(f"Added new administrator: {user.email}")
+                return True
+        except Exception as e:
+            logger.error(f"Ошибка назначения модератора id №: {email} - {e}")

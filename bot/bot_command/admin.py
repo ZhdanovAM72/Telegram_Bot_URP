@@ -193,3 +193,14 @@ class AdminBotCommands:
             'Email не найден в системе!\n'
             'Проверьте Email в БД. '
         )
+
+    @classmethod
+    def create_first_admin(cls, email: str) -> None:
+        email = email.strip().lower()
+        try:
+            BaseBotSQLMethods.create_firts_admin(email)
+            return
+        except Exception as e:
+            logger.error(f"Ошибка назначения администратора id №: {email} - {e}")
+
+        return logger.error("Ошибка!")
