@@ -19,6 +19,20 @@ services:
     networks:
       - services
 
+  migrations:
+    build:
+      context: ./
+      dockerfile: ./alembic/Dockerfile_migrations
+    container_name: migrations
+    env_file:
+      - ./.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - services
+    restart: on-failure
+
   bot:
     build: .
     container_name: telegram_bot
@@ -28,8 +42,8 @@ services:
     env_file:
       - ./.env
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
+      - migrations
     networks:
       - services
 
