@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_urp
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d postgres -p 5432 -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - services
+
+  migrations:
+    build:
+      context: ./
+      dockerfile: ./alembic/Dockerfile_migrations
+    container_name: migrations
+    env_file:
+      - ./.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - services
+    restart: on-failure
+
+  bot:
+    build: .
+    container_name: telegram_bot
+    restart: always
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+      - migrations
+    networks:
+      - services
+
+volumes:
+  postgres_data:
+
+networks:
+  services:
