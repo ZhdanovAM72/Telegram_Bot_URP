@@ -100,6 +100,11 @@ STOP_COMMAND = 'stop'
 Запустить сервис на локальном ПК (из основной директории проекта):
 ```
 python main.py
+
+or
+
+docker  compose  -f  docker-compose.yml  up -d
+
 ```
 
 ### Проект разрабатывается в разных ветках Git.
