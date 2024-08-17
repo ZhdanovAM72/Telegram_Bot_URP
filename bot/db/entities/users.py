@@ -1,7 +1,5 @@
-from datetime import datetime, time
-
-from sqlalchemy import BigInteger, Boolean, DateTime, Integer, String, Time, false, func, text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import BigInteger, Boolean, Integer, String, false
+from sqlalchemy.orm import Mapped, mapped_column
 
 from bot.db.entities import Entity
 
@@ -9,11 +7,10 @@ from bot.db.entities import Entity
 class User(Entity):
     __tablename__ = "users"
 
-    telegram_id: Mapped[BigInteger | None] = mapped_column(BigInteger, unique=True)
+    telegram_id: Mapped[int | None] = mapped_column(BigInteger, unique=True)
     username: Mapped[str | None] = mapped_column(String(32))
     first_name: Mapped[str | None] = mapped_column(String(64))
     last_name: Mapped[str | None] = mapped_column(String(64))
-    # phone_number: Mapped[str | None] = mapped_column(String(25))
     is_admin: Mapped[bool | None] = mapped_column(Boolean, server_default=false())
     is_moderator: Mapped[bool | None] = mapped_column(Boolean, server_default=false())
     email: Mapped[str] = mapped_column(String(254), unique=True, nullable=False)
