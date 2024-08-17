@@ -3,7 +3,7 @@ from telebot import types
 from bot import bot
 from bot.bot_command.start import StartBotCommand
 from bot.db import BaseBotSQLMethods
-from bot.logger_setting.logger_bot import log_user_command_updated, logger
+from bot.logger_setting.logger_bot import logger
 
 
 class RegisterUserCommand:
@@ -26,16 +26,28 @@ class RegisterUserCommand:
         try:
             password = int(message.text)
         except ValueError:
-            bot.send_message(message.chat.id, 'Вы не зарегистрированы! Ошибочный табельный номер!')
-            raise 'Error tab_number'
+            logger.error('Error tab_number')
+            return bot.send_message(
+                message.chat.id,
+                'Вы не зарегистрированы! Ошибочный табельный номер! \n'
+                'Используйте цифры (максимальное значение 1 млн.)!',
+            )
         else:
-            if password > 999_999 or password < 1:
-                return bot.send_message(message.chat.id, 'Вы не зарегистрированы! Ошибочный табельный номер!')
+            if password > 1_000_000 or password < 1:
+                return bot.send_message(
+                    message.chat.id,
+                    'Вы не зарегистрированы! Ошибочный табельный номер! \n'
+                    'Используйте цифры (максимальное значение 1 млн.)!',
+                )
+
             if not BaseBotSQLMethods.search_tab_number_in_db(password):
                 return bot.send_message(message.chat.id, 'Вы не зарегистрированы! Данный табельный номер занят!')
+
             if not BaseBotSQLMethods.search_telegram_id_in_db(message.chat.id):
                 return bot.send_message(message.chat.id, 'Вы не зарегистрированы! Данный id занят!')
+
             BaseBotSQLMethods.user_sign_up(email=login, tab_number=password, message=message)
+
             full_name = BaseBotSQLMethods.search_full_name_in_db(message.chat.id)
             if full_name:
                 return bot.send_message(message.chat.id, f'{full_name} - Вы зарегистрированы!')
