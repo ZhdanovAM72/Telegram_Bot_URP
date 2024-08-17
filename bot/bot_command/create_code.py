@@ -11,15 +11,15 @@ class CreateCodeCommands:
     @classmethod
     def create_user_data(cls, message: types.Message) -> types.Message | None:
         """Создание кода доступа."""
-        if (CheckUserPermission.check_admin(message)
-           or CheckUserPermission.check_moderator(message)):
+        if (CheckUserPermission.check_moderator(message)
+           or CheckUserPermission.check_admin(message)):
             log_user_command_updated(message)
         else:
-            return None
+            return bot.send_message(message.chat.id, 'Недостаточно прав!')
 
         user_data = message.text.split(',')
-        user_email = user_data[1].strip()
-        user_full_name = user_data[2]
+        user_email = user_data[1].strip().lower()
+        user_full_name = user_data[2].title()
 
         created_user = BaseBotSQLMethods.search_email_in_db(user_email)
         if created_user:
@@ -30,4 +30,4 @@ class CreateCodeCommands:
         if created_user is None:
             bot.send_message(message.chat.id, 'Непредвиденная ошибка.')
         user_full_name = BaseBotSQLMethods.search_full_name_if_email(user_email)
-        return bot.send_message(message.chat.id, f'Данные записаны в бд: {user_full_name}')
+        return bot.send_message(message.chat.id, f'Данные записаны в бд! Новый пользователь: {user_full_name}')

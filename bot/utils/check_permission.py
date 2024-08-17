@@ -39,7 +39,6 @@ class CheckUserPermission:
         """Проверяем является ли пользователь администратором."""
         access = BaseBotSQLMethods.get_admin_access(message.chat.id)
         if not access:
-            bot.send_message(message.chat.id, text=NO_ADMIN_RIGHTS)
             return False
         return True
 
@@ -48,6 +47,5 @@ class CheckUserPermission:
         """Проверяем является ли пользователь модератором."""
         access = BaseBotSQLMethods.get_moderator_access(message.chat.id)
         if not access:
-            bot.send_message(message.chat.id, text=NO_MODERATOR_RIGHTS)
             return False
         return True

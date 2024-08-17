@@ -1,6 +1,7 @@
+import os
+
 import telebot
 from telebot import types
-
 import pandas as pd
 
 from bot.bot_command import BaseBotCommands
@@ -103,18 +104,28 @@ def start(message: telebot.types.Message) -> None:
 def register(call: types.CallbackQuery) -> types.Message:
     return BaseBotCommands.register(call)
 
+@bot.message_handler(commands=['add_new_users'])
+def wait_for_file(message: telebot.types.Message) -> None:
+    bot.send_message(
+        message.chat.id,
+        "Пожалуйста отправьте в чат файл с данными пользоватлей для загрузки в базу данных."
+        "\n(максимальный размер файла 20 МБ)",
+    )
+    bot.register_next_step_handler(message, process_file)
 
-@bot.message_handler(commands=['add_users'])
-def print_excel(message: telebot.types.Message) -> types.Message | None:
-    files_paths = [
-        "./develop_files/users_data/es.xlsx",
-        "./develop_files/users_data/its.xlsx",
-        "./develop_files/users_data/nr.xlsx",
-        "./develop_files/users_data/nnggf.xlsx",
-        "./develop_files/users_data/st.xlsx",
-    ]
-    for file in files_paths:
-        df = pd.read_excel(file)
+def process_file(message: telebot.types.Message) -> types.Message | None:
+    if message.content_type != 'document':
+        return bot.send_message(message.chat.id, "Пложалуйста используйте excel файл.")
+
+    file_info = bot.get_file(message.document.file_id)
+    downloaded_file = bot.download_file(file_info.file_path)
+
+    file_path = 'user_data.xlsx'
+    with open(file_path, 'wb') as f:
+        f.write(downloaded_file)
+    try:
+        df = pd.read_excel(file_path)
+        logger.info(df)
 
         def calculate_fot_sv(row):
             full_name: str = row["ФИО сотр."]
@@ -123,7 +134,17 @@ def print_excel(message: telebot.types.Message) -> types.Message | None:
             return
 
         df = df.apply(calculate_fot_sv, axis=1)
-    return bot.send_message(message.chat.id, "Upload user info done!")
+    except Exception as e:
+        logger.info(f'ERROR add_users: {e}')
+        return bot.send_message(
+            message.chat.id,
+            'Ошибка! Пользователи не загружены! Проверьте файл и попробуйте снова!'
+            '\n(снова запустите команду и используйте excel файл)'
+            '\nСтолбцы должны называться строго "ФИО сотр." и "Логин AD"',
+        )
+
+    os.remove(file_path)
+    return bot.send_message(message.chat.id, "Пользователи загружены!")
 
 
 def add_users() -> None:
@@ -184,8 +205,8 @@ def user_stiсker(message: telebot.types.Message) -> types.Message | None:
 
 
 if __name__ == '__main__':
-    add_users()
-    base_bot_commands = BaseBotCommands()
-    base_bot_commands.create_first_admin("gasanbekova.bm")
-    base_bot_commands.create_first_admin("zhdanov.am")
+    # add_users()
+    # base_bot_commands = BaseBotCommands()
+    # base_bot_commands.create_first_admin("gasanbekova.bm")
+    # base_bot_commands.create_first_admin("zhdanov.am")
     bot.polling(none_stop=True, interval=1)

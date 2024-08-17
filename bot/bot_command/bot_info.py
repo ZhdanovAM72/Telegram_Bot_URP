@@ -15,8 +15,10 @@ class BotInfoCommands:
     @classmethod
     def export_info(cls, message: types.Message) -> types.Message | None:
         """Экспортируем БД."""
-        if not CheckUserPermission.check_admin(message):
-            logger.warning(log_user_command_updated(message))
+        if (CheckUserPermission.check_admin(message)
+           or CheckUserPermission.check_moderator(message)):
+            log_user_command_updated(message)
+        else:
             return None
 
         bot.send_message(message.chat.id, 'Попытка экспорта данных.')

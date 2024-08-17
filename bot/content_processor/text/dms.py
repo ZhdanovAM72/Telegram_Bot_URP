@@ -35,12 +35,12 @@ class DmsAndRvl:
                 'caption': 'Памятка по лечению',
             },
             {
-                'file': open(f'{parrent_path}med_list.pdf', 'rb'),
-                'caption': 'Перечень поликлиник',
+                'file': open(f'{parrent_path}med_list.xlsx', 'rb'),
+                'caption': 'Перечень ЛПУ 2024 г.',
             },
             {
                 'file': open(f'{parrent_path}dms.pdf', 'rb'),
-                'caption': 'Программа ДМС',
+                'caption': 'Возможности ДМС в НСА',
             },
         )
         Documents.send_media_group_without_markup(message.chat.id, documents)

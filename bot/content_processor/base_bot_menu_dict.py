@@ -89,6 +89,7 @@ BASE_MENU_DICT = {
     'Мой профиль': BaseTextMenu.my_profile,
     'Индивидуальный план развития': BaseTextMenu.individual_development_plan,
     'Карьерное консультирование': BaseTextMenu.career_counseling,
+    'Личный кабинет рабочего': BaseTextMenu.personal_worker_account,
 
     # ЦИКЛ УПРАВЛЕНИЯ ТАЛАНТАМИ
     'Цикл управления талантами': BaseTextMenu.talent_management_cycle,

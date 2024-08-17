@@ -14,7 +14,7 @@ class ModeratorBotCommands:
         bot.send_message(message.chat.id, 'Проверяем права.')
         if not CheckUserPermission.check_moderator(message):
             logger.warning(log_user_command_updated(message))
-            return None
+            return bot.send_message(message.chat.id, 'Недостаточно прав!')
 
         logger.info(log_user_command_updated(message))
         return (bot.send_message(message.chat.id, 'Привет Moderator!'),
